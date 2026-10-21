@@ -25,6 +25,7 @@ static lv_coord_t s_y[HIST_MAX_PUNKTE];
 static int    s_n = 0;
 static time_t s_t0 = 0;
 static int    s_schritt = 600;
+static int    s_xm = 7;                               // Beschriftungen der Zeitachse
 static int    s_yDez = 0;                             // Nachkommastellen der Achsenbeschriftung (0 oder 1)
 static uint32_t s_sig = 0;
 
@@ -44,7 +45,9 @@ static void achsenBeschriftung(lv_event_t* e) {
   if (!d->text) return;
   if (d->id == LV_CHART_AXIS_PRIMARY_Y) { zehntel(d->text, d->text_length, (int)d->value, s_yDez); return; }
   if (d->id != LV_CHART_AXIS_PRIMARY_X) return;
-  time_t t = s_t0 + (time_t)d->value * s_schritt;
+  // bei der Zeitachse ist value die Nummer der Beschriftung (0 .. s_xm-1), nicht der Punkt
+  const int idx = s_xm > 1 ? (int)lroundf((float)d->value * (s_n - 1) / (s_xm - 1)) : 0;
+  time_t t = s_t0 + (time_t)idx * s_schritt;
   struct tm ti;
   if (s_gezeigt == HB_24H) { t += 1800; localtime_r(&t, &ti); lv_snprintf(d->text, d->text_length, "%02d:00", ti.tm_hour); }   // auf volle Stunden gerundet
   else if (s_gezeigt == HB_7D) { localtime_r(&t, &ti); lv_snprintf(d->text, d->text_length, "%s %d.", WT[ti.tm_wday], ti.tm_mday); }
@@ -105,7 +108,7 @@ static void bauen() {
   lv_obj_set_pos(s_info, 24, 56); lv_obj_set_width(s_info, 976);
 
   s_chart = lv_chart_create(s_scr);
-  lv_obj_set_pos(s_chart, 104, 104); lv_obj_set_size(s_chart, 892, 360);
+  lv_obj_set_pos(s_chart, 104, 104); lv_obj_set_size(s_chart, 892, 332);
   lv_chart_set_type(s_chart, LV_CHART_TYPE_LINE);
   lv_chart_set_update_mode(s_chart, LV_CHART_UPDATE_MODE_SHIFT);
   lv_obj_set_style_bg_opa(s_chart, LV_OPA_TRANSP, LV_PART_MAIN);
@@ -131,7 +134,7 @@ static void bauen() {
   lv_obj_set_style_text_font(s_punkt, &font_montserrat_22, 0);
   lv_obj_set_style_text_align(s_punkt, LV_TEXT_ALIGN_CENTER, 0);
   lv_label_set_long_mode(s_punkt, LV_LABEL_LONG_DOT);
-  lv_obj_set_pos(s_punkt, 24, 480); lv_obj_set_width(s_punkt, 976);
+  lv_obj_set_pos(s_punkt, 24, 482); lv_obj_set_width(s_punkt, 976);
 
   s_btn[0] = taste("24 Stunden", 24, 170, bereichTippen, HB_24H);
   s_btn[1] = taste("7 Tage", 206, 140, bereichTippen, HB_7D);
@@ -200,6 +203,7 @@ static void zeichnen() {
 
   if (s_n < 2) {
     lv_obj_add_flag(s_chart, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_text_font(s_hinweis, &font_montserrat_22, 0); lv_obj_set_pos(s_hinweis, 104, 250); lv_obj_set_width(s_hinweis, 892);
     lv_label_set_text(s_hinweis, hinweis[0] ? hinweis : "Noch keine Daten. Der Verlauf füllt sich alle 10 Minuten.");
     lv_obj_clear_flag(s_hinweis, LV_OBJ_FLAG_HIDDEN);
     lv_label_set_text(s_info, "");
@@ -207,7 +211,7 @@ static void zeichnen() {
     return;
   }
   lv_obj_clear_flag(s_chart, LV_OBJ_FLAG_HIDDEN);
-  if (hinweis[0]) { lv_label_set_text(s_hinweis, hinweis); lv_obj_set_pos(s_hinweis, 104, 466); lv_obj_set_style_text_font(s_hinweis, &font_montserrat_18, 0); lv_obj_clear_flag(s_hinweis, LV_OBJ_FLAG_HIDDEN); }
+  if (hinweis[0]) { lv_label_set_text(s_hinweis, hinweis); lv_obj_set_pos(s_hinweis, 24, 510); lv_obj_set_width(s_hinweis, 976); lv_obj_set_style_text_font(s_hinweis, &font_montserrat_18, 0); lv_obj_clear_flag(s_hinweis, LV_OBJ_FLAG_HIDDEN); }
   else lv_obj_add_flag(s_hinweis, LV_OBJ_FLAG_HIDDEN);
 
   float mn = 1e9f, mx = -1e9f, jetzt = NAN; int imn = 0, imx = 0;
@@ -223,6 +227,7 @@ static void zeichnen() {
   lv_chart_set_point_count(s_chart, s_n);
   lv_chart_set_range(s_chart, LV_CHART_AXIS_PRIMARY_Y, lo10, hi10);
   const int xm = gezeigt == HB_30D ? 7 : gezeigt == HB_7D ? 8 : 7;
+  s_xm = xm;
   lv_chart_set_axis_tick(s_chart, LV_CHART_AXIS_PRIMARY_Y, 8, 4, marken, 1, true, 76);
   lv_chart_set_axis_tick(s_chart, LV_CHART_AXIS_PRIMARY_X, 8, 4, xm, 1, true, 30);
   lv_chart_set_div_line_count(s_chart, marken, xm);
@@ -254,7 +259,7 @@ void uiHistorieOeffnen(const char* id, const char* titel, const char* einheit, i
   s_bereich = HB_24H;
   lv_obj_t* a = lv_scr_act();
   if (a != s_scr) s_zurueck = a;
-  lv_obj_set_style_text_font(s_hinweis, &font_montserrat_22, 0); lv_obj_set_pos(s_hinweis, 104, 250);
+  lv_obj_set_style_text_font(s_hinweis, &font_montserrat_22, 0); lv_obj_set_pos(s_hinweis, 104, 250); lv_obj_set_width(s_hinweis, 892);
   zeichnen();
   lv_scr_load(s_scr);
 }
