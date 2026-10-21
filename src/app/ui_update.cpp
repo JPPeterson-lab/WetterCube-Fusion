@@ -478,7 +478,7 @@ static void quelleAnlegen(lv_obj_t* screen, int x, int y, int breite, const char
   lv_obj_t* l = lv_label_create(screen);
   lv_obj_set_pos(l, x, y);
   lv_obj_set_width(l, breite);
-  lv_label_set_long_mode(l, LV_LABEL_LONG_WRAP);
+  lv_label_set_long_mode(l, breite > 400 ? LV_LABEL_LONG_WRAP : LV_LABEL_LONG_CLIP);   // kurze Hinweise bleiben einzeilig, nur der lange Text im Menue bricht um
   lv_obj_set_style_text_font(l, &font_montserrat_latin_ext_16, 0);
   lv_obj_set_style_text_color(l, lv_color_hex(0x7b8794), 0);
   lv_obj_set_style_text_align(l, ausrichtung, 0);
@@ -490,7 +490,7 @@ static void quellenHinweiseAnlegen() {
   if (fertig || !objects.screenmenu) return;
   fertig = true;
   quelleAnlegen(objects.screenmenu, 14, 290, 996, "Datenquellen: Wetterdaten von Open-Meteo.com (CC BY 4.0), Pollen und Luftqualität aus dem Copernicus Atmosphere Monitoring Service (CAMS) über Open-Meteo, Warnungen, Pollenflug, Biowetter und Radar vom Deutschen Wetterdienst.", LV_TEXT_ALIGN_LEFT);
-  const int X = 740, Y = 566, B = 192;   // rechts neben der Mitte der Navigationsleiste, vor dem rechten Pfeil
+  const int X = 728, Y = 566, B = 207;   // rechts neben der Mitte der Navigationsleiste, vor dem rechten Pfeil
   quelleAnlegen(objects.screen_1,          X, Y, B, "Open-Meteo.com, DWD", LV_TEXT_ALIGN_RIGHT);
   quelleAnlegen(objects.screenverlauf,     X, Y, B, "Open-Meteo.com",      LV_TEXT_ALIGN_RIGHT);
   quelleAnlegen(objects.screenairquality,  X, Y, B, "Open-Meteo.com",      LV_TEXT_ALIGN_RIGHT);

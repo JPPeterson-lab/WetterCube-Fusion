@@ -2,7 +2,7 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-alpha13 (2026-10-21)
+## v0.9.9-alpha14 (2026-10-21)
 
 ### Changed
-- **Interface revised:** The data screens name their source at the bottom right, and the menu now shows the data sources with umlauts.
+- **Interface revised:** The source note at the bottom right of the data screens now fits completely on one line.

@@ -2,7 +2,7 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v0.9.9-alpha13 (2026-10-21)
+## v0.9.9-alpha14 (2026-10-21)
 
 ### Geändert
-- **Oberfläche überarbeitet:** Die Datenscreens nennen unten rechts ihre Quelle, im Menü stehen die Datenquellen jetzt mit Umlauten.
+- **Oberfläche überarbeitet:** Die Quellenangabe unten rechts auf den Datenscreens steht jetzt vollständig in einer Zeile.
