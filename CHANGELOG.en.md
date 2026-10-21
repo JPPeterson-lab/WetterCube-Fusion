@@ -2,9 +2,7 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-beta1 (2026-10-21)
+## v0.9.9-beta2 (2026-10-21)
 
-The Fusion enters its **beta phase**.
-
-### New
-- **Set up Next displays centrally:** at `http://wettercube-next.local` (page "Next-Displays") every WetterCube Next has a tab. With "Vom Fusion verwalten" (managed by the Fusion) you set pages, page turning, brightness, the values of the "Räume" tile and night mode (including the night clock) for each Next in one place. New Next displays (from 0.2.0-alpha1) appear by themselves, up to eight.
+### Changed
+- **Next displays in the web interface:** The "Sensoren" tab of the settings page now has a "Next-Displays" card with the number and status of known Next displays and a button to manage them. You no longer have to go through `wettercube-next.local`; the page can also be reached from the Fusion's own interface.

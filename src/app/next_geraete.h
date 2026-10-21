@@ -14,5 +14,6 @@ void nextAliasPruefen();                                 // Name wettercube-next
 
 // Aus /api/next: ein Next meldet sich (Kennung, Adresse, Version, aktuelle Einstellungen als Zahlenliste "c" und Raeume "r")
 void nextGeraetMeldet(const char* id, const char* ip, const char* ver, const char* c, const char* r);
+const char* nextGeraeteStatusText();                     // kurzer Text fuer die Einstellungsseite ("2 Next-Displays bekannt, 1 online")
 // Einstellungen eines verwalteten Next als JSON-Teil ",\"cfg\":{...}" (leer, wenn nicht verwaltet oder unbekannt)
 std::string nextCfgJson(const char* id);

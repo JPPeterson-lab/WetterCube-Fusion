@@ -251,6 +251,7 @@ static void handleWebRoot() {
   html.replace("%UPDATE_CONFIRM%", "Das Display zeigt waehrend des Updates einen Fortschrittsbalken.");
   html.replace("%UPDATE_LAEUFT%",  "Fortschritt auf dem Display.");
 #endif
+  html.replace("%NEXTS%",        nextGeraeteStatusText());
   html.replace("%IP%",           WiFi.localIP().toString());
   html.replace("%LOCATION%",     cfg.location);
   html.replace("%DWD_REGIONEN%", baueDwdRegionenOptions(cfg.dwd_region));

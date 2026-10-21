@@ -299,6 +299,13 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
 </div>
 
 <div class="card">
+  <h2>Next-Displays</h2>
+  <p class="hint">Alle WetterCube Next an einer Stelle einstellen: ein Reiter je Next (Seiten, R&auml;ume, Helligkeit, Nachtmodus). Auch erreichbar unter <b>wettercube-next.local</b>.</p>
+  <div class="status">%NEXTS%</div>
+  <a href="/next" class="btn btn-blau">Next-Displays einstellen</a>
+</div>
+
+<div class="card">
   <h2>Speicherkarte</h2>
   <p class="hint">Eine microSD-Karte (FAT32) im Einschub speichert den Verlauf der Sensoren und das Log. Status: <b>%SD%</b></p>
   <a href="/karte" class="btn btn-blau">Speicherkarte auslesen</a>

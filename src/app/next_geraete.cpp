@@ -130,6 +130,15 @@ std::string nextCfgJson(const char* id) {
   return std::string(",\"cfg\":") + cfgJson(s_g[i]).c_str();
 }
 
+const char* nextGeraeteStatusText() {
+  static char t[64];
+  if (s_n == 0) { snprintf(t, sizeof(t), "Noch kein Next gemeldet."); return t; }
+  const int64_t jetzt = esp_timer_get_time() / 1000; int online = 0;
+  for (int i = 0; i < s_n; i++) if (s_g[i].gesehen && jetzt - s_g[i].zuletzt_ms < 120000) online++;
+  snprintf(t, sizeof(t), "%d Next-Display%s bekannt, %d online.", s_n, s_n == 1 ? "" : "s", online);
+  return t;
+}
+
 // ── Name wettercube-next.local ───────────────────────────────────────────────
 void nextAliasPruefen() {
   if (WiFi.status() != WL_CONNECTED) return;
