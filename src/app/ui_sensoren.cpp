@@ -51,6 +51,15 @@ static lv_obj_t* karteAnlegen(lv_obj_t* eltern, int x, int y, int w, int h) {
   return c;
 }
 
+// Antippen einer Kachel (oder einer Zeile in einer Gruppen-Kachel): Verlauf dieses Sensors
+static void sensorTippen(lv_event_t* e) {
+  SensorCfg c;
+  if (!sensorenHole((int)(intptr_t)lv_event_get_user_data(e), &c, nullptr)) return;
+  char t[64];
+  if (c.raum[0]) snprintf(t, sizeof(t), "%s (%s)", c.name, c.raum); else strlcpy(t, c.name, sizeof(t));
+  uiHistorieOeffnen(c.id, t, c.einheit, c.dezimal);
+}
+
 // ── Aufbau ───────────────────────────────────────────────────────────────────
 struct Gruppe { int mem[SENSOR_MAX]; int n; char name[20]; };
 
@@ -72,6 +81,8 @@ static uint32_t signatur(const int* idx, int anzahl) {
 // Einzelner Sensor: Icon, Name, Raum und grosser Wert
 static void einzelKachel(lv_obj_t* card, Kachel& k, int sensorIdx, int w, int h, bool kompakt, uint32_t txt) {
   SensorCfg c; if (!sensorenHole(sensorIdx, &c, nullptr)) return;
+  lv_obj_add_flag(card, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(card, sensorTippen, LV_EVENT_CLICKED, (void*)(intptr_t)sensorIdx);
   const int iconPx = kompakt ? 44 : 64;
   lv_obj_t* ic = lv_img_create(card); lv_obj_set_pos(ic, 14, 12); iconSetzen(ic, sensorenIconName(c), iconPx);
   lv_obj_t* name = label(card, &font_montserrat_22, txt, 14, 12 + iconPx + 6, w - 28, LV_TEXT_ALIGN_LEFT); lv_label_set_text(name, c.name);
@@ -124,6 +135,11 @@ static void gruppenKachel(lv_obj_t* card, Kachel& k, const Gruppe& g, int w, int
     lv_obj_t* wert = label(card, fw, txt, x, wy, bw, LV_TEXT_ALIGN_LEFT);
     lv_obj_set_height(wert, zh);                                  // eine Zeile: zu langer Text wird mit ... gekuerzt statt umzubrechen
     k.z[k.n++] = {wert, g.mem[r]};
+    lv_obj_t* tipp = lv_obj_create(card);                         // unsichtbare Tippfläche über der Zeile: öffnet den Verlauf dieses Sensors
+    lv_obj_set_pos(tipp, 0, y); lv_obj_set_size(tipp, w, rh);
+    lv_obj_set_style_bg_opa(tipp, LV_OPA_TRANSP, 0); lv_obj_set_style_border_width(tipp, 0, 0); lv_obj_set_style_pad_all(tipp, 0, 0);
+    lv_obj_set_style_shadow_width(tipp, 0, 0); lv_obj_clear_flag(tipp, LV_OBJ_FLAG_SCROLLABLE); lv_obj_add_flag(tipp, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(tipp, sensorTippen, LV_EVENT_CLICKED, (void*)(intptr_t)g.mem[r]);
   }
 }
 

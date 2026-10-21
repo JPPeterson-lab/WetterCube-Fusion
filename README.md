@@ -8,7 +8,7 @@
 **Größer · Besser · Interne Umweltsensoren · MQTT ready · Inkl. aller WetterCubePlus-Funktionen**
 
 ![Status](https://img.shields.io/badge/Status-Alpha-orange?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v0.9.9--alpha14-blue?style=flat-square&cacheSeconds=1)
+![Version](https://img.shields.io/badge/Version-v0.9.9--alpha15-blue?style=flat-square&cacheSeconds=1)
 ![Ziel](https://img.shields.io/badge/Boards-ESP32--S3%20und%20ESP32--P4-red?style=flat-square&logo=espressif&logoColor=white)
 ![Plattform](https://img.shields.io/badge/Platform-ESP--IDF%205.5-teal?style=flat-square&logo=espressif&logoColor=white)
 ![Lizenz](https://img.shields.io/badge/Lizenz-Apache%202.0-blue?style=flat-square)
@@ -22,6 +22,8 @@
 > **🚧 In Entwicklung (Alpha):** Fusion wird auf **zwei Boards gleichzeitig** entwickelt (S3 und P4). Beide bekommen dieselben Kernfunktionen; der P4 zusätzlich animierte Symbole und weitere Multimedia-Funktionen. Später gibt es für jedes Board eine eigene Firmware.
 >
 > **⚠️ Nur auf Waveshare-Boards:** Unterstützt sind genau die beiden genannten Boards. Andere Boards werden nicht unterstützt und können Probleme machen.
+>
+> **💾 microSD-Karte nötig:** Verlauf, Log, Sicherung der Einstellungen und die Notfall-Kopie der Firmware liegen auf einer microSD-Karte (FAT32). Ohne Karte fehlen diese Funktionen.
 >
 > **🛠️ Softwareprojekt:** Das Gerät baust du selbst (Board kaufen, Firmware aufspielen, Gehäuse gestalten oder drucken), fertige Geräte gibt es nicht. Kurzanleitung: [Bauanleitung](https://wettercube.de/bauanleitung/).
 >
@@ -96,6 +98,8 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 > **🚧 In development (alpha):** Fusion is developed on **two boards at the same time** (S3 and P4). Both get the same core functions; the P4 additionally gets animated icons and further multimedia functions. Later each board gets its own firmware.
 >
 > **⚠️ Waveshare boards only:** Exactly the two boards named above are supported. Other boards are not supported and can cause problems.
+>
+> **💾 microSD card required:** history, log, settings backup and the emergency copy of the firmware live on a microSD card (FAT32). Without a card these functions are missing.
 >
 > **🛠️ Software project:** You build the device yourself (buy a board, flash the firmware, design or print a case); there are no finished devices. Short guide: [build guide](https://wettercube.de/en/build-guide/).
 >

@@ -66,6 +66,7 @@ static void starten()
         uiNachtInit();
         uiSystemInit();
         uiVerlaufInit();
+        uiHistorieInit();
         notfallInit();
         erstelleUpdateBadge();
         nav_goto(SCREEN_ID_SCREENBOOT);      // Start immer über den Bootscreen

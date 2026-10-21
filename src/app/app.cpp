@@ -3,6 +3,7 @@
 // Netzwerk-Task (Core 0): WLAN, Zeit, Datenabruf, Aktualisierung der Oberfläche, WebUI.
 // LVGL läuft in einem eigenen Task auf Core 1; hier wird nur unter LvLock auf die UI zugegriffen.
 #include "app_state.h"
+#include "historie.h"
 #include "homeassistant.h"
 #include "lueften.h"
 #include "../sensors/sensors.h"
@@ -145,6 +146,7 @@ static void netTask(void*) {
   for (;;) {
     webuiBedienen();
     speicherTick();
+    historieTick();
     otaGesundPruefen(millis());
     unsigned long jetzt = millis();
 

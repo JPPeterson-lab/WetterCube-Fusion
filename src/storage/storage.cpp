@@ -162,6 +162,43 @@ static void verlaufSchreiben(const struct tm& ti) {
 }
 
 
+// Verlaufsdatei eines Tages zeilenweise lesen: Zeit (epoch), id, Wert. Spalten: zeit,id,raum,name,wert,einheit; Raum und Name
+// dürfen Kommas enthalten, deshalb werden Wert und Einheit von hinten gesucht.
+bool speicherVerlaufTag(int jahr, int monat, int tag, void (*zeile)(time_t, const char*, float, void*), void* ctx) {
+  if (!s_bereit) return false;
+  char datei[64];
+  snprintf(datei, sizeof(datei), MOUNT "/verlauf/%04d-%02d-%02d.csv", jahr, monat, tag);
+  FILE* f = fopen(datei, "r");
+  if (!f) return false;
+  char z[240];
+  while (fgets(z, sizeof(z), f)) {
+    size_t n = strlen(z);
+    if (n < 20 || z[n - 1] != '\n') continue;                      // Kopfzeile, abgeschnittene oder leere Zeile
+    z[n - 1] = 0;
+    struct tm ti = {};
+    int j, mo, d, h, mi;
+    if (sscanf(z, "%d-%d-%d %d:%d,", &j, &mo, &d, &h, &mi) != 5) continue;
+    ti.tm_year = j - 1900; ti.tm_mon = mo - 1; ti.tm_mday = d; ti.tm_hour = h; ti.tm_min = mi; ti.tm_isdst = -1;
+    char* idStart = strchr(z, ',');
+    if (!idStart) continue;
+    idStart++;
+    char* idEnde = strchr(idStart, ',');
+    if (!idEnde) continue;
+    char* einheit = strrchr(z, ',');
+    if (!einheit || einheit <= idEnde) continue;
+    *einheit = 0;
+    char* wert = strrchr(z, ',');
+    if (!wert || wert <= idEnde) continue;
+    *idEnde = 0;
+    char* ende = nullptr;
+    float w = strtof(wert + 1, &ende);
+    if (ende == wert + 1) continue;
+    zeile(mktime(&ti), idStart, w, ctx);
+  }
+  fclose(f);
+  return true;
+}
+
 // ── Einstellungen auf die Karte sichern (ohne Passwörter), damit nach einem Werksreset nichts verloren ist ──
 static volatile bool s_sichAnf = false;
 static unsigned long s_sichZeit = 0;

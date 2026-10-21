@@ -312,6 +312,8 @@ void uiWarnenPruefen();                   // Regen-/Pollenwarn-Screens bei neuer
 void uiMenuInit();
 void demoDatenSetzen(int variante);        // Beispieldaten für Bildschirmfotos (/demo), siehe demo.cpp
 void uiSensorenErzwingen();               // Sensor-Kacheln jetzt aufbauen (Screenshot), Aufrufer hält den LVGL-Lock
+void uiHistorieInit();                    // Hauptscreen: Temperatur/Feuchte/Druck antippen öffnet den Verlauf (ui_historie.cpp)
+void uiHistorieOeffnen(const char* id, const char* titel, const char* einheit, int dezimal);   // Verlauf einer Messreihe anzeigen (Aufrufer hält den LVGL-Lock)
 void uiVerlaufInit();                     // Temperaturverlauf: Diagramme einrichten
 void uiLuftInit();                        // Luftqualitaet: Verlauf, weitere Werte und Tipp (ui_luft.cpp)
 void uiLuftErzwingen();                   // jetzt neu aufbauen (Screenshot), Aufrufer haelt den LVGL-Lock
