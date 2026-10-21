@@ -27,5 +27,5 @@ document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('
 </style>)rawcss"
 
 // Navigationsleiste für Sensoren und Speicherkarte (die Einstellungsseite hat Reiter); markiert die aktuelle Seite
-#define WEBUI_NAVBAR R"rawhtml(<div class="wcnav"><a href="/">Einstellungen</a><a href="/sensoren" data-p="/sensoren">Sensoren</a><a href="/schalter" data-p="/schalter">Schalter</a><a href="/karte" data-p="/karte">Speicherkarte</a><a href="/log" target="_blank">Log</a><span class="rechts"><button id="wcThemeBtn" class="themebtn" onclick="wcTheme()"></button></span></div>
+#define WEBUI_NAVBAR R"rawhtml(<div class="wcnav"><a href="/">Einstellungen</a><a href="/sensoren" data-p="/sensoren">Sensoren</a><a href="/schalter" data-p="/schalter">Schalter</a><a href="/next" data-p="/next">Next-Displays</a><a href="/karte" data-p="/karte">Speicherkarte</a><a href="/log" target="_blank">Log</a><span class="rechts"><button id="wcThemeBtn" class="themebtn" onclick="wcTheme()"></button></span></div>
 <script>wcThemeLabel();(function(){var l=document.querySelectorAll('.wcnav a[data-p]');for(var i=0;i<l.length;i++)if(location.pathname.indexOf(l[i].getAttribute('data-p'))===0)l[i].className='aktiv';})();</script>)rawhtml"

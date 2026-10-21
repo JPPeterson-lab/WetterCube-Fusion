@@ -4,6 +4,7 @@
 // LVGL läuft in einem eigenen Task auf Core 1; hier wird nur unter LvLock auf die UI zugegriffen.
 #include "app_state.h"
 #include "historie.h"
+#include "next_geraete.h"
 #include "homeassistant.h"
 #include "lueften.h"
 #include "../sensors/sensors.h"
@@ -165,6 +166,7 @@ static void netTask(void*) {
       else                      updateFehlerAnzeigen(fehler);
     }
 
+    { static unsigned long tNext = 0; if (jetzt - tNext >= 30000) { tNext = jetzt; nextAliasPruefen(); } }   // Name wettercube-next.local
     if (jetzt - tUhr >= 60000) { tUhr = jetzt; aktualisiereUhr(); }
 
     // Ort, Region oder Zone in der WebUI geändert → alles neu

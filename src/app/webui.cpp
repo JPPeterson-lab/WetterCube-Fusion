@@ -12,6 +12,7 @@
 #include "../sensors/schalter.h"
 #include "homeassistant.h"
 #include "api_next.h"
+#include "next_geraete.h"
 #include "../storage/storage.h"
 #include <nvs_flash.h>
 #include "ntfy.h"
@@ -238,6 +239,7 @@ static String htmlEsc(const String& t) {
 
 static String updateInfoText();
 static void handleWebRoot() {
+  if (server.hostHeader().startsWith("wettercube-next")) { server.sendHeader("Location", "/next"); server.send(302); return; }   // Name der Next-Verwaltung
   String html = FPSTR(WEBUI_HTML);
   html.replace("%VERSION%",      FIRMWARE_VERSION);
 #if UPDATE_DISPLAY_FLACKERT
@@ -923,6 +925,7 @@ void starteWebUI() {
   server.on("/log",            HTTP_GET,  handleApiLog);
   sensorenWebuiRegistrieren(server);
   schalterWebuiRegistrieren(server);
+  nextGeraeteWebuiRegistrieren(server);
   speicherWebuiRegistrieren(server);
   screenshotRegistrieren(server);
   server.begin();

@@ -2,7 +2,9 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-alpha18 (2026-10-21)
+## v0.9.9-beta1 (2026-10-21)
 
-### Fixed
-- **Outdoor history:** Since alpha17 the fetch of the last days from Open-Meteo was always postponed when memory was low and never ran. It now needs hardly any internal memory (the response is split while it is received instead of being held as a whole) and runs even then.
+The Fusion enters its **beta phase**.
+
+### New
+- **Set up Next displays centrally:** at `http://wettercube-next.local` (page "Next-Displays") every WetterCube Next has a tab. With "Vom Fusion verwalten" (managed by the Fusion) you set pages, page turning, brightness, the values of the "Räume" tile and night mode (including the night clock) for each Next in one place. New Next displays (from 0.2.0-alpha1) appear by themselves, up to eight.

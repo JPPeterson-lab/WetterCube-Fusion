@@ -5,6 +5,7 @@
 #include "app_state.h"
 #include "app_config.h"
 #include "lueften.h"
+#include "next_geraete.h"
 #include "../sensors/sensors.h"
 #include "../platform/WebServer.h"
 #include <math.h>
@@ -134,11 +135,12 @@ uint32_t hash(const char* s, size_t n) { uint32_t h = 2166136261u; for (size_t i
 }  // namespace
 
 // Pruefsumme (ETag) der Daten ausserhalb des Kopfs; Rueckgabe: das ganze JSON
-static std::string nextAufbauen(const char* bloecke, char* etag, size_t etagN) {
+static std::string nextAufbauen(const char* bloecke, char* etag, size_t etagN, const char* geraetId = nullptr) {
   char* b = (char*)heap_caps_malloc(BUF, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
   if (!b) { etag[0] = 0; return "{}"; }
   Schreiber w{b, BUF}; b[0] = 0;
   inhalt(w, bloecke);
+  if (geraetId && geraetId[0]) { std::string cf = nextCfgJson(geraetId); if (!cf.empty()) w.roh(cf.c_str()); }   // Einstellungen, wenn der Fusion dieses Next verwaltet (gehen in die Pruefsumme ein)
   snprintf(etag, etagN, "%08x", (unsigned)hash(b, w.k));
   time_t jetzt = 0; struct tm ti; if (getLocalTime(&ti, 0)) jetzt = time(nullptr);
   char kopf[160];
@@ -155,7 +157,10 @@ std::string nextJson(const char* bloecke) { char e[12]; return nextAufbauen(bloe
 void apiNextRegistrieren(WebServer& server) {
   server.on("/api/next", HTTP_GET, [&server]() {
     String bl = server.arg("b");
-    char etag[12]; std::string j = nextAufbauen(bl.c_str(), etag, sizeof(etag));
+    // Ein Next meldet sich mit Kennung (id), Adresse (ip), Version (nv), aktuellen Einstellungen (c) und Raeumen (r)
+    String id = server.arg("id");
+    if (id.length()) nextGeraetMeldet(id.c_str(), server.arg("ip").c_str(), server.arg("nv").c_str(), server.arg("c").c_str(), server.arg("r").c_str());
+    char etag[12]; std::string j = nextAufbauen(bl.c_str(), etag, sizeof(etag), id.c_str());
     // Unveraendert seit dem letzten Abruf (Parameter e oder Kopfzeile If-None-Match): nur 304 ohne Daten
     String e = server.arg("e"); if (e.length() == 0) e = server.header("If-None-Match");
     e.replace("\"", "");

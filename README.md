@@ -7,8 +7,8 @@
 
 **Größer · Besser · Interne Umweltsensoren · MQTT ready · Inkl. aller WetterCubePlus-Funktionen**
 
-![Status](https://img.shields.io/badge/Status-Alpha-orange?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v0.9.9--alpha18-blue?style=flat-square&cacheSeconds=1)
+![Status](https://img.shields.io/badge/Status-Beta-yellow?style=flat-square)
+![Version](https://img.shields.io/badge/Version-v0.9.9--beta1-blue?style=flat-square&cacheSeconds=1)
 ![Ziel](https://img.shields.io/badge/Boards-ESP32--S3%20und%20ESP32--P4-red?style=flat-square&logo=espressif&logoColor=white)
 ![Plattform](https://img.shields.io/badge/Platform-ESP--IDF%205.5-teal?style=flat-square&logo=espressif&logoColor=white)
 ![Lizenz](https://img.shields.io/badge/Lizenz-Apache%202.0-blue?style=flat-square)
@@ -19,7 +19,7 @@
 
 > **🔓 Open Source (Apache 2.0):** Quellcode, Web-Installer und Firmware liegen in diesem Repository. Texte und Bilder: CC BY-NC 4.0, Bestandteile Dritter: [CREDITS.md](CREDITS.md), Name und Logos sind nicht freigegeben ([NOTICE](NOTICE)).
 >
-> **🚧 In Entwicklung (Alpha):** Fusion wird auf **zwei Boards gleichzeitig** entwickelt (S3 und P4). Beide bekommen dieselben Kernfunktionen; der P4 zusätzlich animierte Symbole und weitere Multimedia-Funktionen. Später gibt es für jedes Board eine eigene Firmware.
+> **🚧 In Entwicklung (Beta):** Fusion wird auf **zwei Boards gleichzeitig** entwickelt (S3 und P4). Beide bekommen dieselben Kernfunktionen; der P4 zusätzlich animierte Symbole und weitere Multimedia-Funktionen. Später gibt es für jedes Board eine eigene Firmware.
 >
 > **⚠️ Nur auf Waveshare-Boards:** Unterstützt sind genau die beiden genannten Boards. Andere Boards werden nicht unterstützt und können Probleme machen.
 >
@@ -95,7 +95,7 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 > **🔓 Open source (Apache 2.0):** source code, web installer and firmware are in this repository. Texts and images: CC BY-NC 4.0, third-party components: [CREDITS.md](CREDITS.md), name and logos are not licensed ([NOTICE](NOTICE)).
 >
-> **🚧 In development (alpha):** Fusion is developed on **two boards at the same time** (S3 and P4). Both get the same core functions; the P4 additionally gets animated icons and further multimedia functions. Later each board gets its own firmware.
+> **🚧 In development (beta):** Fusion is developed on **two boards at the same time** (S3 and P4). Both get the same core functions; the P4 additionally gets animated icons and further multimedia functions. Later each board gets its own firmware.
 >
 > **⚠️ Waveshare boards only:** Exactly the two boards named above are supported. Other boards are not supported and can cause problems.
 >

@@ -6,6 +6,7 @@
 #include "src/board/board.h"
 #include "src/app/navigation.h"
 #include "src/app/app_state.h"
+#include "src/app/next_geraete.h"
 #include "src/app/homeassistant.h"
 #include "src/ui/ui.h"
 #include "src/sensors/sensors.h"
@@ -38,6 +39,7 @@ static void starten()
     memLog("Start");
 
     esp_lcd_touch_handle_t tp    = boardTouchInit();               // initialisiert auch I2C (und die IO-Erweiterung des S3-Boards)
+    nextGeraeteInit();                                             // Liste der Next-Displays laden
     speicherInit();                                                // Speicherkarte (optional): Dauer-Log und Verlauf
     memLog("nach Touch");
     esp_lcd_panel_handle_t panel = boardPanelInit();
