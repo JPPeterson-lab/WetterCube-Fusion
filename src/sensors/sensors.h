@@ -75,6 +75,7 @@ int  sensorenMqttStatus();                             // 0 nicht eingerichtet/a
 int  sensorenKandidaten(SensorKandidat* out, int max);
 bool sensorenMqttSende(const char* topic, const char* nutzlast, int qos, bool retain);   // Meldung senden (nicht blockierend); false, wenn nicht verbunden
 void sensorenMqttLetzterWille(const char* topic, const char* nutzlast);                 // "Letzter Wille" des Clients (retain); wirkt ab der naechsten Verbindung, "" = keiner
+void sensorenMqttPause(bool pause);                                                    // true: Client beenden und nicht neu starten (Update), false: wieder verbinden
 void sensorenMqttNeuVerbinden();                                                         // Client neu starten (z. B. nach Aenderung des "Letzten Willens")
 uint32_t sensorenMqttVerbindungen();                                                      // zaehlt jede (Wieder-)Verbindung zum Broker
 

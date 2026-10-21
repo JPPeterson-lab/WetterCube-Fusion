@@ -7,6 +7,8 @@
 #include "esp_app_format.h"
 #include <ArduinoJson.h>
 #include "navigation.h"
+#include "../sensors/sensors.h"
+#include "esp_heap_caps.h"
 #include "../ui/screens.h"
 #include "../ui/fonts/fonts.h"
 
@@ -324,7 +326,7 @@ static void updateFortschritt(size_t done, size_t total) {
   lv_label_set_text_fmt(updProzent, "%d %%", p);
 }
 
-String installiereUpdate() {
+String installiereUpdateIntern() {
   WiFi.setSleep(false);   // schneller Datenstrom waehrend des Updates (danach Neustart oder unten wieder an)
   logDiag("[OTA] Lade %s", OTA_BIN_URL);
   zeigeUpdateScreen("Update wird installiert", 0xf5a623,
@@ -374,6 +376,16 @@ String installiereUpdate() {
   }
   logDiag("[OTA] %u Bytes geschrieben, Neustart", (unsigned)g_ota.geschrieben);
   return "";
+}
+
+// Update mit freiem Speicher: der MQTT-Client wird solange beendet (er haelt Puffer im knappen internen RAM); schlaegt das Update fehl, verbindet er wieder
+String installiereUpdate() {
+  logDiag("[OTA] Interner Speicher vor dem Update: frei %u, groesster Block %u", (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL), (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL));
+  sensorenMqttPause(true);
+  logDiag("[OTA] MQTT pausiert: frei %u, groesster Block %u", (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL), (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL));
+  String f = installiereUpdateIntern();
+  if (f.length()) sensorenMqttPause(false);
+  return f;
 }
 
 void updateErfolgNeustart() {

@@ -83,6 +83,7 @@ static void stdFrei(Std& s) { heap_caps_free(s.z); for (float* p : s.v) heap_cap
 static bool aussenAbruf(int tage, Std& out) {
   spur("Historie: Abruf");
   if (WiFi.status() != WL_CONNECTED || cfg.lat == 0.0f) return false;
+  if (heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL) < 30000) { logDiag("[Historie] Abruf verschoben: zu wenig interner Speicher (groesster Block %u)", (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL)); return false; }   // TLS braucht ca. 30 KB am Stueck
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://api.open-meteo.com/v1/forecast";

@@ -205,10 +205,19 @@ static void clientStarten() {
 
 void sensorenMqttNeuVerbinden() { s_neustart = true; }
 
+// Waehrend eines Firmware-Updates gibt der MQTT-Client seinen internen Speicher frei (TLS und Netzpuffer brauchen ihn)
+static volatile bool s_pause = false;
+void sensorenMqttPause(bool pause) {
+  s_pause = pause;
+  if (!pause) return;
+  s_neustart = true;                                                // der Waechter beendet den Client
+  for (int i = 0; i < 40 && s_client; i++) vTaskDelay(pdMS_TO_TICKS(100));
+}
+
 static void waechter(void*) {
   for (;;) {
     if (s_neustart) { s_neustart = false; clientStoppen(); }
-    if (!s_client && netzOk()) clientStarten();
+    if (!s_client && !s_pause && netzOk()) clientStarten();
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }

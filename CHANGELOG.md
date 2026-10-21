@@ -2,7 +2,7 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v0.9.9-alpha16 (2026-10-21)
+## v0.9.9-alpha17 (2026-10-21)
 
-### Geändert
-- **Verlauf:** Die Textzeile unter dem Diagramm überschneidet sich nicht mehr mit der Zeitachse, und die Zeitachse zeigt die richtigen Uhrzeiten (alle 4 Stunden) statt immer fast derselben.
+### Behoben
+- **Update bei knappem Speicher:** Das Firmware-Update scheiterte mit „zu wenig Speicher“, wenn viel gleichzeitig lief (Sensoren per MQTT, Home Assistant). Der MQTT-Client pausiert jetzt während des Updates und verbindet danach (oder nach einem Fehler) wieder; das Log nennt den freien Speicher vor und nach der Pause. Die Verlaufsdaten der Diagramme liegen nun im großen Speicher (PSRAM), und der Abruf der Außenwerte wartet, wenn der interne Speicher knapp ist.

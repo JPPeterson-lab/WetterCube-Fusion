@@ -6,6 +6,7 @@
 #include "app_state.h"
 #include "historie.h"
 #include <math.h>
+#include "esp_heap_caps.h"
 #include "../ui/screens.h"
 #include "../ui/colors.h"
 #include "../ui/fonts/fonts.h"
@@ -20,8 +21,8 @@ static int  s_dez = 1;
 static int  s_bereich = HB_24H;                      // gewählter Zeitraum
 static int  s_gezeigt = HB_24H;                      // tatsächlich gezeigter Zeitraum (30 Tage fällt ohne Daten auf 7 Tage zurück)
 static lv_obj_t* s_zbtn = nullptr;                    // Taste "Zurück"
-static float      s_f[HIST_MAX_PUNKTE];
-static lv_coord_t s_y[HIST_MAX_PUNKTE];
+static float*      s_f = nullptr;                       // im PSRAM (das interne RAM ist knapp)
+static lv_coord_t* s_y = nullptr;
 static int    s_n = 0;
 static time_t s_t0 = 0;
 static int    s_schritt = 600;
@@ -94,6 +95,9 @@ static lv_obj_t* taste(const char* text, int x, int w, lv_event_cb_t cb, intptr_
 }
 
 static void bauen() {
+  s_f = (float*)heap_caps_malloc(HIST_MAX_PUNKTE * sizeof(float), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  s_y = (lv_coord_t*)heap_caps_malloc(HIST_MAX_PUNKTE * sizeof(lv_coord_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if (!s_f || !s_y) { logDiag("[Historie] kein Speicher fuer das Diagramm"); return; }
   s_scr = lv_obj_create(nullptr);
   lv_obj_clear_flag(s_scr, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_set_style_bg_opa(s_scr, LV_OPA_COVER, 0);
@@ -253,7 +257,7 @@ static void takt(lv_timer_t*) {
 
 void uiHistorieOeffnen(const char* id, const char* titel, const char* einheit, int dezimal) {
   if (!id || !id[0]) return;
-  if (!s_scr) { bauen(); lv_timer_create(takt, 1000, nullptr); }
+  if (!s_scr) { bauen(); if (!s_scr) return; lv_timer_create(takt, 1000, nullptr); }
   strlcpy(s_id, id, sizeof(s_id)); strlcpy(s_name, titel ? titel : id, sizeof(s_name)); strlcpy(s_einheit, einheit ? einheit : "", sizeof(s_einheit));
   s_dez = dezimal < 0 ? 0 : dezimal > 2 ? 2 : dezimal;
   s_bereich = HB_24H;
