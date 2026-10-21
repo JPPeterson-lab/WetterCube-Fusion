@@ -36,6 +36,7 @@
 - **Eigene Sensoren und Lüften-Ampel:** Sensoren per MQTT/ESPHome oder intern im Gehäuse, Grenzwerte mit Alarm, Taupunkt- und Schimmelhinweis
 - **Home Assistant und MQTT:** Anmeldung per Discovery, Schalter-Kacheln auf dem Display, `/api/status` als JSON
 - **Handy-Nachrichten** über [ntfy](https://ntfy.sh), Nachtmodus nach Sonnenstand, Ruhezeit ohne Warnungen
+- **Verlauf per Antippen und Next-Displays zentral:** Ein Tipp auf Temperatur, Luftdruck, Luftfeuchte oder eine Sensor-Kachel zeigt das Diagramm (24 Stunden, 7 oder 30 Tage). Alle Next-Displays stellst du unter `wettercube-next.local` in einem Reiter je Gerät ein.
 - **Sicher und wartbar:** Update über WLAN oder Datei mit Rollback, Notfall-App am Display, Verlauf und Sicherungen auf der Speicherkarte
 - **Lokal:** kein Konto, keine Cloud, deine Daten bleiben auf dem Gerät
 - **Dazu das [WetterCube Next](https://github.com/JPPeterson-lab/WetterCube-Next):** ein kleines Zusatzdisplay für jeden Raum
@@ -112,6 +113,7 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 - **Own sensors and ventilation traffic light:** sensors via MQTT/ESPHome or inside the case, limits with alarm, dew point and mold hint
 - **Home Assistant and MQTT:** sign-up by discovery, switch tiles on the display, `/api/status` as JSON
 - **Phone messages** via [ntfy](https://ntfy.sh), night mode by position of the sun, quiet hours without warnings
+- **History by tapping, Next displays managed centrally:** tap temperature, air pressure, humidity or a sensor tile to see its chart (24 hours, 7 or 30 days). You set up all Next displays at `wettercube-next.local`, one tab per device.
 - **Safe and maintainable:** update over Wi-Fi or from a file with rollback, recovery app on the display, history and backups on the memory card
 - **Local:** no account, no cloud, your data stays on the device
 - **Plus the [WetterCube Next](https://github.com/JPPeterson-lab/WetterCube-Next):** a small extra display for every room
