@@ -6,7 +6,6 @@
 #include "app_state.h"
 #include "../sensors/sensors.h"
 #include "../storage/storage.h"
-#include <ArduinoJson.h>
 #include <esp_heap_caps.h>
 #include <esp_timer.h>
 #include <math.h>
@@ -80,10 +79,42 @@ static void proben(int64_t slot) {
 struct Std { int n = 0; int64_t* z = nullptr; float* v[3] = {nullptr, nullptr, nullptr}; };
 static void stdFrei(Std& s) { heap_caps_free(s.z); for (float* p : s.v) heap_caps_free(p); s = Std(); }
 
+// Die Antwort wird beim Lesen zerlegt (kein JSON-Baum, kein ganzer Text im Speicher): im knappen internen RAM bleiben nur ein paar hundert Byte.
+// Gesucht werden die Felder "time", "temperature_2m", "relative_humidity_2m" und "surface_pressure" im Block "hourly".
+struct StdParser {
+  Std* out; int kap; int arr = -1; int idx = 0;       // arr: 0 = time, 1-3 = Messwerte, 99 = unbekannte Liste
+  bool inStr = false; char tok[32]; int tl = 0; char key[32] = ""; char num[24]; int nl = 0;
+  int anzahl[4] = {0, 0, 0, 0};
+  void zahlEnde() {
+    if (nl == 0) return;
+    num[nl] = 0; nl = 0;
+    if (arr < 0 || arr == 99 || idx >= kap) { idx++; return; }
+    if (arr == 0) out->z[idx] = strtoll(num, nullptr, 10);
+    else out->v[arr - 1][idx] = strcmp(num, "null") == 0 ? NAN : strtof(num, nullptr);
+    idx++; anzahl[arr] = idx;
+  }
+  void byte(char c) {
+    if (arr >= 0) {
+      if (c == ']') { zahlEnde(); arr = -1; }
+      else if (c == ',') zahlEnde();
+      else if (nl < (int)sizeof(num) - 1 && c != ' ' && c != '\n') num[nl++] = c;
+      return;
+    }
+    if (inStr) {
+      if (c == '"') { inStr = false; tok[tl] = 0; strlcpy(key, tok, sizeof(key)); }
+      else if (tl < (int)sizeof(tok) - 1) tok[tl++] = c;
+    } else if (c == '"') { inStr = true; tl = 0; }
+    else if (c == '[') {
+      arr = !strcmp(key, "time") ? 0 : !strcmp(key, "temperature_2m") ? 1 : !strcmp(key, "relative_humidity_2m") ? 2 : !strcmp(key, "surface_pressure") ? 3 : 99;
+      idx = 0; nl = 0;
+    }
+  }
+};
+
 static bool aussenAbruf(int tage, Std& out) {
   spur("Historie: Abruf");
   if (WiFi.status() != WL_CONNECTED || cfg.lat == 0.0f) return false;
-  if (heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL) < 30000) { logDiag("[Historie] Abruf verschoben: zu wenig interner Speicher (groesster Block %u)", (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL)); return false; }   // TLS braucht ca. 30 KB am Stueck
+  if (heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL) < 16000) { logDiag("[Historie] Abruf verschoben: zu wenig interner Speicher (groesster Block %u)", (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL)); return false; }
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://api.open-meteo.com/v1/forecast";
@@ -92,35 +123,31 @@ static bool aussenAbruf(int tage, Std& out) {
   url += "&hourly=temperature_2m,relative_humidity_2m,surface_pressure";
   url += "&past_days=" + String(tage) + "&forecast_days=1&timeformat=unixtime";
   http.begin(sc, url);
-  int code = http.GET();
+  http.setTimeout(20000);
+  int code = http.GETStream();
   if (code != 200) { logHttpFehler("Historie", code, sc); http.end(); return false; }
-  String body = http.getString();
+  const int kap = (tage + 1) * 24 + 2;
+  out.z = (int64_t*)heap_caps_malloc(kap * sizeof(int64_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  for (int k = 0; k < 3; k++) out.v[k] = (float*)heap_caps_malloc(kap * sizeof(float), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if (!out.z || !out.v[0] || !out.v[1] || !out.v[2]) { http.end(); stdFrei(out); return false; }
+  StdParser p; p.out = &out; p.kap = kap;
+  char buf[512];
+  unsigned long letzte = millis();
+  for (;;) {
+    int n = http.read((uint8_t*)buf, sizeof(buf));
+    if (n > 0) { letzte = millis(); for (int i = 0; i < n; i++) p.byte(buf[i]); }
+    else if (n == 0) break;
+    else if (millis() - letzte > 15000) { http.end(); stdFrei(out); logDiag("[Historie] Abruf abgebrochen"); return false; }
+    else delay(20);
+  }
   http.end();
-  JsonDocument filter;
-  filter["hourly"]["time"] = true; filter["hourly"]["temperature_2m"] = true;
-  filter["hourly"]["relative_humidity_2m"] = true; filter["hourly"]["surface_pressure"] = true;
-  JsonDocument doc;
-  if (deserializeJson(doc, body, DeserializationOption::Filter(filter)) != DeserializationError::Ok) { logDiag("[Historie] JSON-Parse fehlgeschlagen"); return false; }
-  body = String();
-  JsonObject hr = doc["hourly"];
-  JsonArray zeit = hr["time"];
-  const int n = zeit.size();
-  if (n < 2) return false;
-  out.z = (int64_t*)heap_caps_malloc(n * sizeof(int64_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-  for (int k = 0; k < 3; k++) out.v[k] = (float*)heap_caps_malloc(n * sizeof(float), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-  if (!out.z || !out.v[0] || !out.v[1] || !out.v[2]) { stdFrei(out); return false; }
-  static const char* feld[3] = { "temperature_2m", "relative_humidity_2m", "surface_pressure" };
+  int n = p.anzahl[0];
+  for (int k = 1; k <= 3; k++) if (p.anzahl[k] < n) n = p.anzahl[k];
   const time_t jetzt = time(nullptr);
   int m = 0;
-  for (int i = 0; i < n; i++) {
-    int64_t t = zeit[i].as<int64_t>();
-    if (t > jetzt) break;                                         // nur Vergangenheit, die Vorhersage von heute Abend nicht
-    out.z[m] = t;
-    for (int k = 0; k < 3; k++) { JsonVariant v = hr[feld[k]][i]; out.v[k][m] = v.isNull() ? NAN : v.as<float>(); }
-    m++;
-  }
+  while (m < n && out.z[m] <= jetzt) m++;                          // nur Vergangenheit, die Vorhersage von heute Abend nicht
   out.n = m;
-  if (m < 2) { stdFrei(out); return false; }
+  if (m < 2) { stdFrei(out); logDiag("[Historie] Antwort ohne Stundenwerte"); return false; }
   return true;
 }
 

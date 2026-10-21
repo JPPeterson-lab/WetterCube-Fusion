@@ -8,7 +8,7 @@
 **Größer · Besser · Interne Umweltsensoren · MQTT ready · Inkl. aller WetterCubePlus-Funktionen**
 
 ![Status](https://img.shields.io/badge/Status-Alpha-orange?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v0.9.9--alpha17-blue?style=flat-square&cacheSeconds=1)
+![Version](https://img.shields.io/badge/Version-v0.9.9--alpha18-blue?style=flat-square&cacheSeconds=1)
 ![Ziel](https://img.shields.io/badge/Boards-ESP32--S3%20und%20ESP32--P4-red?style=flat-square&logo=espressif&logoColor=white)
 ![Plattform](https://img.shields.io/badge/Platform-ESP--IDF%205.5-teal?style=flat-square&logo=espressif&logoColor=white)
 ![Lizenz](https://img.shields.io/badge/Lizenz-Apache%202.0-blue?style=flat-square)

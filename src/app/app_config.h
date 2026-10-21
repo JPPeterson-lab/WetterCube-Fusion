@@ -14,7 +14,7 @@
 
 // Muss mit docs/version.json übereinstimmen (sobald es Releases gibt)
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.9.9-alpha17"
+#define FIRMWARE_VERSION "0.9.9-alpha18"
 #endif
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/WetterCube-Fusion/main/docs/version.json"
 #define OTA_BIN_URL      "https://jppeterson-lab.github.io/WetterCube-Fusion/firmware/firmware.bin"
