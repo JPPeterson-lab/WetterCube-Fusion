@@ -31,6 +31,7 @@ typedef struct _objects_t {
     lv_obj_t *pico_dark_logo_132;
     lv_obj_t *labelquellemenue;
     lv_obj_t *container_5;
+    lv_obj_t *container_wetterkreis;
     lv_obj_t *labelgefuehlt;
     lv_obj_t *labeltemp;
     lv_obj_t *imagewetter;
