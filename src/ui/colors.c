@@ -486,6 +486,7 @@ const uint32_t common_000000 = 0x000000;
 const uint32_t common_0e7490 = 0x0e7490;
 const uint32_t common_3a424d = 0x3a424d;
 const uint32_t common_6b7280 = 0x6b7280;
+const uint32_t common_7b8794 = 0x7b8794;
 const uint32_t common_87ceeb = 0x87ceeb;
 const uint32_t common_94a3b8 = 0x94a3b8;
 const uint32_t common_d1d5db = 0xd1d5db;

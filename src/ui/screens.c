@@ -36,7 +36,7 @@ void create_screen_screennachtuhr() {
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelnachtdatum = obj;
             lv_obj_set_pos(obj, 112, 300);
-            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_size(obj, 800, 40);
             lv_label_set_text(obj, "Sa. 17.10.2026");
         }
         {
@@ -1229,6 +1229,17 @@ void create_screen_screenbiowetter() {
             lv_img_set_size_mode(obj, LV_IMG_SIZE_MODE_REAL);
             lv_img_set_zoom(obj, 80);
             lv_img_set_antialias(obj, true);
+        }
+        {
+            // labelquellebio
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellebio = obj;
+            lv_obj_set_pos(obj, 675, 560);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
         }
     }
 
@@ -2529,6 +2540,17 @@ void create_screen_screenallergen() {
             lv_obj_set_style_text_align(obj, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "Nächste 3 Tage");
         }
+        {
+            // labelquelleallergen
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquelleallergen = obj;
+            lv_obj_set_pos(obj, 678, 560);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
+        }
     }
 
     tick_screen_screenallergen();
@@ -3223,6 +3245,17 @@ void create_screen_screenmenu() {
             lv_obj_set_style_outline_color(obj, lv_color_hex(common_000000), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_outline_pad(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
+        {
+            // labelquellemenue_1
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellemenue_1 = obj;
+            lv_obj_set_pos(obj, 14, 290);
+            lv_obj_set_size(obj, 996, 130);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Datenquellen: Wetterdaten: Weather data by Open-Meteo.com (CC BY 4.0), Werte teils umgerechnet (zum Beispiel Pollenstufen). Pollen und Luftqualität: Contains modified Copernicus Atmosphere Monitoring Service information, über Open-Meteo. Ortssuche: Location data by GeoNames via Open-Meteo. Warnungen, Pollenflug, Biowetter und Radar: Quelle: Deutscher Wetterdienst (CC BY 4.0).");
+        }
     }
 
     // Event callback registrations
@@ -3321,6 +3354,17 @@ void create_screen_screenwarnkarte2() {
                     lv_obj_center(obj);
                 }
             }
+        }
+        {
+            // labelquellekarte2
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellekarte2 = obj;
+            lv_obj_set_pos(obj, 652, 564);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
         }
     }
 
@@ -3460,6 +3504,17 @@ void create_screen_screenwarnkarte1() {
                     lv_obj_center(obj);
                 }
             }
+        }
+        {
+            // labelquellekarte1
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellekarte1 = obj;
+            lv_obj_set_pos(obj, 681, 560);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
         }
     }
 
@@ -4682,6 +4737,18 @@ void create_screen_screen_1() {
                 }
             }
         }
+        {
+            // labelquellehaupt
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellehaupt = obj;
+            lv_obj_set_pos(obj, 668, 550);
+            lv_obj_set_size(obj, 243, 40);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
+        }
     }
 
     tick_screen_screen_1();
@@ -4753,7 +4820,7 @@ void create_screen_screenboot() {
             // labelpico
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelpico = obj;
-            lv_obj_set_pos(obj, 373, 460);
+            lv_obj_set_pos(obj, 377, 511);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -4764,11 +4831,22 @@ void create_screen_screenboot() {
             // pico_dark_logo_132
             lv_obj_t *obj = lv_img_create(parent_obj);
             objects.pico_dark_logo_132 = obj;
-            lv_obj_set_pos(obj, 512, 452);
+            lv_obj_set_pos(obj, 513, 505);
             lv_obj_set_size(obj, 132, 37);
             lv_img_set_src(obj, &pico_dark_logo_132);
             lv_img_set_size_mode(obj, LV_IMG_SIZE_MODE_REAL);
             lv_img_set_antialias(obj, true);
+        }
+        {
+            // labelquellemenue
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.labelquellemenue = obj;
+            lv_obj_set_pos(obj, 320, 460);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Weather data by Open-Meteo.com");
         }
     }
 
@@ -4920,6 +4998,7 @@ void delete_screen_screenbiowetter() {
     objects.imagebiorheumadeg = 0;
     objects.imagebioasthma = 0;
     objects.imagebiowaerme = 0;
+    objects.labelquellebio = 0;
 }
 
 void delete_screen_screenallergen() {
@@ -5014,6 +5093,7 @@ void delete_screen_screenallergen() {
     objects.imagepollenambrosia = 0;
     objects.labelgruppestunden = 0;
     objects.labelgruppetage = 0;
+    objects.labelquelleallergen = 0;
 }
 
 void delete_screen_screenairquality() {
@@ -5079,6 +5159,7 @@ void delete_screen_screenmenu() {
     objects.labelbuttonmenu_2 = 0;
     objects.labelbuttonmenu_2_label = 0;
     objects.containersystem = 0;
+    objects.labelquellemenue_1 = 0;
 }
 
 void delete_screen_lagerscreen() {
@@ -5099,6 +5180,7 @@ void delete_screen_screenwarnkarte2() {
     objects.labelbuttonhome_1_label = 0;
     objects.labelbuttonscreenhubback = 0;
     objects.labelbuttonscreenhubback_label = 0;
+    objects.labelquellekarte2 = 0;
 }
 
 void delete_screen_screenwarnkarte1() {
@@ -5115,6 +5197,7 @@ void delete_screen_screenwarnkarte1() {
     objects.labelbuttonhome_label = 0;
     objects.labelbuttonscreenhub = 0;
     objects.labelbuttonscreenhub_label = 0;
+    objects.labelquellekarte1 = 0;
 }
 
 void delete_screen_screenwarnunglueften() {
@@ -5236,6 +5319,7 @@ void delete_screen_screen_1() {
     objects.labelwso3 = 0;
     objects.uv_index = 0;
     objects.labelwsuv = 0;
+    objects.labelquellehaupt = 0;
 }
 
 void delete_screen_screenboot() {
@@ -5250,6 +5334,7 @@ void delete_screen_screenboot() {
     objects.barwifi = 0;
     objects.labelpico = 0;
     objects.pico_dark_logo_132 = 0;
+    objects.labelquellemenue = 0;
 }
 
 

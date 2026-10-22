@@ -29,6 +29,7 @@ typedef struct _objects_t {
     lv_obj_t *barwifi;
     lv_obj_t *labelpico;
     lv_obj_t *pico_dark_logo_132;
+    lv_obj_t *labelquellemenue;
     lv_obj_t *labeltime;
     lv_obj_t *imagewetter;
     lv_obj_t *labeltemp;
@@ -116,6 +117,7 @@ typedef struct _objects_t {
     lv_obj_t *labelwso3;
     lv_obj_t *uv_index;
     lv_obj_t *labelwsuv;
+    lv_obj_t *labelquellehaupt;
     lv_obj_t *imagealert;
     lv_obj_t *labelpollenwarntitel;
     lv_obj_t *labelpollenwarnart;
@@ -128,8 +130,10 @@ typedef struct _objects_t {
     lv_obj_t *labelbuttonforward_1;
     lv_obj_t *labelbuttonhome;
     lv_obj_t *labelbuttonscreenhub;
+    lv_obj_t *labelquellekarte1;
     lv_obj_t *labelbuttonhome_1;
     lv_obj_t *labelbuttonscreenhubback;
+    lv_obj_t *labelquellekarte2;
     lv_obj_t *labellightchange;
     lv_obj_t *container_8;
     lv_obj_t *labeldwdchange;
@@ -142,6 +146,7 @@ typedef struct _objects_t {
     lv_obj_t *labelversion;
     lv_obj_t *labelbuttonmenu_2;
     lv_obj_t *containersystem;
+    lv_obj_t *labelquellemenue_1;
     lv_obj_t *container_3;
     lv_obj_t *labelno2value;
     lv_obj_t *label_9;
@@ -257,6 +262,7 @@ typedef struct _objects_t {
     lv_obj_t *imagepollenambrosia;
     lv_obj_t *labelgruppestunden;
     lv_obj_t *labelgruppetage;
+    lv_obj_t *labelquelleallergen;
     lv_obj_t *labelbuttonhome_7;
     lv_obj_t *labelbuttonbackward_4;
     lv_obj_t *labelbuttonforward_6;
@@ -314,6 +320,7 @@ typedef struct _objects_t {
     lv_obj_t *imagebiorheumadeg;
     lv_obj_t *imagebioasthma;
     lv_obj_t *imagebiowaerme;
+    lv_obj_t *labelquellebio;
     lv_obj_t *containersensoren;
     lv_obj_t *buttonsensorenzurueck;
     lv_obj_t *buttonsensorenhome;

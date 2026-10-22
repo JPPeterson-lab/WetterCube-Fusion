@@ -32,6 +32,7 @@ extern const uint32_t common_000000;
 extern const uint32_t common_0e7490;
 extern const uint32_t common_3a424d;
 extern const uint32_t common_6b7280;
+extern const uint32_t common_7b8794;
 extern const uint32_t common_87ceeb;
 extern const uint32_t common_94a3b8;
 extern const uint32_t common_d1d5db;

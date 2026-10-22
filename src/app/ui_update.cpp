@@ -471,33 +471,14 @@ static void mondUvZeichnen() {
 }
 
 
-// Namensnennung der Datenquellen (Open-Meteo: Link-Text neben den angezeigten Daten, DWD: Quellenvermerk).
-// Die Labels werden einmal angelegt; die Schrift hat Umlaute, die Farbe passt zu beiden Designs.
-static void quelleAnlegen(lv_obj_t* screen, int x, int y, int breite, const char* text, lv_text_align_t ausrichtung) {
-  if (!screen) return;
-  lv_obj_t* l = lv_label_create(screen);
-  lv_obj_set_pos(l, x, y);
-  lv_obj_set_width(l, breite);
-  lv_label_set_long_mode(l, breite > 400 ? LV_LABEL_LONG_WRAP : LV_LABEL_LONG_CLIP);   // kurze Hinweise bleiben einzeilig, nur der lange Text im Menue bricht um
-  lv_obj_set_style_text_font(l, &font_montserrat_latin_ext_16, 0);
-  lv_obj_set_style_text_color(l, lv_color_hex(0x7b8794), 0);
-  lv_obj_set_style_text_align(l, ausrichtung, 0);
-  lv_label_set_text(l, text);
-}
-
+// Namensnennung der Datenquellen: die Labels (labelquelle*) kommen aus PicoPixel und sind dort verschiebbar; hier wird nur die Schrift gesetzt
+// (mit Umlauten), soweit PicoPixel keine mitgibt.
 static void quellenHinweiseAnlegen() {
   static bool fertig = false;
-  if (fertig || !objects.screenmenu) return;
+  if (fertig) return;
   fertig = true;
-  quelleAnlegen(objects.screenmenu, 14, 290, 996, "Datenquellen: Wetterdaten von Open-Meteo.com (CC BY 4.0), Pollen und Luftqualität aus dem Copernicus Atmosphere Monitoring Service (CAMS) über Open-Meteo, Warnungen, Pollenflug, Biowetter und Radar vom Deutschen Wetterdienst.", LV_TEXT_ALIGN_LEFT);
-  const int X = 728, Y = 566, B = 207;   // rechts neben der Mitte der Navigationsleiste, vor dem rechten Pfeil
-  quelleAnlegen(objects.screen_1,          X, Y, B, "Open-Meteo.com, DWD", LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenverlauf,     X, Y, B, "Open-Meteo.com",      LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenairquality,  X, Y, B, "Open-Meteo.com",      LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenallergen,    X, Y, B, "Open-Meteo.com, DWD", LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenbiowetter,   X, Y, B, "Quelle: DWD",         LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenwarnkarte1,  X, Y, B, "Quelle: DWD",         LV_TEXT_ALIGN_RIGHT);
-  quelleAnlegen(objects.screenwarnkarte2,  X, Y, B, "Quelle: DWD",         LV_TEXT_ALIGN_RIGHT);
+  lv_obj_t* l[] = {objects.labelquellemenue_1, objects.labelquelleallergen, objects.labelquellebio, objects.labelquellekarte1, objects.labelquellekarte2};
+  for (lv_obj_t* o : l) if (o) lv_obj_set_style_text_font(o, &font_montserrat_latin_ext_16, 0);
 }
 
 void aktualisiereUI() {
