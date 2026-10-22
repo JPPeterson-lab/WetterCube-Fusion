@@ -30,10 +30,11 @@ typedef struct _objects_t {
     lv_obj_t *labelpico;
     lv_obj_t *pico_dark_logo_132;
     lv_obj_t *labelquellemenue;
-    lv_obj_t *labeltime;
-    lv_obj_t *imagewetter;
-    lv_obj_t *labeltemp;
+    lv_obj_t *container_5;
     lv_obj_t *labelgefuehlt;
+    lv_obj_t *labeltemp;
+    lv_obj_t *imagewetter;
+    lv_obj_t *labeltime;
     lv_obj_t *labeldatum;
     lv_obj_t *fc_settings;
     lv_obj_t *labelbuttonbackward;
