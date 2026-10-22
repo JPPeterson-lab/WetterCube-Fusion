@@ -2,7 +2,7 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-beta7 (2026-10-22)
+## v0.9.9-beta8 (2026-10-22)
 
-### Fixed
-- **Weather icons:** The large weather icon and the icons of the hourly forecast sat about 7 pixels too far to the lower right and therefore not in the centre of their background. They now sit exactly where they are designed in the interface.
+### Changed
+- **Wording "Topic":** In the web interface, for ntfy, the switches and in the wiki the German term "Thema" is now "Topic" (MQTT topic, command topic, state topic, topic prefix), the word that MQTT, Home Assistant and ntfy use themselves.

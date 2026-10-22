@@ -55,14 +55,14 @@ struct Config {
   int    night_sonne_ab  = 30;  // Modus 2: Nacht beginnt so viele Minuten nach Sonnenuntergang (auch negativ)
   int    night_sonne_bis = 0;   // Modus 2: Nacht endet so viele Minuten nach Sonnenaufgang (auch negativ)
   bool   night_theme = false;   // nachts dunkles Design (danach wieder das vorherige)
-  // Benachrichtigungen aufs Handy (ntfy); Thema und Zugangsdaten stehen nie in Sicherungen oder im Log
+  // Benachrichtigungen aufs Handy (ntfy); Topic und Zugangsdaten stehen nie in Sicherungen oder im Log
   // Home Assistant per MQTT (Discovery und Zustand, homeassistant.cpp)
   bool   ha_aktiv = false;
   String ha_praefix = "wettercube-fusion";
   bool   ntfy_aktiv = false;
   String ntfy_server = "https://ntfy.sh";
   String ntfy_topic;
-  String ntfy_token;            // nur noetig bei geschuetzten Themen
+  String ntfy_token;            // nur noetig bei geschuetzten Topics
   String web_pw;                // Passwort der Web-Oberflaeche als "Salz:Hash" (leer = kein Passwort); steht nicht in der Sicherung
   int    ntfy_quellen = 1;      // Bit 0 = Sensor-Grenzwerte, Bit 1 = Lueften (spaeter weitere)
   bool   ntfy_entwarnung = true;

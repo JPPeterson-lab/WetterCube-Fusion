@@ -364,7 +364,7 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
   <form action="/api/ha_save" method="post">
   <div class="row"><span>Home Assistant melden</span>
     <label class="toggle"><input type="checkbox" name="ha_aktiv" %HAA%><span class="slider"></span></label></div>
-  <label>Themen-Pr&auml;fix (f&uuml;r Status und Zustand, normalerweise nicht &auml;ndern)</label>
+  <label>Topic-Pr&auml;fix (f&uuml;r Status und Zustand, normalerweise nicht &auml;ndern)</label>
   <input type="text" name="ha_praefix" value="%HAP%" maxlength="30" autocapitalize="off" autocorrect="off">
   <p class="hint" style="margin:6px 0 0"><b>Stand:</b> %HAS%</p>
   <button type="submit" class="btn btn-gruen">Speichern</button>
@@ -374,15 +374,15 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
 
 <div class="card">
   <h2>Benachrichtigung aufs Handy (ntfy)</h2>
-  <p class="hint"><b>ntfy</b> ist ein kostenloser Dienst, der Nachrichten aufs Handy schickt. Die Meldungen laufen &uuml;ber den Server von ntfy.sh (ein Dienst eines Dritten); wer das nicht m&ouml;chte, tr&auml;gt unten einen eigenen Server ein. So richtest du es ein: Installiere die App <b>ntfy</b> (Android oder iPhone), tippe auf &bdquo;+&ldquo; und trage ein <b>Thema</b> ein, am besten einen langen, nicht erratbaren Namen wie <i>wettercube-k7x2m9q4</i>. Dasselbe Thema tr&auml;gst du hier ein. Das Thema wirkt wie ein Passwort: Wer es kennt, kann mitlesen. Es steht deshalb nicht in der Einstellungssicherung und nicht im Log.</p>
+  <p class="hint"><b>ntfy</b> ist ein kostenloser Dienst, der Nachrichten aufs Handy schickt. Die Meldungen laufen &uuml;ber den Server von ntfy.sh (ein Dienst eines Dritten); wer das nicht m&ouml;chte, tr&auml;gt unten einen eigenen Server ein. So richtest du es ein: Installiere die App <b>ntfy</b> (Android oder iPhone), tippe auf &bdquo;+&ldquo; und trage ein <b>Topic</b> ein, am besten einen langen, nicht erratbaren Namen wie <i>wettercube-k7x2m9q4</i>. Dasselbe Topic tr&auml;gst du hier ein. Das Topic wirkt wie ein Passwort: Wer es kennt, kann mitlesen. Es steht deshalb nicht in der Einstellungssicherung und nicht im Log.</p>
   <form action="/api/ntfy_save" method="post">
   <div class="row"><span>Benachrichtigungen aktiv</span>
     <label class="toggle"><input type="checkbox" name="ntfy_aktiv" %NA%><span class="slider"></span></label></div>
   <label>Server</label>
   <input type="text" name="ntfy_server" value="%NSRV%" autocapitalize="off" autocorrect="off">
-  <label>Thema</label>
+  <label>Topic</label>
   <input type="text" name="ntfy_topic" value="%NTOP%" autocapitalize="off" autocorrect="off" autocomplete="off">
-  <details><summary>Gesch&uuml;tztes Thema oder eigener Server mit Anmeldung</summary>
+  <details><summary>Gesch&uuml;tztes Topic oder eigener Server mit Anmeldung</summary>
     <label>Zugangstoken</label>
     <input type="password" name="ntfy_token" autocomplete="new-password" placeholder="%NTOKPH%">
     <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="ntfy_token_weg" style="width:auto"> gespeicherten Token l&ouml;schen</label>

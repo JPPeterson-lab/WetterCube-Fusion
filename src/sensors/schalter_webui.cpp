@@ -26,7 +26,7 @@ details{margin-top:10px} summary{cursor:pointer;color:var(--acc)} .erw{display:n
 )HTML" WEBUI_NAVBAR R"HTML(
 <h1>Schalter auf dem Display</h1>
 <div class="card"><p style="margin-top:0">Hier legst du Kacheln an, mit denen du Ger&auml;te in deinem Smart Home vom WetterCube aus schaltest, zum Beispiel Licht oder eine Steckdose. Die Kacheln erscheinen auf der <b>Sensor-Seite</b> des Displays hinter den Sensoren. <b>Antippen schaltet um</b>.</p>
-<p class="klein">Das funktioniert &uuml;ber dieselbe MQTT-Verbindung wie die Sensoren (siehe <a href="/sensoren">Sensoren</a>, Schritt 1). Der WetterCube sendet den Befehl an ein MQTT-Thema, der Zustand kommt von einem zweiten Thema zur&uuml;ck. Home Assistant meldet seine Schalter und Lichter dem Broker automatisch, dann gen&uuml;gt unten ein Haken.</p>
+<p class="klein">Das funktioniert &uuml;ber dieselbe MQTT-Verbindung wie die Sensoren (siehe <a href="/sensoren">Sensoren</a>, Schritt 1). Der WetterCube sendet den Befehl an ein MQTT-Topic, der Zustand kommt von einem zweiten Topic zur&uuml;ck. Home Assistant meldet seine Schalter und Lichter dem Broker automatisch, dann gen&uuml;gt unten ein Haken.</p>
 <p class="klein" id="mqtt"></p></div>
 
 <div class="card"><h2><span class="nr">1</span>Ger&auml;te aus dem Netz &uuml;bernehmen</h2>
@@ -40,17 +40,17 @@ details{margin-top:10px} summary{cursor:pointer;color:var(--acc)} .erw{display:n
 <button class="blau" onclick="wledHinzu()">WLED hinzuf&uuml;gen</button></details></div>
 
 <div class="card"><h2><span class="nr">2</span>Das zeigt der WetterCube an</h2>
-<div style="overflow-x:auto"><table id="liste"><thead><tr><th>Anzeigen</th><th>Name</th><th>Raum</th><th>Zustand</th><th>Test</th><th class="erw">Befehl-Thema</th><th class="erw">Zustand-Thema</th><th class="erw">An / Aus senden</th><th class="erw">An / Aus erkennen</th><th class="erw">JSON-Schl&uuml;ssel</th><th class="erw">Reihenfolge</th><th></th></tr></thead><tbody></tbody></table></div>
+<div style="overflow-x:auto"><table id="liste"><thead><tr><th>Anzeigen</th><th>Name</th><th>Raum</th><th>Zustand</th><th>Test</th><th class="erw">Befehl-Topic</th><th class="erw">Zustand-Topic</th><th class="erw">An / Aus senden</th><th class="erw">An / Aus erkennen</th><th class="erw">JSON-Schl&uuml;ssel</th><th class="erw">Reihenfolge</th><th></th></tr></thead><tbody></tbody></table></div>
 <p class="klein" id="liste_leer">Noch keine Schalter eingerichtet.</p>
 <button onclick="speichern()">Speichern</button> <span id="msg" class="klein"></span>
-<label style="margin-top:10px"><input type="checkbox" id="erweitert" onchange="document.body.classList.toggle('erwei',this.checked)"> Erweiterte Einstellungen zeigen (Themen, Texte, Reihenfolge)</label>
+<label style="margin-top:10px"><input type="checkbox" id="erweitert" onchange="document.body.classList.toggle('erwei',this.checked)"> Erweiterte Einstellungen zeigen (Topics, Texte, Reihenfolge)</label>
 <details><summary>Schalter von Hand hinzuf&uuml;gen</summary>
 <div class="row"><div><label>Name</label><input id="m_name" placeholder="z. B. Stehlampe"></div><div><label>Raum</label><input id="m_raum" placeholder="z. B. Wohnzimmer"></div></div>
-<label>Befehl-Thema (dorthin sendet der WetterCube, z.&nbsp;B. wohnzimmer/stehlampe/set)</label><input id="m_cmd" autocapitalize="off" autocorrect="off">
-<label>Zustand-Thema (von dort kommt der Zustand zur&uuml;ck, optional, z.&nbsp;B. wohnzimmer/stehlampe/state)</label><input id="m_state" autocapitalize="off" autocorrect="off">
+<label>Befehl-Topic (dorthin sendet der WetterCube, z.&nbsp;B. wohnzimmer/stehlampe/set)</label><input id="m_cmd" autocapitalize="off" autocorrect="off">
+<label>Zustand-Topic (von dort kommt der Zustand zur&uuml;ck, optional, z.&nbsp;B. wohnzimmer/stehlampe/state)</label><input id="m_state" autocapitalize="off" autocorrect="off">
 <div class="row"><div><label>Text f&uuml;r &bdquo;an&ldquo;</label><input id="m_an" placeholder="ON"></div><div><label>Text f&uuml;r &bdquo;aus&ldquo;</label><input id="m_aus" placeholder="OFF"></div></div>
 <button class="blau" onclick="handHinzu()">Hinzuf&uuml;gen</button></details>
-<p class="klein">Ohne Zustand-Thema merkt sich der WetterCube nur, was er zuletzt gesendet hat. Bis zum ersten Zustand zeigt die Kachel &bdquo;?&ldquo;. Pro Kachel ist ein Ger&auml;t m&ouml;glich, bis zu 8 Kacheln.</p></div>
+<p class="klein">Ohne Zustand-Topic merkt sich der WetterCube nur, was er zuletzt gesendet hat. Bis zum ersten Zustand zeigt die Kachel &bdquo;?&ldquo;. Pro Kachel ist ein Ger&auml;t m&ouml;glich, bis zu 8 Kacheln.</p></div>
 
 <script>
 var S={schalter:[],kandidaten:[],mqtt_status:0},sel={},LEER=document.getElementById('kand_leer').innerHTML;
@@ -88,7 +88,7 @@ function neu(name,raum,cmd,state,an,aus,stan,staus){if(S.schalter.length>=8){ale
 function hinzufuegen(){S.kandidaten.forEach(function(k){if(sel[k.cmd_topic]&&!S.schalter.some(function(s){return s.cmd_topic==k.cmd_topic;}))neu(schoen(k.name),'',k.cmd_topic,k.state_topic,k.payload_an,k.payload_aus,k.state_an,k.state_aus);});sel={};speichern();}
 function wledHinzu(){var t=$('w_topic').value.trim().replace(/\/+$/,''),n=$('w_name').value.trim();if(!t||!n){alert('Name und WLED-Gerätethema ausfüllen.');return;}
  if(neu(n,'',t,t+'/g','ON','OFF','>0','0'))speichern();}
-function handHinzu(){if(!$('m_cmd').value.trim()||!$('m_name').value.trim()){alert('Name und Befehl-Thema ausfüllen.');return;}
+function handHinzu(){if(!$('m_cmd').value.trim()||!$('m_name').value.trim()){alert('Name und Befehl-Topic ausfüllen.');return;}
  if(neu($('m_name').value.trim(),$('m_raum').value.trim(),$('m_cmd').value.trim(),$('m_state').value.trim(),$('m_an').value.trim(),$('m_aus').value.trim()))speichern();}
 function weg(i){if(confirm('Schalter entfernen?')){S.schalter.splice(i,1);speichern();}}
 function test(id,an){fetch('/api/schalter/schalten',{method:'POST',body:JSON.stringify({id:id,an:an})}).then(function(r){return r.json();}).then(function(d){$('msg').textContent=d.ok?'Befehl gesendet.':'Nicht gesendet: MQTT ist nicht verbunden.';setTimeout(laden,800);});}

@@ -62,7 +62,7 @@ details{margin-top:10px} summary{cursor:pointer;color:var(--acc)} .erw{display:n
 <p class="klein">Korrektur wird zum Messwert addiert. ESPHome-Sensoren sind meist schon korrigiert, dann 0 lassen. Beim Abgleich tr&auml;gst du den Wert eines Vergleichsger&auml;ts ein, die Korrektur wird berechnet.</p>
 <details><summary>Sensor von Hand hinzuf&uuml;gen</summary>
 <div class="row"><div><label>Name</label><input id="m_name"></div><div><label>Raum</label><input id="m_raum"></div><div><label>Einheit</label><input id="m_einh" placeholder="&deg;C"></div></div>
-<label>MQTT-Thema des Messwerts (z.&nbsp;B. wohnzimmer/sensor/temperatur/state)</label><input id="m_topic"><button class="blau" onclick="handHinzu()">Hinzuf&uuml;gen</button></details></div></div>
+<label>MQTT-Topic des Messwerts (z.&nbsp;B. wohnzimmer/sensor/temperatur/state)</label><input id="m_topic"><button class="blau" onclick="handHinzu()">Hinzuf&uuml;gen</button></details></div></div>
 
 <script>
 var S={sensoren:[],kandidaten:[],mqtt:{}},sel={},LEER=document.getElementById('kand_leer').innerHTML;
@@ -112,7 +112,7 @@ function hinzufuegen(){var z={};S.kandidaten.forEach(function(k){if(sel[k.topic]
  var zus=$('zusammen').checked;S.kandidaten.forEach(function(k){if(sel[k.topic]&&!S.sensoren.some(function(s){return s.topic==k.topic;}))neu(schoen(k.name),raumName(k.geraet),k.einheit,k.topic,k.avail,zus&&z[k.geraet]>1?raumName(k.geraet):'');sel[k.topic]=false;});speichern();}
 function proRaum(){var c={};S.sensoren.forEach(function(s){if(s.raum)c[s.raum]=(c[s.raum]||0)+1;});S.sensoren.forEach(function(s){s.gruppe=(s.raum&&c[s.raum]>1)?s.raum.slice(0,19):'';});zeichne();$('msg').textContent='Noch nicht gespeichert: bitte unten auf Speichern dr\u00fccken.';}
 function alleEinzeln(){S.sensoren.forEach(function(s){s.gruppe='';});zeichne();$('msg').textContent='Noch nicht gespeichert: bitte unten auf Speichern dr\u00fccken.';}
-function handHinzu(){if(!$('m_topic').value||!$('m_name').value){alert('Name und Thema ausfüllen.');return;}if(neu($('m_name').value,$('m_raum').value,$('m_einh').value,$('m_topic').value))speichern();}
+function handHinzu(){if(!$('m_topic').value||!$('m_name').value){alert('Name und Topic ausfüllen.');return;}if(neu($('m_name').value,$('m_raum').value,$('m_einh').value,$('m_topic').value))speichern();}
 function weg(i){if(confirm('Sensor entfernen?')){S.sensoren.splice(i,1);speichern();}}
 function abgleich(i){var s=S.sensoren[i];if(!s.gueltig){alert('Noch kein Messwert vorhanden.');return;}
  var r=prompt('Referenzwert für "'+s.name+'" (aktuell '+s.wert.toFixed(s.dezimal)+' '+s.einheit+'):');if(r===null)return;r=parseFloat(String(r).replace(',','.'));if(isNaN(r))return;

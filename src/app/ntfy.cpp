@@ -79,7 +79,7 @@ void ntfySenden(const char* titel, const char* text, int prio, const char* tags)
 }
 
 void ntfyTest() {
-  if (!ntfyBereit()) { statusSetzen("Bitte erst Server und Thema eintragen und speichern"); return; }
+  if (!ntfyBereit()) { statusSetzen("Bitte erst Server und Topic eintragen und speichern"); return; }
   statusSetzen("Wird gesendet ...");
   ntfySenden("WetterCube Fusion", "Testnachricht: Die Benachrichtigung funktioniert.", 3, "white_check_mark");
 }

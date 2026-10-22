@@ -286,7 +286,7 @@ static void handleWebRoot() {
   html.replace("%HAS%",          haStatusText());
   html.replace("%NSRV%",         htmlEsc(cfg.ntfy_server));
   html.replace("%NTOP%",         htmlEsc(cfg.ntfy_topic));
-  html.replace("%NTOKPH%",       cfg.ntfy_token.length() ? "(gespeichert)" : "nur bei geschützten Themen");
+  html.replace("%NTOKPH%",       cfg.ntfy_token.length() ? "(gespeichert)" : "nur bei geschützten Topics");
   html.replace("%NQS%",          (cfg.ntfy_quellen & NTFY_Q_SENSOR) ? "checked" : "");
   html.replace("%NQL%",          (cfg.ntfy_quellen & NTFY_Q_LUEFTEN) ? "checked" : "");
   html.replace("%LA%",           cfg.lueft_ampel ? "checked" : "");
@@ -466,7 +466,7 @@ String webuiSicherungJson() {   // Einstellungen als JSON (ohne WLAN- und MQTT-P
   doc["lueft_hitze"]      = cfg.lueft_hitze;
   doc["ha_aktiv"]         = cfg.ha_aktiv;
   doc["ha_praefix"]       = std::string(cfg.ha_praefix.c_str());
-  doc["ntfy_aktiv"]       = cfg.ntfy_aktiv;   // Server, Thema und Token stehen bewusst nicht in der Sicherung
+  doc["ntfy_aktiv"]       = cfg.ntfy_aktiv;   // Server, Topic und Token stehen bewusst nicht in der Sicherung
   doc["ntfy_quellen"]     = cfg.ntfy_quellen;
   doc["lueft_ampel"]      = cfg.lueft_ampel;
   doc["lueft_warnung"]    = cfg.lueft_warnung;

@@ -121,7 +121,7 @@ static void ereignis(void*, esp_event_base_t, int32_t id, void* daten) {
       esp_mqtt_client_subscribe(s_client, "homeassistant/sensor/+/+/config", 0);   // Discovery (retained)
       esp_mqtt_client_subscribe(s_client, "homeassistant/switch/+/+/config", 0);   // Schalter und Lichter fuer die Schalter-Kacheln
       esp_mqtt_client_subscribe(s_client, "homeassistant/light/+/+/config", 0);
-      esp_mqtt_client_subscribe(s_client, "wled/+/status", 0);                     // WLED-Lampen (Standard-Themenpraefix) fuer die Schalter-Kacheln
+      esp_mqtt_client_subscribe(s_client, "wled/+/status", 0);                     // WLED-Lampen (Standard-Topic-Praefix) fuer die Schalter-Kacheln
       abonniereListe();
       break;
     case MQTT_EVENT_DISCONNECTED:

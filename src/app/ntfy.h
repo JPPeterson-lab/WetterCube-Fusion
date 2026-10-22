@@ -8,7 +8,7 @@
 
 enum NtfyQuelle { NTFY_Q_SENSOR = 1, NTFY_Q_LUEFTEN = 2 };   // Bits in cfg.ntfy_quellen (weitere folgen)
 
-bool ntfyBereit();                                                    // eingeschaltet, Server und Thema eingetragen
+bool ntfyBereit();                                                    // eingeschaltet, Server und Topic eingetragen
 bool ntfyQuelleAktiv(NtfyQuelle q);                                   // bereit und fuer diese Quelle eingeschaltet
 void ntfySenden(const char* titel, const char* text, int prio, const char* tags);   // prio 1..5 (3 = normal), tags z. B. "warning"
 void ntfyTest();                                                      // Testnachricht senden

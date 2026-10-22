@@ -52,7 +52,7 @@ static uint8_t zustandErkennen(const SchalterCfg& c, const char* nl, int len) {
     strlcpy(wert, p, sizeof(wert));
     for (int i = (int)strlen(wert) - 1; i >= 0 && isspace((unsigned char)wert[i]); i--) wert[i] = 0;
   }
-  // Sonderfall ">0": jede Zahl groesser 0 heisst "an", 0 heisst "aus" (WLED meldet die Helligkeit auf <Thema>/g)
+  // Sonderfall ">0": jede Zahl groesser 0 heisst "an", 0 heisst "aus" (WLED meldet die Helligkeit auf <Topic>/g)
   if (!strcmp(c.state_an, ">0")) {
     char* ende = nullptr; double d = strtod(wert, &ende);
     if (ende != wert && *ende == 0) return d > 0 ? SZ_AN : SZ_AUS;
