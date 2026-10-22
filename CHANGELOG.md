@@ -2,7 +2,7 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v0.9.9-beta6 (2026-10-22)
+## v0.9.9-beta7 (2026-10-22)
 
 ### Behoben
-- **Hauptseite:** Hinter dem Wettersymbol lag noch ein blasser blauer Kasten aus dem früheren Hintergrund. Er ist jetzt unsichtbar, übrig bleibt nur der runde Hintergrund.
+- **Wettersymbole:** Das große Wettersymbol und die Symbole der Stundenvorhersage saßen etwa 7 Pixel zu weit rechts unten und damit nicht in der Mitte ihres Hintergrunds. Sie stehen jetzt genau dort, wo sie in der Oberfläche entworfen sind.

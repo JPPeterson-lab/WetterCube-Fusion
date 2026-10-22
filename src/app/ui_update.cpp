@@ -47,7 +47,7 @@ static void setPollenLabel(lv_obj_t* obj, float v) {
 }
 // Das Zoom-Verhältnis der Bild-Widgets (128-px-Quelle) legt der Export fest, hier wird nur die Quelle getauscht
 // Wettersymbol setzen. Die Symbole haben 112 px Quellgroesse; die angezeigte Groesse und Lage bleiben wie in PicoPixel entworfen
-// (Hauptsymbol 128 px, Stundensymbole 112 px, jeweils um die Mitte eines 128-px-Quellbilds): beim ersten Aufruf wird sie aus dem Widget gelesen.
+// (Hauptsymbol 128 px, Stundensymbole 112 px): beim ersten Aufruf wird links oben und Groesse aus dem Widget gelesen.
 static void setWetterIcon(lv_obj_t* obj, const lv_img_dsc_t* dsc, const char* animName, bool animieren) {
   if (!obj || !dsc) return;
   struct Platz { lv_obj_t* o; int x, y, ziel; };
@@ -57,13 +57,14 @@ static void setWetterIcon(lv_obj_t* obj, const lv_img_dsc_t* dsc, const char* an
   if (!p && np < 8) {
     p = &plaetze[np++];
     p->o = obj; p->ziel = 128 * lv_img_get_zoom(obj) / 256;                    // fruehere Anzeigegroesse (Quelle 128 px)
-    p->x = lv_obj_get_x(obj) + 64 - p->ziel / 2; p->y = lv_obj_get_y(obj) + 64 - p->ziel / 2;   // links oben des angezeigten Bereichs
+    p->x = lv_obj_get_x(obj); p->y = lv_obj_get_y(obj);                         // links oben des angezeigten Bereichs
   }
   // Animiert (ESP32-P4, wenn eingeschaltet und im Paket vorhanden), sonst das statische Symbol
   if (p && animieren && animName && wetterAnimSetzen(obj, animName, p->ziel, p->x, p->y)) return;
   wetterAnimStoppen(obj);
   if (lv_img_get_src(obj) == (const void*)dsc) return;
-  if (p) wetterIconZeichnen(obj, dsc, p->ziel, p->x, p->y);
+  // wetterIconZeichnen setzt das Widget um (Zielgroesse - Quellbreite) / 2 nach innen; hier ausgleichen, damit das Symbol genau im entworfenen Rechteck sitzt
+  if (p) { int d = (p->ziel - (int)dsc->header.w) / 2; wetterIconZeichnen(obj, dsc, p->ziel, p->x - d, p->y - d); }
   else   lv_img_set_src(obj, dsc);
 }
 

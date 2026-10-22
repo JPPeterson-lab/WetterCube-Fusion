@@ -2,7 +2,7 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-beta6 (2026-10-22)
+## v0.9.9-beta7 (2026-10-22)
 
 ### Fixed
-- **Main screen:** A pale blue box from the earlier background was still visible behind the weather icon. It is now invisible, leaving only the round background.
+- **Weather icons:** The large weather icon and the icons of the hourly forecast sat about 7 pixels too far to the lower right and therefore not in the centre of their background. They now sit exactly where they are designed in the interface.
