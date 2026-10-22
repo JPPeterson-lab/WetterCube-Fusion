@@ -72,7 +72,7 @@
 
 > 💙 **Danke an PicoPixel:** Die LVGL-UI des Fusion wird mit [PicoPixel](https://picopixel.io/de/) erstellt, einem kostenlosen, browserbasierten Drag-and-Drop-Editor für LVGL. Das ist kein Werbe- und kein Affiliate-Link, ich verdiene nichts daran.
 
-Bibliotheken, Icons und Schriften von Dritten (LVGL, ESP-IDF, Meteocons, Montserrat, ArduinoJson und weitere) behalten ihre eigenen Lizenzen, Einzelheiten in [CREDITS.md](CREDITS.md). Wetterdaten: [Open-Meteo](https://open-meteo.com) (CC BY 4.0; die kostenlose Schnittstelle ist **nur für nicht-kommerzielle Nutzung**, wer kommerziell einsetzt, braucht dort eine eigene Lizenz) und [DWD Opendata](https://opendata.dwd.de) (CC BY 4.0, „Quelle: Deutscher Wetterdienst“).
+Bibliotheken, Icons und Schriften von Dritten (LVGL, ESP-IDF, Meteocons, Montserrat, ArduinoJson und weitere) behalten ihre eigenen Lizenzen, Einzelheiten in [CREDITS.md](CREDITS.md). Wetterdaten: „Weather data by [Open-Meteo.com](https://open-meteo.com)“ ([CC BY 4.0](https://open-meteo.com/en/licence); die kostenlose Schnittstelle ist **nur für nicht-kommerzielle Nutzung**, wer kommerziell einsetzt, braucht dort eine eigene Lizenz), im WetterCube teils umgerechnet (zum Beispiel zu Pollenstufen). Pollen und Luftqualität: „Contains modified Copernicus Atmosphere Monitoring Service information“, über Open-Meteo. Ortssuche: „Location data by [GeoNames](https://www.geonames.org) via Open-Meteo“. Warnungen, Pollenflug, Biowetter und Radar: [DWD Opendata](https://opendata.dwd.de) (CC BY 4.0, „Quelle: Deutscher Wetterdienst“). Open-Meteo und der Deutsche Wetterdienst empfehlen dieses Gerät nicht.
 
 | Was | Lizenz | Datei |
 |---|---|---|
@@ -149,7 +149,7 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 > 💙 **Thanks to PicoPixel:** The LVGL UI of the Fusion is created with [PicoPixel](https://picopixel.io/), a free, browser-based drag-and-drop editor for LVGL. This is not an advertisement or affiliate link, I earn nothing from it.
 
-Libraries, icons and fonts by third parties (LVGL, ESP-IDF, Meteocons, Montserrat, ArduinoJson and more) keep their own licences, details in [CREDITS.md](CREDITS.md). Weather data: [Open-Meteo](https://open-meteo.com) (CC BY 4.0; the free interface is for **non-commercial use only**, anyone using the software commercially needs their own licence from them) and [DWD Opendata](https://opendata.dwd.de) (CC BY 4.0, “Quelle: Deutscher Wetterdienst”).
+Libraries, icons and fonts by third parties (LVGL, ESP-IDF, Meteocons, Montserrat, ArduinoJson and more) keep their own licences, details in [CREDITS.md](CREDITS.md). Weather data: “Weather data by [Open-Meteo.com](https://open-meteo.com)” ([CC BY 4.0](https://open-meteo.com/en/licence); the free interface is for **non-commercial use only**, anyone using the software commercially needs their own licence from them), partly converted by the WetterCube (for example to pollen levels). Pollen and air quality: “Contains modified Copernicus Atmosphere Monitoring Service information”, via Open-Meteo. Location search: “Location data by [GeoNames](https://www.geonames.org) via Open-Meteo”. Warnings, pollen forecast, bio-weather and radar: [DWD Opendata](https://opendata.dwd.de) (CC BY 4.0, “Quelle: Deutscher Wetterdienst”). Neither Open-Meteo nor the German Weather Service endorses this device.
 
 | What | Licence | File |
 |---|---|---|
