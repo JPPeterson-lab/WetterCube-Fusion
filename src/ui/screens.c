@@ -2658,7 +2658,7 @@ void create_screen_screenallergen() {
             // labelquelleallergen
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelquelleallergen = obj;
-            lv_obj_set_pos(obj, 678, 560);
+            lv_obj_set_pos(obj, 675, 560);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -3473,7 +3473,7 @@ void create_screen_screenwarnkarte2() {
             // labelquellekarte2
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelquellekarte2 = obj;
-            lv_obj_set_pos(obj, 652, 564);
+            lv_obj_set_pos(obj, 675, 560);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -3623,7 +3623,7 @@ void create_screen_screenwarnkarte1() {
             // labelquellekarte1
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelquellekarte1 = obj;
-            lv_obj_set_pos(obj, 681, 560);
+            lv_obj_set_pos(obj, 675, 560);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
