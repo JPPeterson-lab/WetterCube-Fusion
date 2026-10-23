@@ -35,5 +35,6 @@
 #define LVGL_PORT_TASK_CORE         (1)           // WLAN/HTTP laufen auf Core 0
 
 esp_err_t lvgl_port_init(esp_lcd_panel_handle_t lcd_handle, esp_lcd_touch_handle_t tp_handle);
+const uint16_t *lvglPortFramebuffer();   // aktueller Bildschirminhalt (RGB565, H_RES x V_RES) oder nullptr
 bool lvgl_port_lock(int timeout_ms);   // -1 = unbegrenzt warten
 void lvgl_port_unlock(void);

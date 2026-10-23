@@ -4,6 +4,10 @@
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include "esp_lcd_panel_ops.h"
+#include "sdkconfig.h"
+#if CONFIG_IDF_TARGET_ESP32S3
+#include "esp_lcd_panel_rgb.h"
+#endif
 #include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -78,8 +82,23 @@ static void touchpad_read(lv_indev_drv_t *drv, lv_indev_data_t *data)
     }
 }
 
+static esp_lcd_panel_handle_t s_panel = nullptr;
+
+// Der Framebuffer des Displays (RGB565, 1024x600) im PSRAM: enthaelt genau das, was gerade angezeigt wird. Fuer das Bildschirmfoto der
+// Web-Oberflaeche, weil dafuer kein zusaetzlicher Speicher noetig ist (ein LVGL-Abzug braucht 1,2 MB am Stueck, die im PSRAM oft fehlen).
+// nullptr, wenn das Board das nicht anbietet (P4).
+const uint16_t *lvglPortFramebuffer()
+{
+#if CONFIG_IDF_TARGET_ESP32S3
+    void *fb = nullptr;
+    if (s_panel && esp_lcd_rgb_panel_get_frame_buffer(s_panel, 1, &fb) == ESP_OK) return (const uint16_t *)fb;
+#endif
+    return nullptr;
+}
+
 static lv_disp_t *display_init(esp_lcd_panel_handle_t panel)
 {
+    s_panel = panel;
     static lv_disp_draw_buf_t draw_buf;
     static lv_disp_drv_t disp_drv;
 

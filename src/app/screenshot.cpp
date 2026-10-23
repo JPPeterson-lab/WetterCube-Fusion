@@ -101,6 +101,10 @@ static void sendePng(WebServer& server, const uint16_t* px, int W, int H) {
 
 void screenshotRegistrieren(WebServer& server) {
   server.on("/screenshot.png", HTTP_GET, [&server]() {
+    if (!server.hasArg("s") && !server.hasArg("theme")) {   // Knopf in der Web-Oberflaeche: Framebuffer lesen, braucht keinen Zusatzspeicher
+      const uint16_t* fb = lvglPortFramebuffer();
+      if (fb) { sendePng(server, fb, LVGL_PORT_H_RES, LVGL_PORT_V_RES); return; }
+    }
     int W = 0, H = 0;
     uint8_t* puffer = fotoNehmen(server, W, H);
     if (!puffer) { server.send(500, "text/plain", "Bildschirmfoto nicht moeglich (zu wenig Speicher?)"); return; }

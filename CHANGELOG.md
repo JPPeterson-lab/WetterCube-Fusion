@@ -2,11 +2,8 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v0.9.9-beta12 (2026-10-23)
-
-### Neu
-- **Zweiter Standort:** In der Web-Oberfläche (Wetter & Daten) kannst du einen zweiten Ort mit eigener Pollenregion und Biowetter-Zone eintragen, zum Beispiel Wohnort und Ferienhaus. Dann erscheint oben links auf dem Hauptscreen eine kleine Pille mit dem Ortsnamen und zwei Punkten. Ein Tipp darauf schaltet zwischen den Orten um; Wetter, 7-Tage-Vorschau, Pollen, Warnungen, Warnkarte und Biowetter folgen dem gewählten Ort. Umschalten geht auch in der Web-Oberfläche. Sensoren und Verlauf bleiben beim ersten Standort, nach einem Neustart gilt wieder der erste Standort. Der zweite Standort steht in der Einstellungs-Sicherung.
-- **Bildschirmfoto:** In der Web-Oberfläche (Einstellungen, Diagnose) speichert der Knopf „Bildschirmfoto speichern“ ein PNG von dem, was das Display gerade zeigt.
+## v0.9.9-beta13 (2026-10-23)
 
 ### Verbessert
-- Das Bildschirmfoto versucht es bei knappem Speicher bis zu viermal.
+- **Standortwechsel:** Wetter und 7-Tage-Vorschau erscheinen jetzt sofort, der Rest wird danach nachgeladen. Warnungen, Warnkarte, DWD-Pollen und Biowetter werden nur neu geholt, wenn sich Region oder Zone ändern; bei zwei Orten in derselben Region wandert nur der Marker auf der Karte. Vor jedem Abruf wartet das Gerät kurz, bis genug interner Speicher frei ist (sonst scheiterten Abrufe mit „HTTP -1“ und die Web-Oberfläche öffnete sich kaum noch). Das Log nennt jeden Wechsel („[Ort] …“).
+- **Bildschirmfoto:** Der Knopf in der Web-Oberfläche liest den Bildschirminhalt direkt aus dem Display-Speicher und braucht keinen Zusatzspeicher mehr (vorher scheiterte er mit „zu wenig Speicher“, sobald die Warnkarte geladen war).

@@ -60,6 +60,7 @@ void standortWechseln(int nr) {
   if (nr == 1 && !hatStandort2()) nr = 0;
   if (nr == standortAktiv) return;
   standortAktiv = nr;
+  logDiag("[Ort] Umschalten auf Standort %d (%s)", nr + 1, stdName().c_str());
   datenNeuLaden = true;          // der Netzwerk-Task holt alles fuer den neuen Ort
   aktualisiereStandort();
 }
