@@ -1,4 +1,5 @@
 #!/bin/bash
+sedi() { if sed --version >/dev/null 2>&1; then sed -i "$@"; else sed -i '' "$@"; fi; }   # GNU- und BSD-sed (Linux/WSL und macOS)
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Jan Althaus (JPPeterson-lab)
 # PicoPixel UI-Export vorbereiten
@@ -14,7 +15,7 @@ fi
 # PicoPixel generiert "lvgl/lvgl.h" – hier heisst der Header <lvgl.h>
 find "$SRC" -name "*.c" -o -name "*.h" | while read f; do
   if grep -q '"lvgl/lvgl.h"' "$f"; then
-    sed -i '' 's|#include "lvgl/lvgl.h"|#include <lvgl.h>|g' "$f"
+    sedi 's|#include "lvgl/lvgl.h"|#include <lvgl.h>|g' "$f"
     echo "  lvgl-Include gepatcht: $(basename $f)"
   fi
 done
@@ -41,10 +42,10 @@ if [ -d "$SRC/images" ]; then
     echo "  Image umbenannt: $(basename "$f") → $(basename "${base}.inc")"
   done
   if [ -f "$SRC/images.c" ]; then
-    sed -i '' 's|#include "images/\(.*\)\.c"|#include "src/ui/images/\1.inc"|g' "$SRC/images.c"
-    sed -i '' 's|#include "images/\(.*\)\.inc"|#include "src/ui/images/\1.inc"|g' "$SRC/images.c"
+    sedi 's|#include "images/\(.*\)\.c"|#include "src/ui/images/\1.inc"|g' "$SRC/images.c"
+    sedi 's|#include "images/\(.*\)\.inc"|#include "src/ui/images/\1.inc"|g' "$SRC/images.c"
     for n in $WETTER_ICONS; do
-      [ -f "$WICON_DIR/$n.inc" ] && sed -i '' "s|src/ui/images/$n.inc|assets/icons/weather/$n.inc|g" "$SRC/images.c"
+      [ -f "$WICON_DIR/$n.inc" ] && sedi "s|src/ui/images/$n.inc|assets/icons/weather/$n.inc|g" "$SRC/images.c"
     done
     echo "  images.c Include-Pfade aktualisiert (Wetter-Icons aus assets/icons/weather)"
   fi
@@ -52,10 +53,10 @@ fi
 
 # Namenskonflikt: das PicoPixel-Bild "pollen" heisst wie die globale Variable `pollen` (app_state.h) → Symbol in "pollen_img" umbenennen
 if [ -f "$SRC/images.h" ] && grep -q "lv_img_dsc_t pollen;" "$SRC/images.h"; then
-  sed -i '' 's/extern const lv_img_dsc_t pollen;/extern const lv_img_dsc_t pollen_img;/' "$SRC/images.h"
-  sed -i '' 's/&pollen }/\&pollen_img }/' "$SRC/images.c"
-  [ -f "$SRC/images/pollen.inc" ] && sed -i '' 's/const lv_img_dsc_t pollen = {/const lv_img_dsc_t pollen_img = {/' "$SRC/images/pollen.inc"
-  sed -i '' 's/lv_img_set_src(obj, &pollen);/lv_img_set_src(obj, \&pollen_img);/' "$SRC/screens.c"
+  sedi 's/extern const lv_img_dsc_t pollen;/extern const lv_img_dsc_t pollen_img;/' "$SRC/images.h"
+  sedi 's/&pollen }/\&pollen_img }/' "$SRC/images.c"
+  [ -f "$SRC/images/pollen.inc" ] && sedi 's/const lv_img_dsc_t pollen = {/const lv_img_dsc_t pollen_img = {/' "$SRC/images/pollen.inc"
+  sedi 's/lv_img_set_src(obj, &pollen);/lv_img_set_src(obj, \&pollen_img);/' "$SRC/screens.c"
   echo "  Bild pollen → pollen_img umbenannt (Namenskonflikt mit der Variable pollen)"
 fi
 
@@ -109,20 +110,20 @@ PYEOF
 
 # screens.c: PicoPixel exportiert Farben als lv_color_hex(0xffRRGGBB)
 if [ -f "$SRC/screens.c" ]; then
-  sed -i '' 's/lv_color_hex(0xff/lv_color_hex(0x/g' "$SRC/screens.c"
+  sedi 's/lv_color_hex(0xff/lv_color_hex(0x/g' "$SRC/screens.c"
   echo "  screens.c: lv_color_hex 0xff-Prefix entfernt (PicoPixel ARGB→RGB Fix)"
 fi
 
 # ui.c: FADE_IN-Animation → NONE (Crash-Fix)
 if [ -f "$SRC/ui.c" ]; then
-  sed -i '' 's|lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_FADE_IN, 200, 0, false)|lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_NONE, 0, 0, false)|g' "$SRC/ui.c"
+  sedi 's|lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_FADE_IN, 200, 0, false)|lv_scr_load_anim(screen, LV_SCR_LOAD_ANIM_NONE, 0, 0, false)|g' "$SRC/ui.c"
   echo "  ui.c: FADE_IN-Animation → NONE (Crash-Fix)"
 fi
 
 # screens.c: Sonderzeichen ² (U+00B2) → ASCII (LVGL Montserrat-Font hat kein ²)
 if [ -f "$SRC/screens.c" ]; then
   if grep -q 'mg/m²' "$SRC/screens.c"; then
-    sed -i '' 's|mg/m²|ug/m3|g' "$SRC/screens.c"
+    sedi 's|mg/m²|ug/m3|g' "$SRC/screens.c"
     echo "  screens.c: Sonderzeichen mg/m² → ug/m3 ersetzt (Font-Fix)"
   fi
 fi

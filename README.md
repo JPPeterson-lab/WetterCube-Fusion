@@ -31,8 +31,9 @@
 
 ## ✨ Das kann Fusion
 
-- **Wetter, Gesundheit und Haus an einem Ort:** aktuelles Wetter, 4-Stunden-Vorhersage, 24-Stunden-Verlauf mit Regenbalken, UV, Sonne und Mond, dazu Pollenflug, Biowetter und Luftqualität
+- **Wetter, Gesundheit und Haus an einem Ort:** aktuelles Wetter, 4-Stunden-Vorhersage, 7-Tage-Vorschau, 24-Stunden-Verlauf mit Regenbalken, UV, Sonne und Mond, dazu Pollenflug, Biowetter und Luftqualität
 - **DWD-Warnungen** mit Warnkarte und Niederschlagsradar
+- **Zwei Standorte:** zweiter Ort per Tipp auf dem Hauptscreen umschaltbar, zum Beispiel Wohnort und Ferienhaus
 - **Eigene Sensoren und Lüften-Ampel:** Sensoren per MQTT/ESPHome oder intern im Gehäuse, Grenzwerte mit Alarm, Taupunkt- und Schimmelhinweis
 - **Home Assistant und MQTT:** Anmeldung per Discovery, Schalter-Kacheln auf dem Display, `/api/status` als JSON
 - **Handy-Nachrichten** über [ntfy](https://ntfy.sh), Nachtmodus nach Sonnenstand, Ruhezeit ohne Warnungen
@@ -112,8 +113,9 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 ## ✨ What Fusion can do
 
-- **Weather, health and home in one place:** current weather, 4-hour forecast, 24-hour curve with rain bars, UV, sun and moon, plus pollen, Biowetter and air quality
+- **Weather, health and home in one place:** current weather, 4-hour forecast, 7-day forecast, 24-hour curve with rain bars, UV, sun and moon, plus pollen, Biowetter and air quality
 - **DWD warnings** with warning map and precipitation radar
+- **Two locations:** a second place switchable by a tap on the main screen, for example home and holiday home
 - **Own sensors and ventilation traffic light:** sensors via MQTT/ESPHome or inside the case, limits with alarm, dew point and mold hint
 - **Home Assistant and MQTT:** sign-up by discovery, switch tiles on the display, `/api/status` as JSON
 - **Phone messages** via [ntfy](https://ntfy.sh), night mode by position of the sun, quiet hours without warnings
