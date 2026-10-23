@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Jan Althaus (JPPeterson-lab)
-// Standort-Umschalter auf dem Hauptscreen: oben links eine kleine Pille mit zwei Punkten und dem Ortsnamen. Ein Tipp darauf wechselt
+// Standort-Umschalter auf dem Hauptscreen: oben rechts eine kleine Pille mit zwei Punkten und dem Ortsnamen. Ein Tipp darauf wechselt
 // zwischen Standort 1 und 2 (nur sichtbar, wenn ein zweiter Standort eingerichtet ist). Die Pille entsteht im Code, weil sie nur mit
 // zweitem Standort erscheint; Lage und Aussehen koennen spaeter in PicoPixel entworfen werden.
 #include "app_state.h"
@@ -16,10 +16,13 @@ static const int PILLE_X = 12, PILLE_Y = 12, PILLE_H = 40, NAME_MAX_B = 200;
 static void beiTipp(lv_event_t*) { standortWechseln(standortAktiv == 0 ? 1 : 0); }
 
 void uiStandortInit() {
+#if !FUSION_ZWEITER_STANDORT
+  return;
+#endif
   if (s_pille || !objects.screen_1) return;
   s_pille = lv_obj_create(objects.screen_1);
   lv_obj_remove_style_all(s_pille);
-  lv_obj_set_pos(s_pille, PILLE_X, PILLE_Y);
+  lv_obj_align(s_pille, LV_ALIGN_TOP_RIGHT, -PILLE_X, PILLE_Y);   // rechts oben; links sitzt das Update-Symbol
   lv_obj_set_size(s_pille, LV_SIZE_CONTENT, PILLE_H);
   lv_obj_set_flex_flow(s_pille, LV_FLEX_FLOW_ROW);
   lv_obj_set_flex_align(s_pille, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);

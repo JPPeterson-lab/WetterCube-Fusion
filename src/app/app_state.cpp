@@ -49,7 +49,13 @@ static const DwdBbox DWD_BBOX[] = {
 };
 
 int standortAktiv = 0;
-bool hatStandort2() { return !cfg.location2.isEmpty() && cfg.lat2 != 0.0f; }
+bool hatStandort2() {
+#if FUSION_ZWEITER_STANDORT
+  return !cfg.location2.isEmpty() && cfg.lat2 != 0.0f;
+#else
+  return false;
+#endif
+}
 static bool zweiter() { return standortAktiv == 1 && hatStandort2(); }
 const String& stdName()   { return zweiter() ? cfg.location2    : cfg.location; }
 float stdLat()            { return zweiter() ? cfg.lat2         : cfg.lat; }

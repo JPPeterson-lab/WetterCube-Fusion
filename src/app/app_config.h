@@ -12,9 +12,20 @@
 #define UPDATE_DISPLAY_FLACKERT 1
 #endif
 
+// Zweiter Standort (Umschalten per Tipp auf dem Hauptscreen): nur auf dem P4. Der S3 hat nur 10 bis 35 KB internen Speicher frei; ein Ortswechsel
+// holt viele Daten per TLS nacheinander und brachte ihn an die Grenze (Abrufe scheiterten, Web-Oberflaeche kaum erreichbar). Mit
+// -DFUSION_ZWEITER_STANDORT=1 laesst er sich auf dem S3 trotzdem einschalten.
+#ifndef FUSION_ZWEITER_STANDORT
+#if defined(CONFIG_IDF_TARGET_ESP32P4) && CONFIG_IDF_TARGET_ESP32P4
+#define FUSION_ZWEITER_STANDORT 1
+#else
+#define FUSION_ZWEITER_STANDORT 0
+#endif
+#endif
+
 // Muss mit docs/version.json übereinstimmen (sobald es Releases gibt)
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.9.9-beta13"
+#define FIRMWARE_VERSION "0.9.9-beta14"
 #endif
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/WetterCube-Fusion/main/docs/version.json"
 #define OTA_BIN_URL      "https://jppeterson-lab.github.io/WetterCube-Fusion/firmware/firmware.bin"

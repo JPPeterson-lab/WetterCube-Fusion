@@ -257,6 +257,9 @@ static void handleWebRoot() {
   html.replace("%IP%",           WiFi.localIP().toString());
   html.replace("%LOCATION%",     cfg.location);
   html.replace("%DWD_REGIONEN%", baueDwdRegionenOptions(cfg.dwd_region));
+#if !FUSION_ZWEITER_STANDORT
+  { int a = html.indexOf("<!--ST2-->"), b = html.indexOf("<!--/ST2-->"); if (a >= 0 && b > a) html.remove(a, b + 11 - a); }   // Karte "Zweiter Standort" nur wo die Funktion eingeschaltet ist
+#endif
   html.replace("%LOCATION2%",    cfg.location2);
   html.replace("%DWD_REGIONEN2%", baueDwdRegionenOptions(cfg.dwd_region2));
   html.replace("%BIO_ZONE_OPTIONS2%", baueBioZoneOptions(cfg.bio_zone2));

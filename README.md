@@ -8,7 +8,7 @@
 **Größer · Besser · Interne Umweltsensoren · MQTT ready · Inkl. aller WetterCubePlus-Funktionen**
 
 ![Status](https://img.shields.io/badge/Status-Beta-yellow?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v0.9.9--beta13-blue?style=flat-square&cacheSeconds=1)
+![Version](https://img.shields.io/badge/Version-v0.9.9--beta14-blue?style=flat-square&cacheSeconds=1)
 ![Ziel](https://img.shields.io/badge/Boards-ESP32--S3%20und%20ESP32--P4-red?style=flat-square&logo=espressif&logoColor=white)
 ![Plattform](https://img.shields.io/badge/Platform-ESP--IDF%205.5-teal?style=flat-square&logo=espressif&logoColor=white)
 ![Lizenz](https://img.shields.io/badge/Lizenz-Apache%202.0-blue?style=flat-square)
@@ -33,7 +33,7 @@
 
 - **Wetter, Gesundheit und Haus an einem Ort:** aktuelles Wetter, 4-Stunden-Vorhersage, 7-Tage-Vorschau, 24-Stunden-Verlauf mit Regenbalken, UV, Sonne und Mond, dazu Pollenflug, Biowetter und Luftqualität
 - **DWD-Warnungen** mit Warnkarte und Niederschlagsradar
-- **Zwei Standorte:** zweiter Ort per Tipp auf dem Hauptscreen umschaltbar, zum Beispiel Wohnort und Ferienhaus
+- **Zwei Standorte (nur P4):** zweiter Ort per Tipp auf dem Hauptscreen umschaltbar, zum Beispiel Wohnort und Ferienhaus
 - **Eigene Sensoren und Lüften-Ampel:** Sensoren per MQTT/ESPHome oder intern im Gehäuse, Grenzwerte mit Alarm, Taupunkt- und Schimmelhinweis
 - **Home Assistant und MQTT:** Anmeldung per Discovery, Schalter-Kacheln auf dem Display, `/api/status` als JSON
 - **Handy-Nachrichten** über [ntfy](https://ntfy.sh), Nachtmodus nach Sonnenstand, Ruhezeit ohne Warnungen
@@ -115,7 +115,7 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 - **Weather, health and home in one place:** current weather, 4-hour forecast, 7-day forecast, 24-hour curve with rain bars, UV, sun and moon, plus pollen, Biowetter and air quality
 - **DWD warnings** with warning map and precipitation radar
-- **Two locations:** a second place switchable by a tap on the main screen, for example home and holiday home
+- **Two locations (P4 only):** a second place switchable by a tap on the main screen, for example home and holiday home
 - **Own sensors and ventilation traffic light:** sensors via MQTT/ESPHome or inside the case, limits with alarm, dew point and mold hint
 - **Home Assistant and MQTT:** sign-up by discovery, switch tiles on the display, `/api/status` as JSON
 - **Phone messages** via [ntfy](https://ntfy.sh), night mode by position of the sun, quiet hours without warnings

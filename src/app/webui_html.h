@@ -247,9 +247,9 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
   <select name="dwd_region">%DWD_REGIONEN%</select>
 </div>
 
-<div class="card">
+<!--ST2--><div class="card">
   <h2>Zweiter Standort</h2>
-  <p class="hint">Optional, zum Beispiel Wohnort und Ferienhaus. Auf dem Hauptscreen schaltest du mit einem Tipp auf den Ortsnamen oben links zwischen beiden um. Wetter, 7-Tage-Vorschau, Pollen, Warnungen und Biowetter folgen dem gew&auml;hlten Ort. Die Sensoren und der Verlauf bleiben beim ersten Standort. Nach einem Neustart gilt wieder der erste Standort. Feld leeren = zweiten Standort entfernen.</p>
+  <p class="hint">Optional, zum Beispiel Wohnort und Ferienhaus. Auf dem Hauptscreen schaltest du mit einem Tipp auf die Pille oben rechts zwischen beiden um. Wetter, 7-Tage-Vorschau, Pollen, Warnungen und Biowetter folgen dem gew&auml;hlten Ort. Die Sensoren und der Verlauf bleiben beim ersten Standort. Nach einem Neustart gilt wieder der erste Standort. Feld leeren = zweiten Standort entfernen.</p>
   <label>Stadt (ohne Umlaute: Munchen, Koeln)</label>
   <input type="text" name="location2" value="%LOCATION2%" placeholder="leer = kein zweiter Standort">
   <label>DWD Pollenregion</label>
@@ -260,7 +260,7 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
   <button type="button" class="btn btn-blau" onclick="standortWechseln(0)">Standort 1 anzeigen</button>
   <button type="button" class="btn btn-blau" onclick="standortWechseln(1)">Standort 2 anzeigen</button>
 </div>
-
+<!--/ST2-->
 <div class="card">
   <h2>Meine Allergene</h2>
   <p class="hint">Die Pollenwarnung, die Pollen-Ampel und die beiden Pollen auf dem Hauptscreen ber&uuml;cksichtigen nur die gew&auml;hlten Pollen. Hasel, Esche und Roggen kommen aus der DWD-Tagesvorhersage, die &uuml;brigen aus der Stundenvorhersage.</p>
