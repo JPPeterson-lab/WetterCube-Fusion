@@ -61,6 +61,10 @@
 | **[Wiki](https://wiki.wettercube.de/index.php/Fusion/Start)** | Inbetriebnahme, Einstellungen, alle Screens und Funktionen, Sensoren, Home Assistant, Updates, Wiederherstellung, Fehlersuche, Entwicklung |
 | **[Änderungsverlauf](CHANGELOG.md)** | was in welcher Version neu ist |
 
+## 📡 Datenquellen
+
+Wetter, Vorhersage, Pollen, Luftqualität und Ortssuche von [Open-Meteo.com](https://open-meteo.com) (CC BY 4.0; die kostenlose Schnittstelle ist nur für nicht-kommerzielle Nutzung gedacht). Pollen und Luftqualität stammen aus dem Copernicus-Dienst CAMS, die Ortssuche aus GeoNames. Warnungen, Pollenflug, Biowetter und Radar liefert der [Deutsche Wetterdienst](https://opendata.dwd.de) (CC BY 4.0, „Quelle: Deutscher Wetterdienst“). Die Werte werden teils umgerechnet. Einzelheiten und Lizenzen: [CREDITS.md](CREDITS.md).
+
 ## 🙏 Credits und Lizenz
 
 <p align="center">
@@ -137,6 +141,10 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 | **[wettercube.de](https://wettercube.de/en/products/wettercube-fusion/)** | overview, [comparison of the cubes](https://wettercube.de/en/comparison/), [roadmap](https://wettercube.de/en/roadmap/), [build guide](https://wettercube.de/en/build-guide/), [hardware](https://wettercube.de/en/hardware/) |
 | **[Wiki](https://wiki.wettercube.de/index.php/Fusion/Start)** | getting started, settings, all screens and features, sensors, Home Assistant, updates, recovery, troubleshooting, development |
 | **[Changelog](CHANGELOG.en.md)** | what is new in which version |
+
+## 📡 Data sources
+
+Weather, forecast, pollen, air quality and location search from [Open-Meteo.com](https://open-meteo.com) (CC BY 4.0; the free interface is for non-commercial use only). Pollen and air quality come from the Copernicus service CAMS, the location search from GeoNames. Warnings, pollen forecast, bio-weather and radar are provided by the [German Weather Service](https://opendata.dwd.de) (CC BY 4.0, "Quelle: Deutscher Wetterdienst"). Values are partly converted. Details and licences: [CREDITS.md](CREDITS.md).
 
 ## 🙏 Credits and licence
 
