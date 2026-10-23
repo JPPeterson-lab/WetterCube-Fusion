@@ -48,9 +48,25 @@ static const DwdBbox DWD_BBOX[] = {
   {0, 0, 0, 0, 0}
 };
 
+int standortAktiv = 0;
+bool hatStandort2() { return !cfg.location2.isEmpty() && cfg.lat2 != 0.0f; }
+static bool zweiter() { return standortAktiv == 1 && hatStandort2(); }
+const String& stdName()   { return zweiter() ? cfg.location2    : cfg.location; }
+float stdLat()            { return zweiter() ? cfg.lat2         : cfg.lat; }
+float stdLon()            { return zweiter() ? cfg.lon2         : cfg.lon; }
+int stdRegion()           { return zweiter() ? cfg.dwd_region2  : cfg.dwd_region; }
+const String& stdZone()   { return zweiter() ? cfg.bio_zone2    : cfg.bio_zone; }
+void standortWechseln(int nr) {
+  if (nr == 1 && !hatStandort2()) nr = 0;
+  if (nr == standortAktiv) return;
+  standortAktiv = nr;
+  datenNeuLaden = true;          // der Netzwerk-Task holt alles fuer den neuen Ort
+  aktualisiereStandort();
+}
+
 const DwdBbox* getDwdBbox() {
   for (int i = 0; DWD_BBOX[i].id != 0; i++)
-    if (DWD_BBOX[i].id == cfg.dwd_region) return &DWD_BBOX[i];
+    if (DWD_BBOX[i].id == stdRegion()) return &DWD_BBOX[i];
   static const DwdBbox germany = {0, 5.9f, 47.3f, 15.1f, 55.1f};
   return &germany;
 }

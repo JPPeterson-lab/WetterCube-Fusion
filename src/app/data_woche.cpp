@@ -6,12 +6,12 @@
 
 bool fetchWoche() {
   spur("Woche: Abruf");
-  if (WiFi.status() != WL_CONNECTED || cfg.lat == 0.0f) return false;
+  if (WiFi.status() != WL_CONNECTED || stdLat() == 0.0f) return false;
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://api.open-meteo.com/v1/forecast";
-  url += "?latitude="  + String(cfg.lat, 4);
-  url += "&longitude=" + String(cfg.lon, 4);
+  url += "?latitude="  + String(stdLat(), 4);
+  url += "&longitude=" + String(stdLon(), 4);
   url += "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max";
   url += "&timezone=auto&forecast_days=7";
   http.begin(sc, url);

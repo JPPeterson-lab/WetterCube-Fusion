@@ -49,7 +49,7 @@ void fetchBioWetter() {
   }
 
   for (JsonObject z : doc["zone"].as<JsonArray>()) {
-    if (z["id"].as<String>() != cfg.bio_zone) continue;
+    if (z["id"].as<String>() != stdZone()) continue;
     LvLock lock;
     for (int p = 0; p < BIO_PERIODEN; p++) {
       JsonArray eff = z[perioden[p]]["effect"];
@@ -63,9 +63,9 @@ void fetchBioWetter() {
     int n[BIO_PERIODEN] = {};
     for (int q = 0; q < BIO_PERIODEN; q++) for (int k = 0; k < 7; k++) if (bio.wert[q][k]) n[q]++;
     logDiag("[Bio] Zone %s (vorhanden/mit Einfluss): heute vm %d/%d nm %d/%d, morgen vm %d/%d nm %d/%d, uebermorgen vm %d/%d",
-            cfg.bio_zone.c_str(), bio.vorhanden[0], n[0], bio.vorhanden[1], n[1], bio.vorhanden[2], n[2],
+            stdZone().c_str(), bio.vorhanden[0], n[0], bio.vorhanden[1], n[1], bio.vorhanden[2], n[2],
             bio.vorhanden[3], n[3], bio.vorhanden[4], n[4]);
     return;
   }
-  logDiag("[Bio] Zone %s nicht gefunden", cfg.bio_zone.c_str());
+  logDiag("[Bio] Zone %s nicht gefunden", stdZone().c_str());
 }

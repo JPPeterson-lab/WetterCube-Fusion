@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Jan Althaus (JPPeterson-lab)
-// Diagnose: aktuellen Bildschirminhalt als BMP ausliefern (http://wettercube-fusion.local/screenshot.bmp).
+// Bildschirmfoto: aktuellen Bildschirminhalt ausliefern, als PNG (/screenshot.png, Knopf in der Web-Oberflaeche) oder BMP (/screenshot.bmp, Diagnose).
 // Hilfreich, um Layout und Animationen ohne Foto zu pruefen. Mit ?s=main|woche|verlauf|bio|allergen|karte|warnliste|luft|sensoren|menu|pollenwarnung|boot|kachel30|kachel32 auch andere Seiten. Rendert den aktiven Screen einmal in einen PSRAM-Puffer.
 #include "app_state.h"
 #include "lueften.h"
@@ -9,9 +9,11 @@
 #include "../ui/screens.h"
 #include "../ui/colors.h"
 
-void screenshotRegistrieren(WebServer& server) {
-  server.on("/screenshot.bmp", HTTP_GET, [&server]() {
-    int W = 1024, H = 600;
+// Rendert den gewuenschten Screen einmal in einen PSRAM-Puffer (RGB565). Der Puffer ist rund 1,2 MB gross; ist der PSRAM gerade zu
+// zerstueckelt, folgen bis zu drei weitere Versuche. Rueckgabe: Puffer (mit heap_caps_free freigeben) oder nullptr.
+static uint8_t* fotoNehmen(WebServer& server, int& W, int& H) {
+  for (int versuch = 0; versuch < 4; versuch++) {
+    if (versuch) delay(400);
     lv_img_dsc_t dsc;
     uint8_t* puffer = nullptr;
     bool ok = false;
@@ -36,12 +38,79 @@ void screenshotRegistrieren(WebServer& server) {
       if (puffer) ok = lv_snapshot_take_to_buf(scr, LV_IMG_CF_TRUE_COLOR, &dsc, puffer, bedarf) == LV_RES_OK;
       if (designGewechselt) { change_color_theme(altesDesign); aktualisiereUI(); }
     }
-    if (ok) { W = dsc.header.w; H = dsc.header.h; }
-    if (!ok) {
-      if (puffer) heap_caps_free(puffer);
-      server.send(500, "text/plain", "Bildschirmfoto nicht moeglich (zu wenig Speicher?)");
-      return;
+    if (ok) { W = dsc.header.w; H = dsc.header.h; return puffer; }
+    if (puffer) heap_caps_free(puffer);
+  }
+  return nullptr;
+}
+
+static inline void rgb565zu888(uint16_t p, uint8_t* o) {
+  o[0] = ((p >> 11) & 0x1F) * 255 / 31;   // R
+  o[1] = ((p >> 5) & 0x3F) * 255 / 63;    // G
+  o[2] = (p & 0x1F) * 255 / 31;           // B
+}
+
+static uint32_t crc32Teil(uint32_t crc, const uint8_t* d, size_t n) {   // PNG-Pruefsumme, ohne Tabelle (spart RAM, Tempo reicht)
+  for (size_t i = 0; i < n; i++) {
+    crc ^= d[i];
+    for (int k = 0; k < 8; k++) crc = (crc >> 1) ^ (0xEDB88320u & (0u - (crc & 1u)));
+  }
+  return crc;
+}
+
+static void be32(uint8_t* o, uint32_t v) { o[0] = v >> 24; o[1] = v >> 16; o[2] = v >> 8; o[3] = v; }
+
+// PNG ohne Kompression (gespeicherte Deflate-Bloecke, je Bildzeile einer): braucht keinen Zusatzspeicher und wird Zeile fuer Zeile gesendet.
+static void sendePng(WebServer& server, const uint16_t* px, int W, int H) {
+  const uint32_t zeile = 1 + (uint32_t)W * 3;                    // Filterbyte + RGB
+  const uint32_t idat  = 2 + (uint32_t)H * (5 + zeile) + 4;      // zlib-Kopf + Bloecke + Adler32
+  const uint32_t gesamt = 8 + 25 + 12 + idat + 12;
+  server.setContentLength(gesamt);
+  server.sendHeader("Cache-Control", "no-store");
+  server.send(200, "image/png", "");
+  uint8_t kopf[8 + 25 + 8 + 2] = {0x89, 'P', 'N', 'G', 0x0D, 0x0A, 0x1A, 0x0A};
+  be32(kopf + 8, 13); memcpy(kopf + 12, "IHDR", 4);
+  be32(kopf + 16, W); be32(kopf + 20, H); kopf[24] = 8; kopf[25] = 2; kopf[26] = 0; kopf[27] = 0; kopf[28] = 0;   // 8 Bit, RGB
+  be32(kopf + 29, crc32Teil(0xFFFFFFFFu, kopf + 12, 17) ^ 0xFFFFFFFFu);
+  be32(kopf + 33, idat); memcpy(kopf + 37, "IDAT", 4);
+  kopf[41] = 0x78; kopf[42] = 0x01;                              // zlib-Kopf (ohne Kompression)
+  uint32_t crc = crc32Teil(0xFFFFFFFFu, kopf + 37, 4);
+  crc = crc32Teil(crc, kopf + 41, 2);
+  server.sendContent((const char*)kopf, 43);
+  uint8_t* z = (uint8_t*)heap_caps_malloc(5 + zeile + 24, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if (!z) return;
+  uint32_t a = 1, b = 0;                                         // Adler32 ueber die Rohdaten
+  for (int y = 0; y < H; y++) {
+    z[0] = (y == H - 1) ? 1 : 0;                                 // letzter Block: BFINAL
+    z[1] = zeile & 0xFF; z[2] = zeile >> 8; z[3] = ~zeile & 0xFF; z[4] = (~zeile >> 8) & 0xFF;
+    uint8_t* d = z + 5;
+    d[0] = 0;                                                    // Filter "keiner"
+    for (int x = 0; x < W; x++) rgb565zu888(px[y * W + x], d + 1 + x * 3);
+    for (uint32_t i = 0; i < zeile; i++) { a = (a + d[i]) % 65521; b = (b + a) % 65521; }
+    uint32_t n = 5 + zeile;
+    if (y == H - 1) { be32(d + zeile, (b << 16) | a); n += 4; }  // Adler32 haengt am Ende der IDAT-Daten
+    crc = crc32Teil(crc, z, n);
+    if (y == H - 1) {                                            // CRC des IDAT-Blocks und IEND anhaengen
+      be32(z + n, crc ^ 0xFFFFFFFFu); n += 4;
+      be32(z + n, 0); memcpy(z + n + 4, "IEND", 4); be32(z + n + 8, 0xAE426082u); n += 12;
     }
+    server.sendContent((const char*)z, n);
+  }
+  heap_caps_free(z);
+}
+
+void screenshotRegistrieren(WebServer& server) {
+  server.on("/screenshot.png", HTTP_GET, [&server]() {
+    int W = 0, H = 0;
+    uint8_t* puffer = fotoNehmen(server, W, H);
+    if (!puffer) { server.send(500, "text/plain", "Bildschirmfoto nicht moeglich (zu wenig Speicher?)"); return; }
+    sendePng(server, (const uint16_t*)puffer, W, H);
+    heap_caps_free(puffer);
+  });
+  server.on("/screenshot.bmp", HTTP_GET, [&server]() {
+    int W = 0, H = 0;
+    uint8_t* puffer = fotoNehmen(server, W, H);
+    if (!puffer) { server.send(500, "text/plain", "Bildschirmfoto nicht moeglich (zu wenig Speicher?)"); return; }
     const uint32_t zeile = (W * 3 + 3) & ~3u, daten = zeile * H, gesamt = 54 + daten;
     uint8_t kopf[54] = {'B', 'M'};
     auto le32 = [&](int o, uint32_t v) { for (int i = 0; i < 4; i++) kopf[o + i] = (v >> (8 * i)) & 0xFF; };

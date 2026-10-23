@@ -248,6 +248,20 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
 </div>
 
 <div class="card">
+  <h2>Zweiter Standort</h2>
+  <p class="hint">Optional, zum Beispiel Wohnort und Ferienhaus. Auf dem Hauptscreen schaltest du mit einem Tipp auf den Ortsnamen oben links zwischen beiden um. Wetter, 7-Tage-Vorschau, Pollen, Warnungen und Biowetter folgen dem gew&auml;hlten Ort. Die Sensoren und der Verlauf bleiben beim ersten Standort. Nach einem Neustart gilt wieder der erste Standort. Feld leeren = zweiten Standort entfernen.</p>
+  <label>Stadt (ohne Umlaute: Munchen, Koeln)</label>
+  <input type="text" name="location2" value="%LOCATION2%" placeholder="leer = kein zweiter Standort">
+  <label>DWD Pollenregion</label>
+  <select name="dwd_region2">%DWD_REGIONEN2%</select>
+  <label>Biowetter-Zone</label>
+  <select name="bio_zone2">%BIO_ZONE_OPTIONS2%</select>
+  <p class="hint" id="so_status">%STANDORT_STATUS%</p>
+  <button type="button" class="btn btn-blau" onclick="standortWechseln(0)">Standort 1 anzeigen</button>
+  <button type="button" class="btn btn-blau" onclick="standortWechseln(1)">Standort 2 anzeigen</button>
+</div>
+
+<div class="card">
   <h2>Meine Allergene</h2>
   <p class="hint">Die Pollenwarnung, die Pollen-Ampel und die beiden Pollen auf dem Hauptscreen ber&uuml;cksichtigen nur die gew&auml;hlten Pollen. Hasel, Esche und Roggen kommen aus der DWD-Tagesvorhersage, die &uuml;brigen aus der Stundenvorhersage.</p>
   %POL_AUSWAHL%
@@ -478,6 +492,8 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
   <h2>Diagnose</h2>
   <p class="hint">Das Log zeigt Start, WLAN, Datenabrufe und Fehler. Bei Problemen hilft es bei der Suche.</p>
   <a href="/log" target="_blank" class="btn btn-blau">Log ansehen</a>
+  <p class="hint" style="margin-top:14px">Das Bildschirmfoto zeigt, was das Display gerade anzeigt. Es wird als PNG gespeichert (dauert einige Sekunden).</p>
+  <a href="/screenshot.png" download="wettercube-bildschirm.png" class="btn btn-blau">Bildschirmfoto speichern</a>
 </div>
 
 <div class="card">
@@ -487,6 +503,10 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
 </div>
 
 <script>
+function standortWechseln(n){
+  var s=document.getElementById('so_status');
+  fetch('/api/standort?nr='+n,{method:'POST'}).then(function(r){return r.text();}).then(function(t){if(s)s.textContent=t;}).catch(function(){if(s)s.textContent='Fehler beim Umschalten';});
+}
 function wpBestaetigen(){
   var f=document.querySelector('input[name=pw_weg]');
   if(f&&f.checked) return confirm('Passwort entfernen? Dann kann jeder im Heimnetz die Einstellungen aendern.');

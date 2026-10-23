@@ -71,10 +71,10 @@ void aktualisiereWarnkarte() {
   if (lblWarnkarteHint) lv_obj_add_flag(lblWarnkarteHint, LV_OBJ_FLAG_HIDDEN);
 
   // Standort-Marker: Lage innerhalb des Kartenausschnitts
-  if (radarMarker && cfg.lat != 0.0f) {
+  if (radarMarker && stdLat() != 0.0f) {
     const DwdBbox* bb = getDwdBbox();
-    float fx = (cfg.lon - bb->minLon) / (bb->maxLon - bb->minLon);
-    float fy = 1.0f - (cfg.lat - bb->minLat) / (bb->maxLat - bb->minLat);
+    float fx = (stdLon() - bb->minLon) / (bb->maxLon - bb->minLon);
+    float fy = 1.0f - (stdLat() - bb->minLat) / (bb->maxLat - bb->minLat);
     int x0 = (SCREEN_W - warnkarteW) / 2;
     lv_obj_set_pos(radarMarker, x0 + (int)(fx * warnkarteW) - 8, KARTE_Y + (int)(fy * warnkarteH) - 8);
     lv_obj_clear_flag(radarMarker, LV_OBJ_FLAG_HIDDEN);

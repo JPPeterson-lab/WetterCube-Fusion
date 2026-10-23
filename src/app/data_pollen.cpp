@@ -46,7 +46,7 @@ void fetchDwdPollen() {
   }
 
   for (JsonObject region : doc["content"].as<JsonArray>()) {
-    if (region["region_id"].as<int>() != cfg.dwd_region) continue;
+    if (region["region_id"].as<int>() != stdRegion()) continue;
     JsonObject p = region["Pollen"];
     LvLock lock;
     #define DWD(name, key) \
@@ -59,18 +59,18 @@ void fetchDwdPollen() {
     abrufOk(AB_DWD_POLLEN);
     return;
   }
-  logDiag("[Pollen] DWD-Region %d nicht gefunden", cfg.dwd_region);
+  logDiag("[Pollen] DWD-Region %d nicht gefunden", stdRegion());
 }
 
 // ── Open-Meteo: Pollen stündlich + Luftqualität ──────────────────────────────
 void fetchOpenMeteoPollen() {
   spur("Pollen/Luft: Abruf");
-  if (WiFi.status() != WL_CONNECTED || cfg.lat == 0.0f) return;
+  if (WiFi.status() != WL_CONNECTED || stdLat() == 0.0f) return;
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://air-quality-api.open-meteo.com/v1/air-quality";
-  url += "?latitude="  + String(cfg.lat, 4);
-  url += "&longitude=" + String(cfg.lon, 4);
+  url += "?latitude="  + String(stdLat(), 4);
+  url += "&longitude=" + String(stdLon(), 4);
   url += "&hourly=birch_pollen,grass_pollen,alder_pollen,mugwort_pollen,ragweed_pollen";
   url += ",european_aqi,pm2_5,pm10,nitrogen_dioxide,ozone";
   url += ",sulphur_dioxide,carbon_monoxide,dust";

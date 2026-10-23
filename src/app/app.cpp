@@ -70,6 +70,10 @@ static void alleDatenLaden(bool mitBoot) {
     schritt(("Ermittle Standort " + cfg.location + " ...").c_str(), 60);
     if (geocodeLocation(cfg.location)) speichereCfg();
   }
+  if (cfg.lat2 == 0.0f && !cfg.location2.isEmpty()) {   // zweiter Standort: Koordinaten nachholen
+    if (geocodeOrt(cfg.location2, cfg.lat2, cfg.lon2)) speichereCfg();
+    else logDiag("[Geo] Zweiter Standort '%s' nicht gefunden", cfg.location2.c_str());
+  }
   schritt("Lade Wetterdaten ...", 68);   fetchWetter(); fetchWoche();
   schritt("Lade Pollenflug ...", 76);    fetchDwdPollen(); fetchOpenMeteoPollen();
   schritt("Lade Warnungen ...", 84);     fetchDwdWarnungen();
@@ -173,6 +177,9 @@ static void netTask(void*) {
     if (datenNeuLaden) {
       datenNeuLaden = false;
       alleDatenLaden(false);
+      fetchKlima();
+      aktualisiereHinweise();
+      aktualisiereStandort();
       aktualisiereUI();
       aktualisiereDwdWarnBtn();
       aktualisiereWarnliste();

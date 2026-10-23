@@ -238,6 +238,8 @@ static String htmlEsc(const String& t) {
 }
 
 static String updateInfoText();
+static String standortStatusText();
+
 static void handleWebRoot() {
   if (server.hostHeader().startsWith("wettercube-next")) { server.sendHeader("Location", "/next"); server.send(302); return; }   // Name der Next-Verwaltung
   String html = FPSTR(WEBUI_HTML);
@@ -255,6 +257,10 @@ static void handleWebRoot() {
   html.replace("%IP%",           WiFi.localIP().toString());
   html.replace("%LOCATION%",     cfg.location);
   html.replace("%DWD_REGIONEN%", baueDwdRegionenOptions(cfg.dwd_region));
+  html.replace("%LOCATION2%",    cfg.location2);
+  html.replace("%DWD_REGIONEN2%", baueDwdRegionenOptions(cfg.dwd_region2));
+  html.replace("%BIO_ZONE_OPTIONS2%", baueBioZoneOptions(cfg.bio_zone2));
+  { String st = standortStatusText(); st.replace("&", "&amp;"); st.replace("<", "&lt;"); html.replace("%STANDORT_STATUS%", st); }
   html.replace("%PW%",           cfg.pollen_warn ? "checked" : "");
   html.replace("%WR%",           cfg.warn_region ? "checked" : "");
   html.replace("%HR%",           cfg.hinweis_regen ? "checked" : "");
@@ -372,10 +378,22 @@ static void handleWebRoot() {
   server.send(200, "text/html", html);
 }
 
+static String standortStatusText() {
+  String t = "Angezeigt wird: " + (stdName().length() ? stdName() : String("-")) + (standortAktiv == 1 && hatStandort2() ? " (Standort 2)" : " (Standort 1)");
+  if (!cfg.location2.isEmpty() && cfg.lat2 == 0.0f) t += ". Der zweite Ort wird beim nächsten Datenabruf gesucht.";
+  return t;
+}
+
 static void handleWebSave() {
   String prevLocation = cfg.location;
   int prevRegion = cfg.dwd_region;
   String prevZone = cfg.bio_zone;
+  String prevLocation2 = cfg.location2;
+  int prevRegion2 = cfg.dwd_region2;
+  String prevZone2 = cfg.bio_zone2;
+  if (server.hasArg("location2"))    { cfg.location2 = server.arg("location2"); cfg.location2.trim(); }
+  if (server.hasArg("dwd_region2"))  cfg.dwd_region2     = server.arg("dwd_region2").toInt();
+  if (server.hasArg("bio_zone2"))    cfg.bio_zone2       = server.arg("bio_zone2");
   if (server.hasArg("location"))     cfg.location        = server.arg("location");
   if (server.hasArg("dwd_region"))   cfg.dwd_region      = server.arg("dwd_region").toInt();
   cfg.pollen_warn = server.hasArg("pollen_warn");
@@ -426,11 +444,18 @@ static void handleWebSave() {
     cfg.lat = 0.0f; cfg.lon = 0.0f;
     logDiag("[Config] Standort geaendert: '%s' -> '%s'", prevLocation.c_str(), cfg.location.c_str());
   }
+  if (cfg.location2 != prevLocation2) {
+    cfg.lat2 = 0.0f; cfg.lon2 = 0.0f;   // Geocoding im Netzwerk-Task
+    if (cfg.location2.isEmpty() && standortAktiv == 1) standortAktiv = 0;
+  }
   speichereCfg();
   logDiag("[Config] gespeichert");
   setBrightness(cfg.brightness);
   // Neuer Ort, Region oder Biowetter-Zone → Daten sofort neu abrufen (macht der Netzwerk-Task)
   if (cfg.location != prevLocation || cfg.dwd_region != prevRegion || cfg.bio_zone != prevZone) datenNeuLaden = true;
+  if (standortAktiv == 1 && (cfg.location2 != prevLocation2 || cfg.dwd_region2 != prevRegion2 || cfg.bio_zone2 != prevZone2)) datenNeuLaden = true;
+  if (cfg.location2 != prevLocation2) datenNeuLaden = true;   // neuen zweiten Ort aufloesen
+  aktualisiereStandort();
   aktualisiereUI();
   server.sendHeader("Location", "/"); server.send(302);
 }
@@ -448,6 +473,11 @@ String webuiSicherungJson() {   // Einstellungen als JSON (ohne WLAN- und MQTT-P
   doc["lat"]              = cfg.lat;
   doc["lon"]              = cfg.lon;
   doc["dwd_region"]       = cfg.dwd_region;
+  doc["location2"]        = cfg.location2;
+  doc["lat2"]             = cfg.lat2;
+  doc["lon2"]             = cfg.lon2;
+  doc["dwd_region2"]      = cfg.dwd_region2;
+  doc["bio_zone2"]        = cfg.bio_zone2;
   doc["pollen_warn"]      = cfg.pollen_warn;
   doc["pollen_schwelle"]  = cfg.pollen_schwelle;
   doc["pollen_auswahl"]   = cfg.pollen_auswahl;
@@ -528,6 +558,7 @@ static int wendeSicherungAn(const String& body) {
   #define RS_INT(key, feld, lo, hi)  if (!doc[key].isNull()) { cfg.feld = rsKlemme(doc[key].as<int>(), lo, hi); n++; }
   #define RS_BOOL(key, feld)         if (!doc[key].isNull()) { cfg.feld = doc[key].as<bool>(); n++; }
   RS_INT ("dwd_region",       dwd_region,       0, 255);
+  RS_INT ("dwd_region2",      dwd_region2,      0, 255);
   RS_BOOL("pollen_warn",      pollen_warn);
   RS_INT ("pollen_schwelle",  pollen_schwelle,  0, 3);
   RS_INT ("pollen_auswahl",   pollen_auswahl,   0, 255);
@@ -588,6 +619,18 @@ static int wendeSicherungAn(const String& body) {
   #undef RS_BOOL
   String zone = String((const char*)(doc["bio_zone"] | ""));
   if (zone.length() == 1 && zone[0] >= 'A' && zone[0] <= 'K') { cfg.bio_zone = zone; n++; }
+  String zone2 = String((const char*)(doc["bio_zone2"] | ""));
+  if (zone2.length() == 1 && zone2[0] >= 'A' && zone2[0] <= 'K') { cfg.bio_zone2 = zone2; n++; }
+  if (doc["location2"].is<const char*>()) {
+    String ort2 = String((const char*)doc["location2"]);
+    if (ort2.length() <= 60) {
+      cfg.location2 = ort2; n++;
+      float la = doc["lat2"] | 0.0f, lo = doc["lon2"] | 0.0f;
+      bool koordOk = !ort2.isEmpty() && (la != 0.0f || lo != 0.0f) && la >= -90.0f && la <= 90.0f && lo >= -180.0f && lo <= 180.0f;
+      cfg.lat2 = koordOk ? la : 0.0f;
+      cfg.lon2 = koordOk ? lo : 0.0f;
+    }
+  }
   String ort = String((const char*)(doc["location"] | ""));
   if (ort.length() > 0 && ort.length() <= 60) {
     cfg.location = ort; n++;
@@ -899,6 +942,11 @@ void starteWebUI() {
   });
   server.on("/api/ntfy_test",  HTTP_POST, []() { ntfyTest(); server.send(200, "text/plain", "ok"); });
   server.on("/api/ntfy_status", HTTP_GET, []() { server.send(200, "text/plain; charset=utf-8", ntfyStatusText()); });
+  server.on("/api/standort",   HTTP_POST, []() {   // ?nr=0|1: zwischen Standort 1 und 2 umschalten (wie der Tipp auf den Ortsnamen am Display)
+    if (!hatStandort2() && server.arg("nr").toInt() == 1) { server.send(200, "text/plain; charset=utf-8", "Es ist noch kein zweiter Standort eingerichtet (erst speichern)."); return; }
+    standortWechseln(server.arg("nr").toInt() == 1 ? 1 : 0);
+    server.send(200, "text/plain; charset=utf-8", standortStatusText());
+  });
   server.on("/backup",         HTTP_GET,  handleWebBackup);
   server.on("/restore",        HTTP_POST, handleWebRestore);
   server.on("/restore_karte",  HTTP_POST, handleWebRestoreKarte);

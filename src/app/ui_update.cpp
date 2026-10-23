@@ -489,6 +489,7 @@ void aktualisiereUI() {
   aktualisiereHinweise();
   aktualisiereVerlauf();
   aktualisiereWoche();
+  aktualisiereStandort();
   struct tm ti;
   bool hasTime = getLocalTime(&ti, 0);
   char buf[32];

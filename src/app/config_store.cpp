@@ -14,6 +14,11 @@ void ladeCfg() {
   cfg.lat              = prefs.getFloat ("lat",         0.0f);
   cfg.lon              = prefs.getFloat ("lon",         0.0f);
   cfg.dwd_region       = prefs.getInt   ("dwd_region",  31);
+  cfg.location2        = prefs.getString("location2",   "");
+  cfg.lat2             = prefs.getFloat ("lat2",        0.0f);
+  cfg.lon2             = prefs.getFloat ("lon2",        0.0f);
+  cfg.dwd_region2      = prefs.getInt   ("dwd_region2", 31);
+  cfg.bio_zone2        = prefs.getString("bio_zone2",   "A");
   cfg.pollen_warn      = prefs.getBool  ("pollen_warn", true);
   cfg.pollen_schwelle  = prefs.getInt   ("pol_schw",    2);
   cfg.pollen_auswahl   = prefs.getInt   ("pol_ausw",    0xFF);
@@ -84,6 +89,11 @@ void speichereCfg() {
   prefs.putFloat ("lat",         cfg.lat);
   prefs.putFloat ("lon",         cfg.lon);
   prefs.putInt   ("dwd_region",  cfg.dwd_region);
+  prefs.putString("location2",   cfg.location2);
+  prefs.putFloat ("lat2",        cfg.lat2);
+  prefs.putFloat ("lon2",        cfg.lon2);
+  prefs.putInt   ("dwd_region2", cfg.dwd_region2);
+  prefs.putString("bio_zone2",   cfg.bio_zone2);
   prefs.putBool  ("pollen_warn", cfg.pollen_warn);
   prefs.putInt   ("pol_schw",    cfg.pollen_schwelle);
   prefs.putInt   ("pol_ausw",    cfg.pollen_auswahl);
@@ -157,7 +167,9 @@ static String urlKodieren(const String& s) {
   return out;
 }
 
-bool geocodeLocation(const String& city) {
+bool geocodeLocation(const String& city) { return geocodeOrt(city, cfg.lat, cfg.lon); }
+
+bool geocodeOrt(const String& city, float& lat, float& lon) {
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://geocoding-api.open-meteo.com/v1/search?name=" + urlKodieren(city) +
@@ -176,9 +188,9 @@ bool geocodeLocation(const String& city) {
     } else if (doc["results"].size() == 0) {
       logDiag("[Geo] Fehlgeschlagen fuer '%s': kein Treffer", city.c_str());
     } else {
-      cfg.lat = doc["results"][0]["latitude"].as<float>();
-      cfg.lon = doc["results"][0]["longitude"].as<float>();
-      logDiag("[Geo] Gefunden: %.4f, %.4f", cfg.lat, cfg.lon);
+      lat = doc["results"][0]["latitude"].as<float>();
+      lon = doc["results"][0]["longitude"].as<float>();
+      logDiag("[Geo] Gefunden: %.4f, %.4f", lat, lon);
       ok = true;
     }
   }

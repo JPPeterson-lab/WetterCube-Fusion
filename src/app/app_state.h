@@ -27,6 +27,12 @@ struct Config {
   float  lat = 0.0f;
   float  lon = 0.0f;
   int    dwd_region = 31;       // 31 = Brandenburg/Berlin; Liste siehe app_state.cpp
+  // Zweiter Standort (leer = nicht eingerichtet); per Tipp auf den Ortsnamen im Hauptscreen umschaltbar
+  String location2;
+  float  lat2 = 0.0f;
+  float  lon2 = 0.0f;
+  int    dwd_region2 = 31;
+  String bio_zone2 = "A";
   bool   pollen_warn = true;
   int    pollen_schwelle = 2;   // 0=gering 1=mittel 2=hoch 3=stark
   int    pollen_auswahl = 0xFF; // „Meine Allergene“: Bit i = POLLEN_ANZEIGE[i] (Standard: alle)
@@ -259,6 +265,20 @@ inline void logHttpFehler(const char* tag, int code, WiFiClientSecure& sc) {
 void ladeCfg();
 void speichereCfg();
 bool geocodeLocation(const String& city);
+bool geocodeOrt(const String& city, float& lat, float& lon);   // Koordinaten zu einem Ortsnamen (Open-Meteo-Geocoding)
+
+// Aktiver Standort: 0 = Standort 1 (Einstellungen), 1 = Standort 2. Gilt nur zur Laufzeit; nach einem Neustart ist wieder Standort 1 aktiv.
+// Wetter, 7 Tage, Pollen, Warnungen, Biowetter und Klima folgen dem aktiven Standort; Sensorverlauf und Aussenwerte der Historie bleiben beim Standort 1.
+extern int standortAktiv;
+bool hatStandort2();
+const String& stdName();
+float stdLat();
+float stdLon();
+int stdRegion();
+const String& stdZone();
+void standortWechseln(int nr);
+void uiStandortInit();
+void aktualisiereStandort();
 
 // ── Daten abrufen (blockierend, nur aus dem Netzwerk-Task aufrufen) ──────────
 bool fetchWetter();                           // true = erfolgreich

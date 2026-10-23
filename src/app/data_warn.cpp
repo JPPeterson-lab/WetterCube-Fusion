@@ -92,7 +92,7 @@ void fetchDwdWarnungen() {
   for (int i = 0; i < 5; i++) warnungen[i] = neu[i];
   anzahl_warnungen = count;
   abrufOk(AB_WARNUNGEN);
-  logDiag("[DWD-Warn] %d Warnung(en) fuer Region %d", count, cfg.dwd_region);
+  logDiag("[DWD-Warn] %d Warnung(en) fuer Region %d", count, stdRegion());
 }
 
 // ── Warnkarte ────────────────────────────────────────────────────────────────

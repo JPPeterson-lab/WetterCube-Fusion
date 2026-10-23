@@ -7,12 +7,12 @@
 
 bool fetchKlima() {
   spur("Klima: Abruf");
-  if (WiFi.status() != WL_CONNECTED || cfg.lat == 0.0f) return false;
+  if (WiFi.status() != WL_CONNECTED || stdLat() == 0.0f) return false;
   WiFiClientSecure sc;
   HTTPClient http;
   String url = "https://api.open-meteo.com/v1/forecast";
-  url += "?latitude="  + String(cfg.lat, 4);
-  url += "&longitude=" + String(cfg.lon, 4);
+  url += "?latitude="  + String(stdLat(), 4);
+  url += "&longitude=" + String(stdLon(), 4);
   url += "&hourly=surface_pressure&daily=precipitation_sum,temperature_2m_max";
   url += "&past_days=3&forecast_days=2&timezone=auto";   // Stundenwerte ab 00:00 vor drei Tagen: "jetzt" liegt bei Index 72 + Stunde
   http.begin(sc, url);
