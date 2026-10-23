@@ -130,6 +130,7 @@ void uiWocheInit() {
   lv_obj_clear_flag(s_tage, LV_OBJ_FLAG_SCROLLABLE);
   if (objects.labelwochetitel) {
     lv_obj_set_style_text_font(objects.labelwochetitel, &font_montserrat_32, 0);
+    lv_obj_set_style_text_color(objects.labelwochetitel, lv_color_black(), 0);   // Rahmen ist in beiden Themen weiss
     lv_obj_set_width(objects.labelwochetitel, 700);
     lv_label_set_long_mode(objects.labelwochetitel, LV_LABEL_LONG_CLIP);
     lv_label_set_text(objects.labelwochetitel, "7-Tage-Vorschau");
