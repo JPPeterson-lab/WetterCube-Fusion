@@ -57,7 +57,7 @@
 
 | Wo | Was |
 |---|---|
-| **[wettercube.de](https://wettercube.de/produkte/wettercube-fusion/)** | Überblick, [Vergleich der Cubes](https://wettercube.de/vergleich/), [Roadmap](https://wettercube.de/roadmap/), [Bauanleitung](https://wettercube.de/bauanleitung/), [Hardware](https://wettercube.de/hardware/) |
+| **[wettercube.de](https://wettercube.de/projekte/wettercube-fusion/)** | Überblick, [Vergleich der Cubes](https://wettercube.de/vergleich/), [Roadmap](https://wettercube.de/roadmap/), [Bauanleitung](https://wettercube.de/bauanleitung/), [Hardware](https://wettercube.de/hardware/) |
 | **[Wiki](https://wiki.wettercube.de/index.php/Fusion/Start)** | Inbetriebnahme, Einstellungen, alle Screens und Funktionen, Sensoren, Home Assistant, Updates, Wiederherstellung, Fehlersuche, Entwicklung |
 | **[Änderungsverlauf](CHANGELOG.md)** | was in welcher Version neu ist |
 
