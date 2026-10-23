@@ -88,8 +88,6 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 > **Versprechen:** Die private Nutzung von WetterCubePlus, Fusion und Next bleibt auch in Zukunft frei.
 
-**Mitmachen:** Pull Requests sind willkommen und werden unter der Apache-Lizenz 2.0 aufgenommen (Abschnitt 5). Fehler und Wünsche gern als [Issue](https://github.com/JPPeterson-lab/WetterCube-Fusion/issues), am besten mit dem Text von `/log` (Web-Oberfläche → Log).
-
 ---
 
 <a id="english"></a>
@@ -169,4 +167,3 @@ You may use, modify and share the source code, also commercially; the software i
 
 > **Promise:** Private use of WetterCubePlus, Fusion and Next stays free in the future.
 
-**Contributing:** Pull requests are welcome and are accepted under the Apache License 2.0 (section 5). Bugs and wishes as an [issue](https://github.com/JPPeterson-lab/WetterCube-Fusion/issues), ideally with the text of `/log` (web interface → Log).
