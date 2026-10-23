@@ -1,6 +1,6 @@
 {
   "name": "WetterCube Fusion",
-  "version": "0.9.9-beta8",
+  "version": "0.9.9-beta9",
   "home_assistant_domain": "esphome",
   "funding_url": "https://github.com/JPPeterson-lab/WetterCube-Fusion",
   "new_install_prompt_erase": true,

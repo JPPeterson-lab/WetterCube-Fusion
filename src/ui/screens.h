@@ -10,6 +10,7 @@ extern "C" {
 
 typedef struct _objects_t {
     lv_obj_t *screennachtuhr;
+    lv_obj_t *screenwoche;
     lv_obj_t *screenverlauf;
     lv_obj_t *screensensoren;
     lv_obj_t *screenbiowetter;
@@ -339,6 +340,11 @@ typedef struct _objects_t {
     lv_obj_t *buttonverlaufzurueck;
     lv_obj_t *buttonverlaufhome;
     lv_obj_t *buttonverlaufweiter;
+    lv_obj_t *containerwoche;
+    lv_obj_t *labelwochetitel;
+    lv_obj_t *buttonwochezurueck;
+    lv_obj_t *buttonwochehome;
+    lv_obj_t *buttonwocheweiter;
     lv_obj_t *labelnachtzeit;
     lv_obj_t *labelnachtdatum;
     lv_obj_t *imagenachtwetter;
@@ -368,30 +374,37 @@ typedef struct _objects_t {
     lv_obj_t *buttonverlaufzurueck_label;
     lv_obj_t *buttonverlaufhome_label;
     lv_obj_t *buttonverlaufweiter_label;
+    lv_obj_t *buttonwochezurueck_label;
+    lv_obj_t *buttonwochehome_label;
+    lv_obj_t *buttonwocheweiter_label;
 } objects_t;
 
 extern objects_t objects;
 
 enum ScreensEnum {
     SCREEN_ID_SCREENNACHTUHR = 1,
-    SCREEN_ID_SCREENVERLAUF = 2,
-    SCREEN_ID_SCREENSENSOREN = 3,
-    SCREEN_ID_SCREENBIOWETTER = 4,
-    SCREEN_ID_SCREENALLERGEN = 5,
-    SCREEN_ID_SCREENAIRQUALITY = 6,
-    SCREEN_ID_SCREENMENU = 7,
-    SCREEN_ID_LAGERSCREEN = 8,
-    SCREEN_ID_SCREENWARNKARTE2 = 9,
-    SCREEN_ID_SCREENWARNKARTE1 = 10,
-    SCREEN_ID_SCREENWARNUNGLUEFTEN = 11,
-    SCREEN_ID_SCREENWARNUNGPOLLEN = 12,
-    SCREEN_ID_SCREEN_1 = 13,
-    SCREEN_ID_SCREENBOOT = 14,
+    SCREEN_ID_SCREENWOCHE = 2,
+    SCREEN_ID_SCREENVERLAUF = 3,
+    SCREEN_ID_SCREENSENSOREN = 4,
+    SCREEN_ID_SCREENBIOWETTER = 5,
+    SCREEN_ID_SCREENALLERGEN = 6,
+    SCREEN_ID_SCREENAIRQUALITY = 7,
+    SCREEN_ID_SCREENMENU = 8,
+    SCREEN_ID_LAGERSCREEN = 9,
+    SCREEN_ID_SCREENWARNKARTE2 = 10,
+    SCREEN_ID_SCREENWARNKARTE1 = 11,
+    SCREEN_ID_SCREENWARNUNGLUEFTEN = 12,
+    SCREEN_ID_SCREENWARNUNGPOLLEN = 13,
+    SCREEN_ID_SCREEN_1 = 14,
+    SCREEN_ID_SCREENBOOT = 15,
 };
 
 void create_screen_screennachtuhr();
 void tick_screen_screennachtuhr();
 void delete_screen_screennachtuhr();
+void create_screen_screenwoche();
+void tick_screen_screenwoche();
+void delete_screen_screenwoche();
 void create_screen_screenverlauf();
 void tick_screen_screenverlauf();
 void delete_screen_screenverlauf();

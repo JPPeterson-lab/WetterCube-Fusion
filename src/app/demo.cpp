@@ -6,8 +6,28 @@
 #include "lueften.h"
 #include <time.h>
 
+// Beispieldaten der 7-Tage-Vorschau (Datum ab heute)
+static void demoWoche() {
+  static const int   wmo[7]  = {3, 61, 80, 2, 1, 0, 45};
+  static const float hoch[7] = {13, 11, 12, 15, 17, 19, 8};
+  static const float tief[7] = {8, 7, 6, 5, 7, 9, 3};
+  static const float mm[7]   = {0.2f, 5.4f, 2.1f, 0, 0, 0, 0};
+  static const int   p[7]    = {20, 90, 70, 10, 0, 0, 5};
+  static const float wind[7] = {16, 28, 22, 12, 9, 8, 14};
+  time_t jetzt = time(nullptr);
+  for (int i = 0; i < 7; i++) {
+    time_t t = jetzt + (time_t)i * 86400;
+    struct tm tm; localtime_r(&t, &tm);
+    strftime(woche.tag[i].datum, sizeof(woche.tag[i].datum), "%Y-%m-%d", &tm);
+    woche.tag[i].wmo = wmo[i]; woche.tag[i].tmax = hoch[i]; woche.tag[i].tmin = tief[i];
+    woche.tag[i].regen_mm = mm[i]; woche.tag[i].regen_p = p[i]; woche.tag[i].wind_max = wind[i];
+  }
+  woche.n = 7; woche.geladen = true;
+}
+
 void demoDatenSetzen(int variante) {
   LvLock lock;
+  demoWoche();
   // Pollen: DWD-Stufen 0–3 (heute, morgen, übermorgen) und Open-Meteo-Körner/m³ (nächste Stunden)
   pollen.dwd_hasel = 0.5f;   pollen.dwd_hasel_tmr = 0.5f;   pollen.dwd_hasel_da = 0;
   pollen.dwd_erle = 1.0f;    pollen.dwd_erle_tmr = 1.5f;    pollen.dwd_erle_da = 1.0f;

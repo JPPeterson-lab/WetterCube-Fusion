@@ -131,6 +131,22 @@ struct WetterDaten {
   int    vl_h0        = 0;      // Stunde (0-23) des ersten Punkts
 };
 
+// 7-Tage-Vorschau (Open-Meteo daily, eigene kleine Abfrage alle 60 Minuten, siehe data_woche.cpp)
+struct WocheTag {
+  char  datum[11] = "";        // JJJJ-MM-TT
+  int   wmo = 0;
+  float tmax = 0, tmin = 0;
+  float regen_mm = 0;          // Niederschlagssumme des Tages
+  int   regen_p = -1;          // hoechste Regenwahrscheinlichkeit in Prozent (-1 = unbekannt)
+  float wind_max = 0;          // hoechste Windgeschwindigkeit in km/h
+};
+struct WocheDaten {
+  static const int N = 7;
+  WocheTag tag[N];
+  int  n = 0;                  // Anzahl gueltiger Tage
+  bool geladen = false;
+};
+
 struct PollenDaten {
   // Open-Meteo (Körner/m³), nächste Stunde
   float birke = -1, graeser = -1, erle = -1, beifuss = -1, ambrosia = -1;
@@ -188,6 +204,7 @@ struct BioWetterDaten {
 
 extern WetterDaten    wetter;
 extern PollenDaten    pollen;
+extern WocheDaten      woche;
 extern KlimaDaten     klima;
 extern BioWetterDaten bio;
 extern WarnDaten      warnungen[5];
@@ -246,6 +263,7 @@ bool geocodeLocation(const String& city);
 // ── Daten abrufen (blockierend, nur aus dem Netzwerk-Task aufrufen) ──────────
 bool fetchWetter();                           // true = erfolgreich
 bool fetchKlima();                            // Luftdruck-Trend, Regen der letzten Tage
+bool fetchWoche();                            // 7-Tage-Vorschau (data_woche.cpp)
 void fetchDwdPollen();
 void fetchOpenMeteoPollen();
 void fetchBioWetter();
@@ -318,6 +336,8 @@ void uiVerlaufInit();                     // Temperaturverlauf: Diagramme einric
 void uiLuftInit();                        // Luftqualitaet: Verlauf, weitere Werte und Tipp (ui_luft.cpp)
 void uiLuftErzwingen();                   // jetzt neu aufbauen (Screenshot), Aufrufer haelt den LVGL-Lock
 void aktualisiereVerlauf();               // Temperaturverlauf mit den aktuellen Wetterdaten füllen
+void uiWocheInit();                       // 7-Tage-Vorschau: Seite einrichten (ui_woche.cpp)
+void aktualisiereWoche();                 // 7-Tage-Vorschau neu aufbauen, Aufrufer haelt den LVGL-Lock
 class WebServer;
 void screenshotRegistrieren(WebServer& server);   // screenshot.cpp: /screenshot.bmp (Diagnose)
 void uiBoot(const char* text, int pct);   // Bootscreen-Status (nimmt den LVGL-Lock selbst)

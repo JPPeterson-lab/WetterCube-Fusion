@@ -29,7 +29,6 @@ extern const lv_img_dsc_t barometer;
 extern const lv_img_dsc_t fc_left_60;
 extern const lv_img_dsc_t pollen_img;
 extern const lv_img_dsc_t night_full_moon_snow;
-extern const lv_img_dsc_t day_clear;
 extern const lv_img_dsc_t sunrise;
 extern const lv_img_dsc_t fc_right_60;
 extern const lv_img_dsc_t night_full_moon_rain;
@@ -39,6 +38,7 @@ extern const lv_img_dsc_t fc_right_up2_38;
 extern const lv_img_dsc_t fc_left_down2_38;
 extern const lv_img_dsc_t wind;
 extern const lv_img_dsc_t pico_dark_logo_132;
+extern const lv_img_dsc_t day_clear;
 extern const lv_img_dsc_t day_rain;
 extern const lv_img_dsc_t day_snow;
 extern const lv_img_dsc_t fog;
@@ -50,7 +50,7 @@ extern const lv_img_dsc_t rain_thunder;
 extern const lv_img_dsc_t sleet;
 extern const lv_img_dsc_t snow;
 extern const lv_img_dsc_t thunder;
-extern const ext_img_desc_t images[22];
+extern const ext_img_desc_t images[21];
 
 
 #ifdef __cplusplus

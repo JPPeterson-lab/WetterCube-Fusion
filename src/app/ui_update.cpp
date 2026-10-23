@@ -488,6 +488,7 @@ void aktualisiereUI() {
   allergenEinrichten();
   aktualisiereHinweise();
   aktualisiereVerlauf();
+  aktualisiereWoche();
   struct tm ti;
   bool hasTime = getLocalTime(&ti, 0);
   char buf[32];

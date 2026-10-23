@@ -66,6 +66,120 @@ void tick_screen_screennachtuhr() {
 }
 
 
+void create_screen_screenwoche() {
+    lv_obj_t *obj = lv_obj_create(0);
+    objects.screenwoche = obj;
+    lv_obj_set_pos(obj, 0, 0);
+    lv_obj_set_size(obj, 1024, 600);
+        lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    {
+        lv_obj_t *parent_obj = obj;
+        {
+            // containerwoche
+            lv_obj_t *obj = lv_obj_create(parent_obj);
+            objects.containerwoche = obj;
+            lv_obj_set_pos(obj, 14, 14);
+            lv_obj_set_size(obj, 996, 520);
+            lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+            lv_obj_set_style_pad_all(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_BACKGR_CONT]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_color(obj, lv_color_hex(common_94a3b8), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_width(obj, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_BACKGR_CONT] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // labelwochetitel
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.labelwochetitel = obj;
+                    lv_obj_set_pos(obj, 73, 17);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_label_set_text(obj, "7-Tage-Vorschau");
+                }
+            }
+        }
+        {
+            // buttonwochezurueck
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttonwochezurueck = obj;
+            lv_obj_set_pos(obj, 13, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_left_60, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttonwochezurueck_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttonwochezurueck_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+        {
+            // buttonwochehome
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttonwochehome = obj;
+            lv_obj_set_pos(obj, 465, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_home, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttonwochehome_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttonwochehome_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+        {
+            // buttonwocheweiter
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttonwocheweiter = obj;
+            lv_obj_set_pos(obj, 911, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_right_60, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttonwocheweiter_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttonwocheweiter_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+    }
+
+    tick_screen_screenwoche();
+}
+
+void tick_screen_screenwoche() {
+}
+
+
 void create_screen_screenverlauf() {
     lv_obj_t *obj = lv_obj_create(0);
     objects.screenverlauf = obj;
@@ -3708,7 +3822,7 @@ void create_screen_screen_1() {
                     objects.imagewetter = obj;
                     lv_obj_set_pos(obj, 15, 10);
                     lv_obj_set_size(obj, 128, 128);
-                    lv_img_set_src(obj, &day_clear);
+                    lv_img_set_src(obj, &night_full_moon_snow);
                     lv_img_set_size_mode(obj, LV_IMG_SIZE_MODE_REAL);
                     lv_img_set_antialias(obj, true);
                 }
@@ -4894,6 +5008,7 @@ void tick_screen_screenboot() {
 typedef void (*tick_screen_func_t)();
 tick_screen_func_t tick_screen_funcs[] = {
     tick_screen_screennachtuhr,
+    tick_screen_screenwoche,
     tick_screen_screenverlauf,
     tick_screen_screensensoren,
     tick_screen_screenbiowetter,
@@ -4925,6 +5040,22 @@ void delete_screen_screennachtuhr() {
     objects.labelnachtdatum = 0;
     objects.imagenachtwetter = 0;
     objects.labelnachttemp = 0;
+}
+
+void delete_screen_screenwoche() {
+    if (objects.screenwoche != NULL) {
+        pp_anim_stop_timelines_for_deleted_tree(objects.screenwoche);
+        lv_obj_del(objects.screenwoche);
+    }
+    objects.screenwoche = 0;
+    objects.containerwoche = 0;
+    objects.labelwochetitel = 0;
+    objects.buttonwochezurueck = 0;
+    objects.buttonwochezurueck_label = 0;
+    objects.buttonwochehome = 0;
+    objects.buttonwochehome_label = 0;
+    objects.buttonwocheweiter = 0;
+    objects.buttonwocheweiter_label = 0;
 }
 
 void delete_screen_screenverlauf() {
@@ -5376,6 +5507,7 @@ void delete_screen_screenboot() {
 typedef void (*delete_screen_func_t)();
 delete_screen_func_t delete_screen_funcs[] = {
     delete_screen_screennachtuhr,
+    delete_screen_screenwoche,
     delete_screen_screenverlauf,
     delete_screen_screensensoren,
     delete_screen_screenbiowetter,
@@ -5401,6 +5533,7 @@ void create_screens() {
     lv_disp_set_theme(dispp, theme);
 
     create_screen_screennachtuhr();
+    create_screen_screenwoche();
     create_screen_screenverlauf();
     create_screen_screensensoren();
     create_screen_screenbiowetter();

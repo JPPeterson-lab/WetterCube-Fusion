@@ -57,6 +57,7 @@ const DwdBbox* getDwdBbox() {
 
 WetterDaten    wetter;
 PollenDaten    pollen;
+WocheDaten     woche;
 KlimaDaten     klima;
 BioWetterDaten bio;
 WarnDaten      warnungen[5];

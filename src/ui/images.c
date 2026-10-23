@@ -13,7 +13,6 @@
 #include "src/ui/images/fc_left_60.inc"
 #include "src/ui/images/pollen.inc"
 #include "assets/icons/weather/night_full_moon_snow.inc"
-#include "assets/icons/weather/day_clear.inc"
 #include "src/ui/images/sunrise.inc"
 #include "src/ui/images/fc_right_60.inc"
 #include "assets/icons/weather/night_full_moon_rain.inc"
@@ -23,6 +22,7 @@
 #include "src/ui/images/fc_left_down2_38.inc"
 #include "src/ui/images/wind.inc"
 #include "src/ui/images/pico_dark_logo_132.inc"
+#include "assets/icons/weather/day_clear.inc"
 #include "assets/icons/weather/day_rain.inc"
 #include "assets/icons/weather/day_snow.inc"
 #include "assets/icons/weather/fog.inc"
@@ -34,7 +34,7 @@
 #include "assets/icons/weather/sleet.inc"
 #include "assets/icons/weather/snow.inc"
 #include "assets/icons/weather/thunder.inc"
-const ext_img_desc_t images[22] = {
+const ext_img_desc_t images[21] = {
     { "thermometer", &thermometer },
     { "day_partial_cloud", &day_partial_cloud },
     { "fc_home", &fc_home },
@@ -47,7 +47,6 @@ const ext_img_desc_t images[22] = {
     { "fc_left_60", &fc_left_60 },
     { "pollen", &pollen_img },
     { "night_full_moon_snow", &night_full_moon_snow },
-    { "day_clear", &day_clear },
     { "sunrise", &sunrise },
     { "fc_right_60", &fc_right_60 },
     { "night_full_moon_rain", &night_full_moon_rain },

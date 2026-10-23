@@ -70,7 +70,7 @@ static void alleDatenLaden(bool mitBoot) {
     schritt(("Ermittle Standort " + cfg.location + " ...").c_str(), 60);
     if (geocodeLocation(cfg.location)) speichereCfg();
   }
-  schritt("Lade Wetterdaten ...", 68);   fetchWetter();
+  schritt("Lade Wetterdaten ...", 68);   fetchWetter(); fetchWoche();
   schritt("Lade Pollenflug ...", 76);    fetchDwdPollen(); fetchOpenMeteoPollen();
   schritt("Lade Warnungen ...", 84);     fetchDwdWarnungen();
   schritt("Lade Biowetter ...", 90);     fetchBioWetter();
@@ -186,6 +186,8 @@ static void netTask(void*) {
     }
     { static unsigned long tKlima = millis() - 30UL * 60000UL + 20000UL;   // erster Abruf ca. 20 s nach dem Start, danach alle 30 Minuten
       if (jetzt - tKlima >= 30UL * 60000UL) { tKlima = jetzt; if (!fetchKlima()) tKlima -= 30UL * 60000UL - 120000UL; aktualisiereHinweise(); } }
+    { static unsigned long tWoche = millis() - 60UL * 60000UL + 40000UL;   // 7-Tage-Vorschau: erster Abruf ca. 40 s nach dem Start, danach stuendlich
+      if (jetzt - tWoche >= 60UL * 60000UL) { tWoche = jetzt; if (!fetchWoche()) tWoche -= 60UL * 60000UL - 120000UL; aktualisiereUI(); } }
     if (jetzt - tPollen >= INTERVALL_POLLEN) {
       tPollen = jetzt;
       fetchDwdPollen();
