@@ -1,0 +1,25 @@
+.DS_Store
+*.bak
+build/
+managed_components/
+dependencies.lock
+sdkconfig
+sdkconfig.old
+
+# Doppelte Dateien, die der PicoPixel-Export anlegt (z. B. "screens 2.c")
+src/ui/*[[:space:]][0-9].*
+src/ui/*/*[[:space:]][0-9].*
+
+# Duplikate in allen Quellordnern (macOS/iCloud: "datei 2.cpp")
+src/*/*[[:space:]][0-9].*
+
+# macOS/iCloud-Duplikate der Konfiguration
+sdkconfig[[:space:]][0-9]*
+sdkconfig.old[[:space:]][0-9]*
+
+# .elf-Dateien der Releases (nur lokal, fuer die Uebersetzung von Absturz-Adressen)
+releases-elf/
+build_p4/
+sdkconfig_p4
+sdkconfig_p4.old
+dependencies.lock.p4

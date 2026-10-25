@@ -1,0 +1,9 @@
+# WetterCube Fusion – Partitionstabelle fuer das Waveshare ESP32-P4-WIFI6-Touch-LCD-7B (32 MB Flash)
+# Gleicher Aufbau wie beim S3 (nvs/otadata/factory an denselben Stellen), nur die beiden Firmware-Slots sind groesser (je 10 MB).
+# factory: kleine Notfall-App (Wiederherstellung); app0/app1: Firmware, Updates wechseln zwischen beiden (Rollback).
+# Name,    Type, SubType,  Offset,    Size,     Flags
+nvs,       data, nvs,      0x9000,    0x5000,
+otadata,   data, ota,      0xe000,    0x2000,
+factory,   app,  factory,  0x10000,   0x180000,
+app0,      app,  ota_0,    0x190000,  0xA00000,
+app1,      app,  ota_1,    0xB90000,  0xA00000,

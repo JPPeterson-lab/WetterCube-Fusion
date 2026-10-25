@@ -1,0 +1,37 @@
+# ── Ziel: Waveshare ESP32-P4-WIFI6-Touch-LCD-7B (32 MB Flash, 32 MB PSRAM, MIPI-DSI-Display EK79007, WLAN ueber ESP32-C6) ──────
+# ERSTER ENTWURF ohne Board: nur uebersetzt, noch nicht auf der Hardware erprobt. Werte beim ersten Start pruefen
+# (Taktraten, PSRAM, Chip-Revision).
+CONFIG_IDF_TARGET="esp32p4"
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_p4.csv"
+
+CONFIG_ESPTOOLPY_FLASHSIZE_32MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+
+# 32 MB PSRAM im Hex-Modus (Typ ESP32-P4NRW32). Die Geschwindigkeit steht auf dem Wert der Waveshare-Beispiele (200 MHz).
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_SPEED_200M=y
+CONFIG_SPIRAM_USE_MALLOC=y
+CONFIG_SPIRAM_MALLOC_ALWAYSINTERNAL=4096
+# Code und Nur-Lese-Daten duerfen im PSRAM liegen: Flash-Zugriffe (Update) halten Programm und Display nicht an
+CONFIG_SPIRAM_FETCH_INSTRUCTIONS=y
+CONFIG_SPIRAM_RODATA=y
+
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_360=y
+CONFIG_CACHE_L2_CACHE_256KB=y
+CONFIG_CACHE_L2_CACHE_LINE_128B=y
+
+# Display ueber DMA2D/DSI: ISR flash-sicher (Update waehrend des Betriebs)
+CONFIG_LCD_DSI_ISR_CACHE_SAFE=y
+
+# Bootloader klein halten: beim P4 darf er wegen des festen Offsets der Partitionstabelle (0x8000) hoechstens 24 KB gross sein
+CONFIG_BOOTLOADER_LOG_LEVEL_WARN=y
+CONFIG_BOOTLOADER_COMPILER_OPTIMIZATION_SIZE=y
+
+# WLAN: ESP32-C6 am P4 ueber SDIO (esp_hosted, esp_wifi_remote). Die SDIO-Pins des Waveshare-Boards entsprechen nach Herstellerangabe
+# denen des ESP32-P4-Function-EV-Board (CLK 18, CMD 19, D0-D3 14-17, Reset 54): beim ersten Start mit dem Board pruefen.
+CONFIG_ESP_HOSTED_P4_DEV_BOARD_FUNC_BOARD=y
+
+# Chip-Revision: IDF 5.5.5 baut standardmaessig fuer v3.01 und neuer. Hat das Board einen aelteren Chip (v1.x, steht beim Flashen:
+# "esptool chip-id"), stattdessen CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y setzen und sdkconfig_p4 loeschen.
+CONFIG_IDF_EXPERIMENTAL_FEATURES=y
