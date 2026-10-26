@@ -69,7 +69,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-Frühere Versionen dieses Projekts (WetterCubePlus XL bis v0.3.16, aus dem die Fusion hervorgegangen ist) nutzten stattdessen Wetter-Icons von
+Frühere Versionen dieses Projekts nutzten stattdessen Wetter-Icons von
 [Dovora](https://www.dovora.com/resources/weather-icons/) (CC BY-SA 4.0). Sie sind in der Fusion nicht mehr enthalten.
 
 ---
@@ -163,9 +163,8 @@ Thema (Standard `https://ntfy.sh`, auch selbst gehostet möglich). Es wird kein 
 
 ## Vorgänger
 
-WetterCube Fusion führt den [WetterCubePlus XL](https://github.com/JPPeterson-lab/WetterCubePlus-XL) (ESP32-S3, 7") weiter, der wiederum eine Portierung des
-[WetterCubePlus](https://github.com/JPPeterson-lab/WetterCubePlus) (ESP32-S3 N16R8, 3,5"-Display) ist; Anfang der Familie ist der
-WetterCube (ESP32-C3).
+WetterCube Fusion baut auf dem [WetterCubePlus](https://github.com/JPPeterson-lab/WetterCubePlus) (ESP32-S3 N16R8, 3,5"-Display) auf;
+Anfang der Familie ist der WetterCube (ESP32-C3).
 
 ---
 
