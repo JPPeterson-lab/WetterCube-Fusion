@@ -21,12 +21,14 @@ struct Geraet {
   // gespeichert (bis "gesehen")
   char id[13]; char name[24]; uint8_t verwaltet;
   uint8_t seiten, hell, nq, nverh, nhell, nwach; uint16_t wechsel, nvon, nbis; char r[104];
+  uint8_t unten;   // erste Seite, unten: 0 = Raeume und Biowetter, 1 = nur Raeume, 2 = nur Biowetter (ab Next 0.3.0-beta2); Speicherstand ohne dieses Feld bleibt lesbar
   // fluechtig
   uint8_t gesehen; char ip[16]; char ver[24]; int64_t zuletzt_ms;
 };
 Geraet s_g[NEXT_MAX];
 int s_n = 0;
 const size_t GESPEICHERT = offsetof(Geraet, gesehen);
+const size_t GESPEICHERT_ALT = offsetof(Geraet, unten);   // aeltere Speicherung (vor dem Feld unten)
 
 bool hexId(const char* id) {
   if (!id || strlen(id) != 12) return false;
@@ -72,9 +74,9 @@ void raeumeSetzen(Geraet& g, const char* r) {
 int begrenzt(long v, int lo, int hi) { return v < lo ? lo : v > hi ? hi : (int)v; }
 
 String cfgJson(const Geraet& g) {
-  char b[260];
-  snprintf(b, sizeof(b), "{\"seiten\":%d,\"wechsel\":%d,\"hell\":%d,\"nq\":%d,\"nvon\":%d,\"nbis\":%d,\"nverh\":%d,\"nhell\":%d,\"nwach\":%d,\"r\":\"%s\"}",
-           g.seiten, g.wechsel, g.hell, g.nq, g.nvon, g.nbis, g.nverh, g.nhell, g.nwach, g.r);
+  char b[280];
+  snprintf(b, sizeof(b), "{\"seiten\":%d,\"wechsel\":%d,\"hell\":%d,\"nq\":%d,\"nvon\":%d,\"nbis\":%d,\"nverh\":%d,\"nhell\":%d,\"nwach\":%d,\"unten\":%d,\"r\":\"%s\"}",
+           g.seiten, g.wechsel, g.hell, g.nq, g.nvon, g.nbis, g.nverh, g.nhell, g.nwach, g.unten, g.r);
   return String(b);
 }
 }  // namespace
@@ -86,17 +88,18 @@ void nextGeraeteInit() {
   for (int i = 0; i < n && i < NEXT_MAX; i++) {
     char k[4]; snprintf(k, sizeof(k), "g%d", i);
     Geraet g; memset(&g, 0, sizeof(g)); size_t len = GESPEICHERT;
-    if (nvs_get_blob(h, k, &g, &len) != ESP_OK || len != GESPEICHERT || !hexId(g.id)) continue;
+    if (nvs_get_blob(h, k, &g, &len) != ESP_OK || (len != GESPEICHERT && len != GESPEICHERT_ALT) || !hexId(g.id)) continue;
+    if (len == GESPEICHERT_ALT) g.unten = 0;
     g.name[sizeof(g.name) - 1] = 0; g.r[sizeof(g.r) - 1] = 0;
     g.seiten = begrenzt(g.seiten, 1, 3); g.hell = begrenzt(g.hell, 3, 100); g.nq = begrenzt(g.nq, 0, 2); g.nverh = begrenzt(g.nverh, 0, 2);
     g.nhell = begrenzt(g.nhell, 1, 100); g.nwach = begrenzt(g.nwach, 3, 120); g.wechsel = begrenzt(g.wechsel, 0, 600);
-    g.nvon = begrenzt(g.nvon, 0, 1439); g.nbis = begrenzt(g.nbis, 0, 1439);
+    g.nvon = begrenzt(g.nvon, 0, 1439); g.nbis = begrenzt(g.nbis, 0, 1439); g.unten = begrenzt(g.unten, 0, 2);
     s_g[s_n++] = g;
   }
   nvs_close(h);
 }
 
-void nextGeraetMeldet(const char* id, const char* ip, const char* ver, const char* c, const char* r) {
+void nextGeraetMeldet(const char* id, const char* ip, const char* ver, const char* c, const char* r, const char* u) {
   if (!hexId(id)) return;
   int i = finde(id);
   bool neu = false;
@@ -117,6 +120,7 @@ void nextGeraetMeldet(const char* id, const char* ip, const char* ver, const cha
       z.seiten = begrenzt(v[0], 1, 3); z.wechsel = begrenzt(v[1], 0, 600); z.hell = begrenzt(v[2], 3, 100); z.nq = begrenzt(v[3], 0, 2);
       z.nvon = begrenzt(v[4], 0, 1439); z.nbis = begrenzt(v[5], 0, 1439); z.nverh = begrenzt(v[6], 0, 2); z.nhell = begrenzt(v[7], 1, 100); z.nwach = begrenzt(v[8], 3, 120);
       raeumeSetzen(z, r);
+      if (u && u[0]) z.unten = begrenzt(atoi(u), 0, 2);
       if (memcmp(&z, &g, GESPEICHERT) != 0) { memcpy(&g, &z, GESPEICHERT); geaendert = true; }
     }
   }
@@ -176,7 +180,7 @@ Anzeigeart, Drehen, Farben, WLAN und Update bleiben auf der Seite des jeweiligen
 <div class="tabs" id="tabs"></div>
 <div id="panel"></div>
 <script>
-var D={geraete:[],sensoren:[]},cur=0,NQ=['Nie (kein Nachtmodus)','Wie der Fusion (nach dessen Einstellungen)','Eigene Zeiten'],NV=['Display aus (Antippen schaltet kurz an)','Dunkles Design, gedimmt','Nacht-Uhr (Uhrzeit, Datum, Wetter, gedimmt)'];
+var D={geraete:[],sensoren:[]},cur=0,NQ=['Nie (kein Nachtmodus)','Wie der Fusion (nach dessen Einstellungen)','Eigene Zeiten'],UN=['Räume und Biowetter nebeneinander','Nur Räume','Nur Biowetter'],NV=['Display aus (Antippen schaltet kurz an)','Dunkles Design, gedimmt','Nacht-Uhr (Uhrzeit, Datum, Wetter, gedimmt)'];
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function hm(m){m=+m;var h=Math.floor(m/60)%24,n=m%60;return(h<10?'0':'')+h+':'+(n<10?'0':'')+n}
 function minuten(s,v){var p=String(s).split(':');return p.length==2&&+p[0]>=0&&+p[0]<24&&+p[1]>=0&&+p[1]<60?(+p[0])*60+(+p[1]):v}
@@ -195,6 +199,7 @@ function zeige(){
  h+='<div class="card" id="f_cfg"><h2 style="margin-top:0">Anzeige</h2>'+
   '<div class="z"><input type="checkbox" id="f_s0"'+(c.seiten&1?' checked':'')+'>Temperatur und Biowetter</div><div class="z"><input type="checkbox" id="f_s1"'+(c.seiten&2?' checked':'')+'>Allergene und Vorhersage</div>'+
   '<div class="row"><div><label>Weiterblättern (Sekunden, 0 = nur Antippen)</label><input type="number" id="f_wechsel" min="0" max="600" value="'+c.wechsel+'"></div><div><label>Helligkeit am Tag (%)</label><input type="number" id="f_hell" min="3" max="100" value="'+c.hell+'"></div></div>'+
+  '<label>Erste Seite, unten</label><select id="f_unten">'+UN.map(function(t,q){return '<option value="'+q+'"'+(c.unten==q?' selected':'')+'>'+t+'</option>'}).join('')+'</select>'+
   '<h2>Räume</h2><div class="klein">Welche vier Werte zeigt die Kachel „Räume“? Ohne Auswahl die ersten vier.</div><div class="row">';
  var ids=(c.r||'').split(',');
  for(var k=0;k<4;k++){h+='<div><label>Wert '+(k+1)+'</label><select id="f_r'+k+'"><option value="">–</option>';for(var s=0;s<D.sensoren.length;s++){var x=D.sensoren[s];h+='<option value="'+esc(x.id)+'"'+(ids[k]==x.id?' selected':'')+'>'+esc(x.label)+'</option>'}h+='</select></div>'}
@@ -211,7 +216,7 @@ function speichern(){
  var r=[];for(var k=0;k<4;k++){var x=w('f_r'+k);if(x)r.push(x)}
  var s=(document.getElementById('f_s0').checked?1:0)|(document.getElementById('f_s1').checked?2:0);if(!s)s=1;
  var g=D.geraete[cur];
- var b={id:g.id,name:w('f_name'),verwaltet:document.getElementById('f_verw').checked?1:0,cfg:{seiten:s,wechsel:+w('f_wechsel'),hell:+w('f_hell'),nq:+w('f_nq'),nvon:minuten(w('f_nvon'),1320),nbis:minuten(w('f_nbis'),390),nverh:+w('f_nverh'),nhell:+w('f_nhell'),nwach:+w('f_nwach'),r:r.join(',')}};
+ var b={id:g.id,name:w('f_name'),verwaltet:document.getElementById('f_verw').checked?1:0,cfg:{seiten:s,wechsel:+w('f_wechsel'),hell:+w('f_hell'),nq:+w('f_nq'),nvon:minuten(w('f_nvon'),1320),nbis:minuten(w('f_nbis'),390),nverh:+w('f_nverh'),nhell:+w('f_nhell'),nwach:+w('f_nwach'),unten:+w('f_unten'),r:r.join(',')}};
  fetch('/api/nextgeraete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json()}).then(function(j){document.getElementById('f_msg').textContent=j.ok?'Gespeichert':'Fehler';if(j.ok)laden()}).catch(function(){document.getElementById('f_msg').textContent='Fehler'})}
 function loeschen(){var g=D.geraete[cur];if(!confirm('„'+g.name+'“ aus der Liste entfernen? Meldet sich das Next wieder, erscheint es neu.'))return;
  fetch('/api/nextgeraete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:g.id,loeschen:1})}).then(function(){cur=0;laden()})}
@@ -242,7 +247,7 @@ void nextGeraeteWebuiRegistrieren(WebServer& server) {
       o["zuletzt"] = g.gesehen ? (int)((jetzt - g.zuletzt_ms) / 1000) : -1;
       JsonObject c = o["cfg"].to<JsonObject>();
       c["seiten"] = g.seiten; c["wechsel"] = g.wechsel; c["hell"] = g.hell; c["nq"] = g.nq; c["nvon"] = g.nvon; c["nbis"] = g.nbis;
-      c["nverh"] = g.nverh; c["nhell"] = g.nhell; c["nwach"] = g.nwach; c["r"] = g.r;
+      c["nverh"] = g.nverh; c["nhell"] = g.nhell; c["nwach"] = g.nwach; c["unten"] = g.unten; c["r"] = g.r;
     }
     String out; serializeJson(doc, out);
     server.sendHeader("Cache-Control", "no-store");
@@ -272,6 +277,7 @@ void nextGeraeteWebuiRegistrieren(WebServer& server) {
       g.seiten = begrenzt(c["seiten"] | (int)g.seiten, 1, 3); g.wechsel = begrenzt(c["wechsel"] | (int)g.wechsel, 0, 600); g.hell = begrenzt(c["hell"] | (int)g.hell, 3, 100);
       g.nq = begrenzt(c["nq"] | (int)g.nq, 0, 2); g.nvon = begrenzt(c["nvon"] | (int)g.nvon, 0, 1439); g.nbis = begrenzt(c["nbis"] | (int)g.nbis, 0, 1439);
       g.nverh = begrenzt(c["nverh"] | (int)g.nverh, 0, 2); g.nhell = begrenzt(c["nhell"] | (int)g.nhell, 1, 100); g.nwach = begrenzt(c["nwach"] | (int)g.nwach, 3, 120);
+      g.unten = begrenzt(c["unten"] | (int)g.unten, 0, 2);
       raeumeSetzen(g, c["r"] | "");
     }
     speichern(i);

@@ -1,6 +1,6 @@
 {
   "name": "WetterCube Fusion (ESP32-S3)",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "home_assistant_domain": "esphome",
   "funding_url": "https://github.com/JPPeterson-lab/WetterCube-Fusion",
   "new_install_prompt_erase": true,

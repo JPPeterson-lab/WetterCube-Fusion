@@ -159,7 +159,7 @@ void apiNextRegistrieren(WebServer& server) {
     String bl = server.arg("b");
     // Ein Next meldet sich mit Kennung (id), Adresse (ip), Version (nv), aktuellen Einstellungen (c) und Raeumen (r)
     String id = server.arg("id");
-    if (id.length()) nextGeraetMeldet(id.c_str(), server.arg("ip").c_str(), server.arg("nv").c_str(), server.arg("c").c_str(), server.arg("r").c_str());
+    if (id.length()) nextGeraetMeldet(id.c_str(), server.arg("ip").c_str(), server.arg("nv").c_str(), server.arg("c").c_str(), server.arg("r").c_str(), server.arg("u").c_str());
     char etag[12]; std::string j = nextAufbauen(bl.c_str(), etag, sizeof(etag), id.c_str());
     // Unveraendert seit dem letzten Abruf (Parameter e oder Kopfzeile If-None-Match): nur 304 ohne Daten
     String e = server.arg("e"); if (e.length() == 0) e = server.header("If-None-Match");
