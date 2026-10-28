@@ -80,11 +80,17 @@
 <body>
 <div class="container">
   <h1>WetterCube Fusion <span class="badge">v1.0.0-rc1</span></h1>
-  <p class="subtitle">Wetterdisplay für das Waveshare ESP32-S3-Touch-LCD-7B (7&quot;, 1024×600) – Wetter, DWD-Warnungen, Pollenflug, Biowetter, Warnkarte, Sensoren &amp; Home Assistant</p>
+  <p class="subtitle">Wetterdisplay für die Waveshare-Boards ESP32-P4-WIFI6-Touch-LCD-7B und ESP32-S3-Touch-LCD-7B (7&quot;, 1024×600) – Wetter, DWD-Warnungen, Pollenflug, Biowetter, Warnkarte, Sensoren &amp; Home Assistant</p>
 
   <div class="card">
     <h2>Firmware installieren</h2>
     <p>Wähle unten dein Board und verbinde es per USB-C-Datenkabel am Anschluss mit der Beschriftung „UART“ (USB TO UART) mit dem Computer. Chrome oder Edge Browser erforderlich. Achtung: Setzt du im Installationsfenster den Haken „Gerät löschen“, wird der gesamte Flash-Speicher gelöscht, auch gespeicherte WLAN-Daten und Einstellungen. Ohne den Haken bleiben sie erhalten. Nur für die genannten Waveshare-Boards; andere Boards werden nicht unterstützt.</p>
+    <div style="margin:14px 0 6px;color:#e6edf3;font-size:.95em"><strong>Welches Board hast du?</strong></div>
+    <div class="boardwahl" style="display:grid;gap:8px;margin-bottom:12px">
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="p4" checked style="margin-right:8px"><strong>ESP32-P4-WIFI6-Touch-LCD-7B</strong> <span style="color:#3fb950">(empfohlen)</span><br><span style="font-size:.88em;color:#8b949e">Das Board mit Zukunft: mehr Leistung und Speicher, animierte Wettersymbole, Lautsprecher mit Timer und Warnton. Neue Funktionen kommen zuerst hierher.</span></label>
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="s3" style="margin-right:8px"><strong>ESP32-S3-Touch-LCD-7B</strong><br><span style="font-size:.88em;color:#8b949e">Läuft mit allen Kernfunktionen, hat aber weniger Speicher, keine Animationen und keinen Lautsprecher. Nimm das <strong>Modell mit Touch</strong> und 1024×600 Pixeln.</span></label>
+    </div>
+    <p style="font-size:.88em;color:#8b949e;margin:0 0 10px">Achte beim Kauf auf das <strong>7-Zoll-Display mit 1024×600 Pixeln</strong> (es gibt auch eine 800×480-Variante, die nicht passt) und beim S3 auf die <strong>Touch-Ausführung</strong> (das Board gibt es auch ohne Touch).</p>
     <div style="margin:16px 0;padding:14px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;font-size:.92em;line-height:1.55;color:#e6edf3">
       <strong>Welchen Anschluss wählen?</strong><br>
       Nach dem Klick auf den Installationsknopf öffnet der Browser ein Fenster „… möchte eine Verbindung zu einem seriellen Anschluss herstellen“. Wähle dort den Anschluss deines Boards und klicke auf „Verbinden“:
@@ -97,12 +103,6 @@
       <img src="usb-anschluss.png" alt="Beispiel: Fenster zur Auswahl des seriellen Anschlusses unter Windows und auf dem Mac" style="max-width:100%;height:auto;margin-top:10px;border-radius:6px">
     </div>
     <label style="display:block;margin:14px 0 4px;color:#e6edf3;font-size:.9em;line-height:1.5;cursor:pointer"><input type="checkbox" id="haftung-ok" style="margin-right:8px">Ich habe die <a href="https://wettercube.de/nutzungshinweise/" target="_blank" style="color:#58a6ff">Nutzungshinweise</a> gelesen und nutze die Firmware auf eigene Gefahr.</label>
-    <div style="margin:14px 0 6px;color:#e6edf3;font-size:.95em"><strong>Welches Board hast du?</strong></div>
-    <div class="boardwahl" style="display:grid;gap:8px;margin-bottom:12px">
-      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="p4" checked style="margin-right:8px"><strong>ESP32-P4-WIFI6-Touch-LCD-7B</strong> <span style="color:#3fb950">(empfohlen)</span><br><span style="font-size:.88em;color:#8b949e">Das Board mit Zukunft: mehr Leistung und Speicher, animierte Wettersymbole, Lautsprecher mit Timer und Warnton. Neue Funktionen kommen zuerst hierher.</span></label>
-      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="s3" style="margin-right:8px"><strong>ESP32-S3-Touch-LCD-7B</strong><br><span style="font-size:.88em;color:#8b949e">Läuft mit allen Kernfunktionen, hat aber weniger Speicher, keine Animationen und keinen Lautsprecher. Nimm das <strong>Modell mit Touch</strong> und 1024×600 Pixeln.</span></label>
-    </div>
-    <p style="font-size:.88em;color:#8b949e;margin:0 0 10px">Achte beim Kauf auf das <strong>7-Zoll-Display mit 1024×600 Pixeln</strong> (es gibt auch eine 800×480-Variante, die nicht passt) und beim S3 auf die <strong>Touch-Ausführung</strong> (das Board gibt es auch ohne Touch).</p>
     <div id="installbereich">
       <esp-web-install-button manifest="manifest-p4.json"></esp-web-install-button>
     </div>
