@@ -1,6 +1,6 @@
 {
   "name": "WetterCube Fusion (ESP32-P4)",
-  "version": "1.0.0-rc2",
+  "version": "1.0.0-rc3",
   "home_assistant_domain": "esphome",
   "funding_url": "https://github.com/JPPeterson-lab/WetterCube-Fusion",
   "new_install_prompt_erase": true,
@@ -27,7 +27,7 @@
         },
         {
           "path": "firmware/p4-firmware.bin",
-          "offset": 1638400
+          "offset": 786432
         }
       ]
     }

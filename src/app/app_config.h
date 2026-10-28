@@ -5,8 +5,8 @@
 
 #include "sdkconfig.h"
 // Flackert das Display beim Schreiben der Firmware in den Flash? Nur der Arduino-IDE-Build tut das (Display-ISR nicht flash-sicher);
-// der ESP-IDF-Build (platforms/idf) setzt CONFIG_LCD_RGB_ISR_IRAM_SAFE und zeigt das Bild ruhig weiter.
-#if defined(CONFIG_LCD_RGB_ISR_IRAM_SAFE) && CONFIG_LCD_RGB_ISR_IRAM_SAFE
+// der ESP-IDF-Build (platforms/idf) setzt CONFIG_LCD_RGB_ISR_IRAM_SAFE und zeigt das Bild ruhig weiter. Der P4 hat ein DSI-Display (kein RGB-Panel): es flackert nicht.
+#if (defined(CONFIG_LCD_RGB_ISR_IRAM_SAFE) && CONFIG_LCD_RGB_ISR_IRAM_SAFE) || (defined(CONFIG_IDF_TARGET_ESP32P4) && CONFIG_IDF_TARGET_ESP32P4)
 #define UPDATE_DISPLAY_FLACKERT 0
 #else
 #define UPDATE_DISPLAY_FLACKERT 1
@@ -25,7 +25,7 @@
 
 // Muss mit docs/version.json übereinstimmen (sobald es Releases gibt)
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.0.0-rc2"
+#define FIRMWARE_VERSION "1.0.0-rc3"
 #endif
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/WetterCube-Fusion/main/docs/version.json"
 #if CONFIG_IDF_TARGET_ESP32P4

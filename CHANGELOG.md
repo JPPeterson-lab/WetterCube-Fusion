@@ -2,7 +2,11 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v1.0.0-rc2 (2026-10-28)
+## v1.0.0-rc3 (2026-10-28)
+
+### Behoben
+- **P4: Update über WLAN scheiterte** mit „Die Firmware-Datei ist beschädigt“. Ursache: Der zweite Firmware-Slot lag teilweise hinter 16 MB; dort kann das System die Firmware nicht prüfen und nicht starten (24-Bit-Flashadressen). Die Partitionstabelle des P4 ist neu: alles liegt unter 16 MB, die Slots sind je knapp 8 MB groß (die Firmware ist 7,2 MB). Updates (und Rollback) laufen jetzt in beide Richtungen. **Einmalig nötig:** den P4 mit rc3 per USB über den Web-Installer neu installieren (Haken „Gerät löschen“ NICHT setzen, die Einstellungen bleiben). Ein P4 mit rc1 oder rc2 kann per WLAN nicht auf rc3 aktualisieren und meldet dabei denselben Fehler. Der S3 ist nicht betroffen.
+- **P4: Update-Hinweis** sagt nicht mehr, das Display flackere (das tut der P4 nicht); er zeigt „Gerät nicht vom Strom trennen“ und den Fortschrittsbalken.
 
 ### Neu
-- **Next-Displays: untere Hälfte der ersten Seite wählbar.** Im Reiter jedes Next (Seite `/next`) gibt es „Erste Seite, unten“: Räume und Biowetter nebeneinander, nur Räume oder nur Biowetter (dann über die ganze Breite, ohne abgeschnittene Namen). Braucht Next ab v0.3.0-beta2; ältere Next ignorieren die Einstellung. Bereits gespeicherte Next-Einstellungen bleiben erhalten.
+- **Fehlersuche beim Update:** Scheitert die Prüfung der Firmware, steht im Diagnose-Log (`/log`) die Meldung des Systems und ein Vergleich des Flash-Inhalts mit den empfangenen Daten.

@@ -9,8 +9,41 @@
 #include "navigation.h"
 #include "../sensors/sensors.h"
 #include "esp_heap_caps.h"
+#include "esp_log.h"
+#include "esp_crc.h"
 #include "../ui/screens.h"
 #include "../ui/fonts/fonts.h"
+
+// Fehlersuche bei "Firmware-Datei ist beschaedigt": die IDF-Meldungen von esp_image/esp_ota ins Diagnose-Log (/log) holen und den Flash
+// nach dem Schreiben mit den empfangenen Daten vergleichen (je Schreibblock eine CRC), damit klar wird, ob Empfang, Schreiben oder Pruefung fehlschlaegt.
+namespace {
+struct Block { uint32_t off; uint16_t len; uint32_t crc; };
+constexpr int BLOCK_MAX = 6000;
+vprintf_like_t s_altesVprintf = nullptr;
+int idfLogWeiter(const char* fmt, va_list ap) {
+  va_list kopie; va_copy(kopie, ap);
+  char z[160]; vsnprintf(z, sizeof(z), fmt, kopie); va_end(kopie);
+  if (strstr(z, "esp_image") || strstr(z, "esp_ota") || strstr(z, "ota_ops") || strstr(z, "boot_comm") || strstr(z, "flash")) {
+    for (char* p = z; *p; p++) if (*p == '\n' || *p == '\r') *p = ' ';
+    // ANSI-Farbcodes am Anfang entfernen
+    const char* s = z; if ((unsigned char)s[0] == 27) { const char* m = strchr(s, 'm'); if (m) s = m + 1; }
+    logDiag("[OTA-IDF] %.120s", s);
+  }
+  return s_altesVprintf ? s_altesVprintf(fmt, ap) : vprintf(fmt, ap);
+}
+void flashMitEmpfangVergleichen(const esp_partition_t* ziel, const Block* b, int n, bool alleErfasst) {
+  uint8_t* r = (uint8_t*)heap_caps_malloc(4096, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+  if (!r || !ziel || !b) { if (r) heap_caps_free(r); logDiag("[OTA] Vergleich mit dem Flash nicht moeglich (kein Speicher)"); return; }
+  int falsch = 0, erster = -1;
+  for (int i = 0; i < n; i++) {
+    if (esp_partition_read(ziel, b[i].off, r, b[i].len) != ESP_OK) { falsch++; if (erster < 0) erster = i; continue; }
+    if (esp_crc32_le(0, r, b[i].len) != b[i].crc) { falsch++; if (erster < 0) erster = i; }
+  }
+  heap_caps_free(r);
+  if (falsch == 0) logDiag("[OTA] Vergleich: Flash stimmt mit den empfangenen Daten ueberein (%d Bloecke%s)", n, alleErfasst ? "" : ", nicht alle erfasst");
+  else logDiag("[OTA] Vergleich: %d von %d Bloecken im Flash weichen ab, erster bei Byte %u", falsch, n, (unsigned)b[erster].off);
+}
+}
 
 // Schreibt eine Firmware in den freien Update-Slot (esp_ota_*): begin, write (nacheinander), end prüft das Abbild und setzt den Startslot
 namespace {
@@ -20,15 +53,19 @@ struct OtaSchreiber {
   bool offen = false;
   size_t geschrieben = 0;
   String fehler;
+  Block* bl = nullptr; int nbl = 0; bool alleErfasst = true;   // je Schreibblock eine CRC, fuer den Vergleich mit dem Flash bei Fehlern
+  void blFrei() { if (bl) { heap_caps_free(bl); bl = nullptr; } nbl = 0; }
   bool begin() {
     ziel = esp_ota_get_next_update_partition(nullptr);
     if (!ziel) { fehler = "Kein Platz für das Update vorhanden"; return false; }
     esp_err_t e = esp_ota_begin(ziel, OTA_WITH_SEQUENTIAL_WRITES, &h);
     if (e != ESP_OK) { fehler = String("Der Update-Platz lässt sich nicht beschreiben (") + esp_err_to_name(e) + ")"; return false; }
     offen = true; geschrieben = 0; fehler = "";
+    blFrei(); alleErfasst = true; bl = (Block*)heap_caps_malloc(sizeof(Block) * BLOCK_MAX, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     return true;
   }
   bool write(const uint8_t* d, size_t n) {
+    if (bl && n <= 0xFFFF) { if (nbl < BLOCK_MAX) bl[nbl++] = { (uint32_t)geschrieben, (uint16_t)n, esp_crc32_le(0, d, (uint32_t)n) }; else alleErfasst = false; }
     esp_err_t e = esp_ota_write(h, d, n);
     if (e != ESP_OK) { fehler = String("Schreibfehler im Flash (") + esp_err_to_name(e) + ")"; return false; }
     geschrieben += n;
@@ -36,13 +73,19 @@ struct OtaSchreiber {
   }
   bool end() {
     offen = false;
+    s_altesVprintf = esp_log_set_vprintf(idfLogWeiter);
     esp_err_t e = esp_ota_end(h);
-    if (e != ESP_OK) { fehler = e == ESP_ERR_OTA_VALIDATE_FAILED ? String("Die Firmware-Datei ist beschädigt") : String("Abschluss fehlgeschlagen (") + esp_err_to_name(e) + ")"; return false; }
+    esp_log_set_vprintf(s_altesVprintf);
+    if (e != ESP_OK) {
+      logDiag("[OTA] esp_ota_end: %s, geschrieben %u Bytes", esp_err_to_name(e), (unsigned)geschrieben);
+      flashMitEmpfangVergleichen(ziel, bl, nbl, alleErfasst); blFrei();
+      fehler = e == ESP_ERR_OTA_VALIDATE_FAILED ? String("Die Firmware-Datei ist beschädigt") : String("Abschluss fehlgeschlagen (") + esp_err_to_name(e) + ")"; return false; }
+    blFrei();
     e = esp_ota_set_boot_partition(ziel);
     if (e != ESP_OK) { fehler = String("Startpartition lässt sich nicht setzen (") + esp_err_to_name(e) + ")"; return false; }
     return true;
   }
-  void abbrechen() { if (offen) { esp_ota_abort(h); offen = false; } }
+  void abbrechen() { if (offen) { esp_ota_abort(h); offen = false; } blFrei(); }
 } g_ota;
 }
 

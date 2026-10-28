@@ -76,7 +76,7 @@ FwInfo pruefeDatei(const char* pfad) {
   if (stat(pfad, &st) != 0) { setzeFehler(info, "Datei nicht gefunden"); return info; }
   Leser L; L.f = fopen(pfad, "rb"); L.gesamt = st.st_size;
   if (!L.f) { setzeFehler(info, "Datei nicht lesbar"); return info; }
-  // Hoechstgroesse = Groesse eines Firmware-Slots (S3: 0x6C0000, P4: 0xA00000), sonst passt die Datei nicht
+  // Hoechstgroesse = Groesse eines Firmware-Slots (S3: 0x6C0000, P4: 0x7A0000), sonst passt die Datei nicht
   const esp_partition_t* slot = esp_partition_find_first(ESP_PARTITION_TYPE_APP, ESP_PARTITION_SUBTYPE_APP_OTA_0, NULL);
   info = pruefeLeser(L, slot ? slot->size : 0x6C0000);
   fclose(L.f);
