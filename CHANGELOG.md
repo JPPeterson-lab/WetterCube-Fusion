@@ -2,9 +2,14 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v0.9.9-beta15 (2026-10-25)
+## v1.0.0-rc1 (2026-10-28)
 
-### Behoben
-- **Biowetter und Pollenflug vor 11 Uhr:** Der DWD erneuert beide Dateien nur einmal täglich gegen 11 Uhr. Bis dahin steht in „heute“ noch das Datum von gestern; das Gerät zeigte deshalb am Vormittag um einen Tag verschobene Werte und „sprang“ nach dem Update. Jetzt zählt das Datum der einzelnen Zeiträume bzw. das Datum der Datei, gestrige Zeiträume fallen weg. Ist die Datei noch von gestern, holt das Gerät sie alle 20 Minuten erneut (auch direkt nach dem Start).
-- **Biowetter-Kurzübersicht:** Vor 12 Uhr zeigt sie „Heute Vormittag“, bis 18 Uhr „Heute Nachmittag“, danach „Morgen Vormittag“. Fehlt der gewählte Zeitraum, nimmt sie den nächsten, den der DWD geliefert hat.
-- Das Log nennt das Dateidatum („Datei vom … = VERALTET“).
+### Neu
+- **Release Candidate:** Der Fusion läuft auf **zwei Boards**, dem **ESP32-P4** (empfohlen) und dem **ESP32-S3**. Der Web-Installer hat eine Boardauswahl und installiert die passende Firmware; Updates über WLAN holen automatisch die Firmware des eigenen Boards.
+- **Timer und Stoppuhr:** Taste „Timer“ im Menü. Beim Ablauf blinkt das Display; auf dem P4 spielt ein Alarmton aus dem Lautsprecher (fünf Töne zur Auswahl, Lautstärke einstellbar, „Ton probehören“ in der Web-Oberfläche).
+- **Warnton (P4):** Bei neuer DWD- oder Pollenwarnung ertönt kurz der gewählte Ton; einstellbar (ein/aus, Ton, Lautstärke), in der Ruhezeit still, ein laufender Timer-Alarm hat Vorrang.
+
+### Geändert
+- **P4:** Anzeige und Touch um 180° gedreht (die Anschlüsse liegen im Gehäuse auf der anderen Seite).
+- **P4:** Beim Zeichnen der Oberfläche werden keine Bildteile mehr verloren (die Kopie ins Display wird abgewartet).
+- Dokumentation: Bildschirmfotos neu (vom P4), Hinweise zu Display (1024×600) und Touch-Ausführung beim Kauf des S3.

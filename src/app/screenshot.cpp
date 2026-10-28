@@ -32,6 +32,7 @@ static uint8_t* fotoNehmen(WebServer& server, int& W, int& H) {
       else if (s == "woche") { scr = objects.screenwoche; aktualisiereWoche(); }
       else if (s == "verlauf") scr = objects.screenverlauf; else if (s == "karte") scr = objects.screenwarnkarte1;
       else if (s == "warnliste") scr = objects.screenwarnkarte2; else if (s == "pollenwarnung") scr = objects.screenwarnungpollen; else if (s == "lueftenwarnung") { lueftenDemoSetzen(); aktualisiereLueftenWarnScreen(); scr = objects.screenwarnunglueften; } else if (s == "boot") scr = objects.screenboot;
+      else if (s == "timer") scr = uiTimerFuerFoto();
       else if (s == "kachel30") scr = objects.container_30; else if (s == "kachel32") scr = objects.container_32;   // einzelne Kacheln: brauchen kaum Speicher
       uint32_t bedarf = scr ? lv_snapshot_buf_size_needed(scr, LV_IMG_CF_TRUE_COLOR) : 0;
       if (bedarf) puffer = (uint8_t*)heap_caps_malloc(bedarf, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);

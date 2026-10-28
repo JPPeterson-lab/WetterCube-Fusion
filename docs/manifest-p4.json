@@ -1,0 +1,35 @@
+{
+  "name": "WetterCube Fusion (ESP32-P4)",
+  "version": "1.0.0-rc1",
+  "home_assistant_domain": "esphome",
+  "funding_url": "https://github.com/JPPeterson-lab/WetterCube-Fusion",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-P4",
+      "improv": false,
+      "parts": [
+        {
+          "path": "firmware/p4-bootloader.bin",
+          "offset": 8192
+        },
+        {
+          "path": "firmware/p4-partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "firmware/p4-boot_app0.bin",
+          "offset": 57344
+        },
+        {
+          "path": "firmware/p4-notfall.bin",
+          "offset": 65536
+        },
+        {
+          "path": "firmware/p4-firmware.bin",
+          "offset": 1638400
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,8 @@
 #include "esp_lcd_panel_io.h"
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_ek79007.h"
+#include "freertos/semphr.h"
+#include "esp_attr.h"
 #include "../../hardware/gt911.h"
 
 static const char* TAG = "board_p4";
@@ -67,7 +69,7 @@ esp_lcd_touch_handle_t boardTouchInit() {
     .x_max = BOARD_LCD_H_RES, .y_max = BOARD_LCD_V_RES,
     .rst_gpio_num = GPIO_NUM_NC, .int_gpio_num = GPIO_NUM_NC,
     .levels = { .reset = 0, .interrupt = 0 },
-    .flags = { .swap_xy = 0, .mirror_x = 1, .mirror_y = 1 },   // wie in den Waveshare-Beispielen
+    .flags = { .swap_xy = 0, .mirror_x = BOARD_ANZEIGE_GEDREHT ? 0 : 1, .mirror_y = BOARD_ANZEIGE_GEDREHT ? 0 : 1 },   // wie in den Waveshare-Beispielen; bei gedrehtem Bild entfaellt die Spiegelung
   };
   esp_lcd_touch_handle_t h = nullptr;
   ESP_ERROR_CHECK(esp_lcd_touch_new_i2c_gt911(tpIo, &tp, &h));
@@ -97,6 +99,13 @@ void boardHelligkeit(int prozent) {
 void boardBacklightAn() { boardHelligkeit(s_helligkeit); }
 
 // ── Display ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+static SemaphoreHandle_t s_drawFertig = nullptr;
+static bool IRAM_ATTR onKopieFertig(esp_lcd_panel_handle_t, esp_lcd_dpi_panel_event_data_t*, void*) {
+  BaseType_t hoeher = pdFALSE;
+  if (s_drawFertig) xSemaphoreGiveFromISR(s_drawFertig, &hoeher);
+  return hoeher == pdTRUE;
+}
+
 esp_lcd_panel_handle_t boardPanelInit() {
   helligkeitInit();                                    // Beleuchtung bleibt aus (Tastverhaeltnis 0), bis boardBacklightAn() kommt
   esp_ldo_channel_handle_t phy = nullptr;              // Strom fuer den MIPI-DSI-PHY
@@ -121,8 +130,17 @@ esp_lcd_panel_handle_t boardPanelInit() {
   ESP_ERROR_CHECK(esp_lcd_new_panel_ek79007(io, &dev, &s_panel));
   ESP_ERROR_CHECK(esp_lcd_panel_reset(s_panel));
   ESP_ERROR_CHECK(esp_lcd_panel_init(s_panel));
+  // Das Kopieren in den Bildspeicher laeuft asynchron (2D-DMA): ohne Warten meldet draw_bitmap beim naechsten Aufruf "previous draw operation is not finished" und Teile fehlen
+  s_drawFertig = xSemaphoreCreateBinary();
+  esp_lcd_dpi_panel_event_callbacks_t cbs = {};
+  cbs.on_color_trans_done = onKopieFertig;
+  ESP_ERROR_CHECK(esp_lcd_dpi_panel_register_event_callbacks(s_panel, &cbs, nullptr));
   ESP_LOGI(TAG, "Display bereit");
   return s_panel;
+}
+
+void boardDrawWarten() {
+  if (s_drawFertig) xSemaphoreTake(s_drawFertig, pdMS_TO_TICKS(200));
 }
 
 void boardFramebuffer(void** fb) {

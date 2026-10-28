@@ -148,6 +148,7 @@ typedef struct _objects_t {
     lv_obj_t *labellightchangevalue;
     lv_obj_t *labelversion;
     lv_obj_t *labelbuttonmenu_2;
+    lv_obj_t *buttontimer;
     lv_obj_t *containersystem;
     lv_obj_t *labelquellemenue_1;
     lv_obj_t *container_3;
@@ -359,6 +360,7 @@ typedef struct _objects_t {
     lv_obj_t *labelbuttonscreenhubback_label;
     lv_obj_t *labelswitchtheme_label;
     lv_obj_t *labelbuttonmenu_2_label;
+    lv_obj_t *buttontimer_label;
     lv_obj_t *labelbuttonforward_2_label;
     lv_obj_t *labelbuttonbackward_2_label;
     lv_obj_t *labelbuttonhome_2_label;

@@ -21,6 +21,7 @@ extern const lv_img_dsc_t thermometer;
 extern const lv_img_dsc_t day_partial_cloud;
 extern const lv_img_dsc_t fc_home;
 extern const lv_img_dsc_t fc_settings;
+extern const lv_img_dsc_t fc_alarm_clock;
 extern const lv_img_dsc_t alert;
 extern const lv_img_dsc_t wind_direction_n;
 extern const lv_img_dsc_t overcast;
@@ -50,7 +51,7 @@ extern const lv_img_dsc_t rain_thunder;
 extern const lv_img_dsc_t sleet;
 extern const lv_img_dsc_t snow;
 extern const lv_img_dsc_t thunder;
-extern const ext_img_desc_t images[21];
+extern const ext_img_desc_t images[22];
 
 
 #ifdef __cplusplus

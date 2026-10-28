@@ -13,6 +13,7 @@
 #include "esp_timer.h"
 #include <algorithm>
 #include "lvgl_port.h"
+#include "../board/board.h"
 #include "src/ui/screens.h"
 
 static const char *TAG = "lv_port";
@@ -49,10 +50,22 @@ static void flush_cb(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *colo
     int64_t t0 = esp_timer_get_time();
 #endif
     // Kopiert den Bereich synchron in den Framebuffer (inkl. Cache-Rückschreiben), in kleinen Stücken
-    const int w = area->x2 - area->x1 + 1;
+    int w = area->x2 - area->x1 + 1;
+    lv_area_t a = *area;
+#if BOARD_ANZEIGE_GEDREHT
+    {   // 180 Grad: Pixelreihenfolge des Bereichs umkehren und den Bereich an den Mittelpunkt des Bildschirms spiegeln
+        const size_t n = (size_t)w * (size_t)(area->y2 - area->y1 + 1);
+        lv_color_t *p = color_map, *q = color_map + n - 1;
+        for (; p < q; p++, q--) { lv_color_t t = *p; *p = *q; *q = t; }
+        a.x1 = LVGL_PORT_H_RES - 1 - area->x2; a.x2 = LVGL_PORT_H_RES - 1 - area->x1;
+        a.y1 = LVGL_PORT_V_RES - 1 - area->y2; a.y2 = LVGL_PORT_V_RES - 1 - area->y1;
+    }
+#endif
+    area = &a;
     for (int y = area->y1; y <= area->y2; y += LVGL_PORT_FLUSH_CHUNK_LINES) {
         int yEnd = std::min(y + LVGL_PORT_FLUSH_CHUNK_LINES, (int)area->y2 + 1);
         esp_lcd_panel_draw_bitmap(panel, area->x1, y, area->x2 + 1, yEnd, color_map + (size_t)(y - area->y1) * w);
+        boardDrawWarten();   // P4: asynchrone Kopie abwarten, bevor der naechste Streifen kommt oder LVGL den Puffer wieder beschreibt
     }
 #if LVGL_PORT_PERF_LOG
     flush_us_sum += (uint32_t)(esp_timer_get_time() - t0);

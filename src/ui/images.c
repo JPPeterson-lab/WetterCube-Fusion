@@ -5,6 +5,7 @@
 #include "assets/icons/weather/day_partial_cloud.inc"
 #include "src/ui/images/fc_home.inc"
 #include "src/ui/images/fc_settings.inc"
+#include "src/ui/images/fc_alarm_clock.inc"
 #include "assets/icons/weather/alert.inc"
 #include "src/ui/images/wind_direction_n.inc"
 #include "assets/icons/weather/overcast.inc"
@@ -34,11 +35,12 @@
 #include "assets/icons/weather/sleet.inc"
 #include "assets/icons/weather/snow.inc"
 #include "assets/icons/weather/thunder.inc"
-const ext_img_desc_t images[21] = {
+const ext_img_desc_t images[22] = {
     { "thermometer", &thermometer },
     { "day_partial_cloud", &day_partial_cloud },
     { "fc_home", &fc_home },
     { "fc_settings", &fc_settings },
+    { "fc_alarm_clock", &fc_alarm_clock },
     { "alert", &alert },
     { "wind_direction_n", &wind_direction_n },
     { "overcast", &overcast },

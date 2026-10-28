@@ -2,9 +2,14 @@
 
 *[Deutsche Version](CHANGELOG.md)*
 
-## v0.9.9-beta15 (2026-10-25)
+## v1.0.0-rc1 (2026-10-28)
 
-### Fixed
-- **Biotropic forecast and pollen before 11 am:** The DWD renews both files only once a day, around 11 am. Until then "today" still carries yesterday's date, so the device showed values shifted by one day in the morning and "jumped" after the update. The date of each period (or of the file) now decides, yesterday's periods are dropped. If the file is still from yesterday, the device fetches it again every 20 minutes (also right after boot).
-- **Biotropic summary:** Before 12 noon it shows "Today morning", until 6 pm "Today afternoon", then "Tomorrow morning". If the chosen period is missing, it takes the next one the DWD delivered.
-- The log states the file date ("file from … = OUTDATED").
+### New
+- **Release candidate:** Fusion runs on **two boards**, the **ESP32-P4** (recommended) and the **ESP32-S3**. The web installer has a board selection and installs the matching firmware; over-the-air updates fetch the firmware of the own board automatically.
+- **Timer and stopwatch:** "Timer" button in the menu. When it expires the display flashes; on the P4 an alarm tone plays from the speaker (five tones to choose from, adjustable volume, "listen to tone" in the web interface).
+- **Warning tone (P4):** For a new DWD or pollen warning the selected tone plays briefly; adjustable (on/off, tone, volume), silent during quiet hours, a running timer alarm takes priority.
+
+### Changed
+- **P4:** display and touch rotated by 180° (the connectors sit on the other side in the case).
+- **P4:** no more lost image parts while drawing the interface (the copy into the display is awaited).
+- Documentation: new screenshots (from the P4), notes about display (1024×600) and touch version when buying the S3.

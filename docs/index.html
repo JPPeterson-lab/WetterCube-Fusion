@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WetterCube Fusion – Web-Installer</title>
-  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"></script>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10.4.0/dist/web/install-button.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -79,12 +79,12 @@
 </head>
 <body>
 <div class="container">
-  <h1>WetterCube Fusion <span class="badge">v0.9.9-beta15</span></h1>
+  <h1>WetterCube Fusion <span class="badge">v1.0.0-rc1</span></h1>
   <p class="subtitle">Wetterdisplay für das Waveshare ESP32-S3-Touch-LCD-7B (7&quot;, 1024×600) – Wetter, DWD-Warnungen, Pollenflug, Biowetter, Warnkarte, Sensoren &amp; Home Assistant</p>
 
   <div class="card">
     <h2>Firmware installieren</h2>
-    <p>Verbinde das Board per USB-C-Datenkabel am Anschluss mit der Beschriftung „UART“ (USB TO UART) mit dem Computer. Chrome oder Edge Browser erforderlich. Achtung: Setzt du im Installationsfenster den Haken „Gerät löschen“, wird der gesamte Flash-Speicher gelöscht, auch gespeicherte WLAN-Daten und Einstellungen. Ohne den Haken bleiben sie erhalten. Nur für die genannten Waveshare-Boards; andere Boards werden nicht unterstützt.</p>
+    <p>Wähle unten dein Board und verbinde es per USB-C-Datenkabel am Anschluss mit der Beschriftung „UART“ (USB TO UART) mit dem Computer. Chrome oder Edge Browser erforderlich. Achtung: Setzt du im Installationsfenster den Haken „Gerät löschen“, wird der gesamte Flash-Speicher gelöscht, auch gespeicherte WLAN-Daten und Einstellungen. Ohne den Haken bleiben sie erhalten. Nur für die genannten Waveshare-Boards; andere Boards werden nicht unterstützt.</p>
     <div style="margin:16px 0;padding:14px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;font-size:.92em;line-height:1.55;color:#e6edf3">
       <strong>Welchen Anschluss wählen?</strong><br>
       Nach dem Klick auf den Installationsknopf öffnet der Browser ein Fenster „… möchte eine Verbindung zu einem seriellen Anschluss herstellen“. Wähle dort den Anschluss deines Boards und klicke auf „Verbinden“:
@@ -97,14 +97,24 @@
       <img src="usb-anschluss.png" alt="Beispiel: Fenster zur Auswahl des seriellen Anschlusses unter Windows und auf dem Mac" style="max-width:100%;height:auto;margin-top:10px;border-radius:6px">
     </div>
     <label style="display:block;margin:14px 0 4px;color:#e6edf3;font-size:.9em;line-height:1.5;cursor:pointer"><input type="checkbox" id="haftung-ok" style="margin-right:8px">Ich habe die <a href="https://wettercube.de/nutzungshinweise/" target="_blank" style="color:#58a6ff">Nutzungshinweise</a> gelesen und nutze die Firmware auf eigene Gefahr.</label>
+    <div style="margin:14px 0 6px;color:#e6edf3;font-size:.95em"><strong>Welches Board hast du?</strong></div>
+    <div class="boardwahl" style="display:grid;gap:8px;margin-bottom:12px">
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="p4" checked style="margin-right:8px"><strong>ESP32-P4-WIFI6-Touch-LCD-7B</strong> <span style="color:#3fb950">(empfohlen)</span><br><span style="font-size:.88em;color:#8b949e">Das Board mit Zukunft: mehr Leistung und Speicher, animierte Wettersymbole, Lautsprecher mit Timer und Warnton. Neue Funktionen kommen zuerst hierher.</span></label>
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="s3" style="margin-right:8px"><strong>ESP32-S3-Touch-LCD-7B</strong><br><span style="font-size:.88em;color:#8b949e">Läuft mit allen Kernfunktionen, hat aber weniger Speicher, keine Animationen und keinen Lautsprecher. Nimm das <strong>Modell mit Touch</strong> und 1024×600 Pixeln.</span></label>
+    </div>
+    <p style="font-size:.88em;color:#8b949e;margin:0 0 10px">Achte beim Kauf auf das <strong>7-Zoll-Display mit 1024×600 Pixeln</strong> (es gibt auch eine 800×480-Variante, die nicht passt) und beim S3 auf die <strong>Touch-Ausführung</strong> (das Board gibt es auch ohne Touch).</p>
     <div id="installbereich">
-      <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+      <esp-web-install-button manifest="manifest-p4.json"></esp-web-install-button>
     </div>
     <script>
   (function () {
     var cb = document.getElementById('haftung-ok'), bereich = document.getElementById('installbereich');
     function pruefen() { bereich.style.display = cb.checked ? '' : 'none'; }
     cb.addEventListener('change', pruefen); pruefen();
+    var knopf = document.querySelector('esp-web-install-button');
+    document.querySelectorAll('input[name=board]').forEach(function (r) {
+      r.addEventListener('change', function () { knopf.setAttribute('manifest', r.value === 'p4' ? 'manifest-p4.json' : 'manifest.json'); });
+    });
   })();
 </script>
   </div>
@@ -127,14 +137,14 @@
     <p>
       Wetter · 4-Stunden-Vorhersage · 32 Wettersymbole · Pollenflug (8 Allergene) · Biowetter · Luftqualität · Hinweise (Regen, Frost, UV, Hitze) ·
       DWD Wetterwarnungen · Warnkarte · Sonne · UV-Index · Mondphase · Eigene Sensoren (MQTT/ESPHome) · Lüften-Ampel · Handy-Nachrichten (ntfy) ·
-      Home Assistant (MQTT) · Schalter-Kacheln · Nachtmodus mit Nacht-Uhr · Ruhezeit · Speicherkarte · Dark Mode · WebUI · OTA-Update mit Rollback · Notfall-App · Captive Portal
+      Home Assistant (MQTT) · Schalter-Kacheln · Timer und Stoppuhr · Warnton und Alarmtöne (P4) · Nachtmodus mit Nacht-Uhr · Ruhezeit · Speicherkarte · Dark Mode · WebUI · OTA-Update mit Rollback · Notfall-App · Captive Portal
     </p>
   </div>
 
   <div class="card">
     <h2>Informationen</h2>
     <p>
-      <strong>Hardware:</strong> Waveshare ESP32-S3-Touch-LCD-7B · 7&quot; 1024×600 RGB-Display · GT911 Touch<br>
+      <strong>Hardware:</strong> Waveshare ESP32-P4-WIFI6-Touch-LCD-7B (empfohlen) oder ESP32-S3-Touch-LCD-7B · 7&quot; 1024×600 · GT911 Touch<br>
       <strong>Datenquellen:</strong> <a href="https://open-meteo.com" target="_blank" rel="noopener">Weather data by Open-Meteo.com</a> (<a href="https://open-meteo.com/en/licence" target="_blank" rel="noopener">CC BY 4.0</a>; Werte teils umgerechnet) · Pollen/Luftqualität: Contains modified Copernicus Atmosphere Monitoring Service information, über Open-Meteo · Ortssuche: Location data by <a href="https://www.geonames.org" target="_blank" rel="noopener">GeoNames</a> via Open-Meteo · Warnungen, Pollenflug, Biowetter und Radar: Quelle: <a href="https://opendata.dwd.de" target="_blank" rel="noopener">Deutscher Wetterdienst</a> (<a href="https://www.dwd.de/DE/service/rechtliche_hinweise/rechtliche_hinweise_node.html" target="_blank" rel="noopener">CC BY 4.0</a>)<br>
       <strong>Quellcode:</strong> <a href="https://github.com/JPPeterson-lab/WetterCube-Fusion" target="_blank">JPPeterson-lab/WetterCube-Fusion</a> (Open Source, Apache-Lizenz 2.0; Fehler und Wünsche bitte als Issue)<br>
       <strong>Anleitung:</strong> <a href="https://wiki.wettercube.de/index.php/Fusion/Start" target="_blank">Wiki</a><br>

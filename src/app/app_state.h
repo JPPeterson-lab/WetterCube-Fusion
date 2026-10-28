@@ -93,6 +93,9 @@ struct Config {
   // Biowetter-Kategorien der Kurzübersicht (0=Befinden 1=Hypotonie 2=Bluthochdruck
   // 3=Rheuma entz. 4=Rheuma deg. 5=Asthma 6=Wärmebelastung)
   int ws_cat0 = 0, ws_cat1 = 1, ws_cat2 = 2, ws_cat3 = 5;
+  bool warn_ton_an = true;              // Warnton bei neuer DWD- oder Pollenwarnung (nur mit Lautsprecher, nicht in der Ruhezeit)
+  int warn_ton = 1, warn_laut = 50;
+  int timer_ton = 2, timer_laut = 60;   // Alarmton (0 bis BOARD_AUDIO_TOENE-1) und Lautstaerke in Prozent (nur Boards mit Lautsprecher)
 };
 extern Config cfg;
 
@@ -351,6 +354,9 @@ void aktualisiereWarnkarte();             // neue Karte (warnkarteDsc) anzeigen
 void aktualisiereDwdWarnBtn();
 void uiWarnenPruefen();                   // Regen-/Pollenwarn-Screens bei neuer Warnung zeigen
 void uiMenuInit();
+void uiTimerInit();
+void warnTonSpielen();                    // Warnton (P4) bei neuer Wetter- oder Pollenwarnung, nicht in der Ruhezeit und nicht ueber einem Timer-Alarm (ui_warn.cpp)
+lv_obj_t* uiTimerFuerFoto();              // Timer-Screen ohne Umschalten aufbauen (Bildschirmfoto)                       // Timer und Stoppuhr (ui_timer.cpp), Taste auf dem Menue-Screen
 void demoDatenSetzen(int variante);        // Beispieldaten für Bildschirmfotos (/demo), siehe demo.cpp
 void uiSensorenErzwingen();               // Sensor-Kacheln jetzt aufbauen (Screenshot), Aufrufer hält den LVGL-Lock
 void uiHistorieInit();                    // Hauptscreen: Temperatur/Feuchte/Druck antippen öffnet den Verlauf (ui_historie.cpp)

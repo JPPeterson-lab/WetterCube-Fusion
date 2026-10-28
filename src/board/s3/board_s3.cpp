@@ -50,6 +50,7 @@ esp_lcd_touch_handle_t boardTouchInit() {
 }
 
 esp_lcd_panel_handle_t boardPanelInit() { return waveshare_esp32_s3_rgb_lcd_init(); }
+void boardDrawWarten() {}
 void boardFramebuffer(void** fb) { waveshare_get_frame_buffer(fb, nullptr); }
 void boardBacklightAn() { wavesahre_rgb_lcd_bl_on(); }
 uint32_t boardBilderGezaehlt() { return rgbBilderGezaehlt(); }
@@ -95,3 +96,10 @@ bool boardSdEinhaengen(const char* mount, sdmmc_card_t** card, char* diag, size_
   }
   return true;
 }
+
+// Der S3 hat keinen Lautsprecher: Alarme bleiben optisch (blinkendes Display)
+const char* const BOARD_AUDIO_TONNAMEN[BOARD_AUDIO_TOENE] = {"Piepen", "Glocke", "Melodie", "Sirene", "Sanft"};
+bool boardAudioVorhanden() { return false; }
+void boardAudioTon(int, int, int) {}
+bool boardAudioSpielt() { return false; }
+void boardAudioStopp() {}

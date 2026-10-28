@@ -83,7 +83,7 @@ void create_screen_screenwoche() {
             lv_obj_set_size(obj, 996, 520);
             lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
             lv_obj_set_style_pad_all(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_bg_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_border_color(obj, lv_color_hex(common_94a3b8), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_border_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -92,7 +92,7 @@ void create_screen_screenwoche() {
             lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(obj, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_bg_opa(obj, 138, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
             {
                 lv_obj_t *parent_obj = obj;
                 {
@@ -3343,6 +3343,36 @@ void create_screen_screenmenu() {
             }
         }
         {
+            // buttontimer
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttontimer = obj;
+            lv_obj_set_pos(obj, 333, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_letter_space(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_line_space(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_decor(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &font_montserrat_32, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_src(obj, &fc_alarm_clock, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(common_000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttontimer_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttontimer_label = obj;
+                    lv_obj_set_style_text_color(obj, lv_color_hex(common_000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+        {
             // containersystem
             lv_obj_t *obj = lv_obj_create(parent_obj);
             objects.containersystem = obj;
@@ -4888,12 +4918,11 @@ void create_screen_screen_1() {
             // labelquellehaupt
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.labelquellehaupt = obj;
-            lv_obj_set_pos(obj, 668, 550);
-            lv_obj_set_size(obj, 243, 40);
+            lv_obj_set_pos(obj, 744, 555);
+            lv_obj_set_size(obj, 167, 35);
             lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_font(obj, &font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(common_7b8794), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_align(obj, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "Quelle: Deutscher Wetterdienst");
         }
     }
@@ -5322,6 +5351,8 @@ void delete_screen_screenmenu() {
     objects.labelversion = 0;
     objects.labelbuttonmenu_2 = 0;
     objects.labelbuttonmenu_2_label = 0;
+    objects.buttontimer = 0;
+    objects.buttontimer_label = 0;
     objects.containersystem = 0;
     objects.labelquellemenue_1 = 0;
 }

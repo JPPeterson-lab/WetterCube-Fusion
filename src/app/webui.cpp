@@ -378,6 +378,11 @@ static void handleWebRoot() {
   html.replace("%WS_CAT_OPTIONS1%", baueWsCatOptions(cfg.ws_cat1));
   html.replace("%WS_CAT_OPTIONS2%", baueWsCatOptions(cfg.ws_cat2));
   html.replace("%WS_CAT_OPTIONS3%", baueWsCatOptions(cfg.ws_cat3));
+  { String o; for (int i = 0; i < BOARD_AUDIO_TOENE; i++) o += "<option value='" + String(i) + "'" + (i == cfg.timer_ton ? " selected" : "") + ">" + BOARD_AUDIO_TONNAMEN[i] + "</option>";
+    html.replace("%TIMER_TON_OPTIONS%", o); html.replace("%TIMER_LAUT%", String(cfg.timer_laut)); }
+  { String o; for (int i = 0; i < BOARD_AUDIO_TOENE; i++) o += "<option value='" + String(i) + "'" + (i == cfg.warn_ton ? " selected" : "") + ">" + BOARD_AUDIO_TONNAMEN[i] + "</option>";
+    html.replace("%WARN_TON_OPTIONS%", o); html.replace("%WARN_LAUT%", String(cfg.warn_laut)); html.replace("%WTA%", cfg.warn_ton_an ? "checked" : ""); }
+  if (!boardAudioVorhanden()) { html.replace("id=\"tw_test_zeile\"", "id=\"tw_test_zeile\" style=\"display:none\""); html.replace("id=\"tt_test_zeile\"", "id=\"tt_test_zeile\" style=\"display:none\""); html.replace("id=\"tt_kein\" style=\"display:none\"", "id=\"tt_kein\""); }
   server.send(200, "text/html", html);
 }
 
@@ -443,6 +448,10 @@ static void handleWebSave() {
   if (server.hasArg("ws_cat1"))      cfg.ws_cat1          = server.arg("ws_cat1").toInt();
   if (server.hasArg("ws_cat2"))      cfg.ws_cat2          = server.arg("ws_cat2").toInt();
   if (server.hasArg("ws_cat3"))      cfg.ws_cat3          = server.arg("ws_cat3").toInt();
+  if (server.hasArg("warn_ton"))     { cfg.warn_ton_an = server.hasArg("warn_ton_an"); cfg.warn_ton = constrain(server.arg("warn_ton").toInt(), 0, BOARD_AUDIO_TOENE - 1); }
+  if (server.hasArg("warn_laut"))    cfg.warn_laut        = constrain(server.arg("warn_laut").toInt(), 0, 100);
+  if (server.hasArg("timer_ton"))    cfg.timer_ton        = constrain(server.arg("timer_ton").toInt(), 0, BOARD_AUDIO_TOENE - 1);
+  if (server.hasArg("timer_laut"))   cfg.timer_laut       = constrain(server.arg("timer_laut").toInt(), 0, 100);
   if (cfg.location != prevLocation) {   // Geocoding neu anstoßen
     cfg.lat = 0.0f; cfg.lon = 0.0f;
     logDiag("[Config] Standort geaendert: '%s' -> '%s'", prevLocation.c_str(), cfg.location.c_str());
@@ -536,6 +545,11 @@ String webuiSicherungJson() {   // Einstellungen als JSON (ohne WLAN- und MQTT-P
   doc["ws_cat1"]          = cfg.ws_cat1;
   doc["ws_cat2"]          = cfg.ws_cat2;
   doc["ws_cat3"]          = cfg.ws_cat3;
+  doc["warn_ton_an"]      = cfg.warn_ton_an;
+  doc["warn_ton"]         = cfg.warn_ton;
+  doc["warn_laut"]        = cfg.warn_laut;
+  doc["timer_ton"]        = cfg.timer_ton;
+  doc["timer_laut"]       = cfg.timer_laut;
   { JsonDocument sd; deserializeJson(sd, sensorenSicherungJson().c_str()); doc["sensorik"] = sd; }   // ohne MQTT-Passwort
   { JsonDocument sw; deserializeJson(sw, schalterSicherungJson().c_str()); doc["schalterliste"] = sw; }
   String out;
@@ -616,6 +630,11 @@ static int wendeSicherungAn(const String& body) {
   RS_INT ("ws_cat1",          ws_cat1,          0, 6);
   RS_INT ("ws_cat2",          ws_cat2,          0, 6);
   RS_INT ("ws_cat3",          ws_cat3,          0, 6);
+  RS_BOOL("warn_ton_an",      warn_ton_an);
+  RS_INT ("warn_ton",         warn_ton,         0, BOARD_AUDIO_TOENE - 1);
+  RS_INT ("warn_laut",        warn_laut,        0, 100);
+  RS_INT ("timer_ton",        timer_ton,        0, BOARD_AUDIO_TOENE - 1);
+  RS_INT ("timer_laut",       timer_laut,       0, 100);
   if (doc["sensorik"].is<JsonObject>()) { String sj; serializeJson(doc["sensorik"], sj); if (sensorenAusJson(sj.c_str(), true) >= 0) n++; }
   if (doc["schalterliste"].is<JsonObject>()) { String sj; serializeJson(doc["schalterliste"], sj); if (schalterAusJson(sj.c_str()) >= 0) n++; }
   #undef RS_INT
@@ -925,6 +944,12 @@ void starteWebUI() {
   server.on("/update_datei",   HTTP_POST, handleWebUpdateDatei);
   server.on("/wlan",           HTTP_GET,  handleWebWlanAendern);
   server.on("/wlan_speichern", HTTP_POST, handleWebWlanSave);
+  server.on("/api/tontest",    HTTP_POST, []() {   // Alarmton probehoeren (Einstellungen), ?aus=1 beendet ihn
+    if (server.hasArg("aus")) { boardAudioStopp(); server.send(200, "text/plain", "ok"); return; }
+    if (!boardAudioVorhanden()) { server.send(200, "text/plain", "Dieses Board hat keinen Lautsprecher"); return; }
+    boardAudioTon(constrain(server.arg("ton").toInt(), 0, BOARD_AUDIO_TOENE - 1), constrain(server.arg("laut").toInt(), 0, 100));
+    server.send(200, "text/plain", "ok");
+  });
   server.on("/api/ampel",      HTTP_GET,  handleApiAmpel);
   server.on("/api/ampel_save", HTTP_POST, handleApiAmpelSave);
   server.on("/api/ntfy_save",  HTTP_POST, handleNtfySave);

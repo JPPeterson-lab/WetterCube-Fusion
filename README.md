@@ -7,8 +7,8 @@
 
 **Größer · Besser · Interne Umweltsensoren · MQTT ready · Inkl. aller WetterCubePlus-Funktionen**
 
-![Status](https://img.shields.io/badge/Status-Beta-yellow?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v0.9.9--beta15-blue?style=flat-square&cacheSeconds=1)
+![Status](https://img.shields.io/badge/Status-Release%20Candidate-brightgreen?style=flat-square)
+![Version](https://img.shields.io/badge/Version-v1.0.0--rc1-blue?style=flat-square&cacheSeconds=1)
 ![Ziel](https://img.shields.io/badge/Boards-ESP32--S3%20und%20ESP32--P4-red?style=flat-square&logo=espressif&logoColor=white)
 ![Plattform](https://img.shields.io/badge/Platform-ESP--IDF%205.5-teal?style=flat-square&logo=espressif&logoColor=white)
 ![Lizenz](https://img.shields.io/badge/Lizenz-Apache%202.0-blue?style=flat-square)
@@ -19,9 +19,9 @@
 
 > **🔓 Open Source (Apache 2.0):** Quellcode, Web-Installer und Firmware liegen in diesem Repository. Texte und Bilder: CC BY-NC 4.0, Bestandteile Dritter: [CREDITS.md](CREDITS.md), Name und Logos sind nicht freigegeben ([NOTICE](NOTICE)).
 >
-> **🚧 In Entwicklung (Beta):** Fusion wird auf **zwei Boards gleichzeitig** entwickelt (S3 und P4). Beide bekommen dieselben Kernfunktionen; der P4 zusätzlich animierte Symbole und weitere Multimedia-Funktionen. Später gibt es für jedes Board eine eigene Firmware.
+> **✅ Release Candidate:** Fusion läuft auf **zwei Boards**: dem **ESP32-P4** (empfohlen, zukunftssicher: mehr Leistung, animierte Symbole, Lautsprecher mit Timer und Warnton) und dem **ESP32-S3**. Beide haben dieselben Kernfunktionen, der Web-Installer wählt die passende Firmware.
 >
-> **⚠️ Nur auf Waveshare-Boards:** Unterstützt sind genau die beiden genannten Boards. Andere Boards werden nicht unterstützt und können Probleme machen.
+> **⚠️ Nur auf Waveshare-Boards:** Unterstützt sind genau die beiden genannten Boards. Achte auf das **7-Zoll-Modell mit 1024×600 Pixeln** (die 800×480-Variante passt nicht) und beim S3 auf die **Touch-Ausführung** (es gibt das Board auch ohne Touch). Andere Boards werden nicht unterstützt.
 >
 > **💾 microSD-Karte nötig:** Verlauf, Log, Sicherung der Einstellungen und die Notfall-Kopie der Firmware liegen auf einer microSD-Karte (FAT32). Ohne Karte fehlen diese Funktionen.
 >
@@ -101,9 +101,9 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 
 > **🔓 Open source (Apache 2.0):** source code, web installer and firmware are in this repository. Texts and images: CC BY-NC 4.0, third-party components: [CREDITS.md](CREDITS.md), name and logos are not licensed ([NOTICE](NOTICE)).
 >
-> **🚧 In development (beta):** Fusion is developed on **two boards at the same time** (S3 and P4). Both get the same core functions; the P4 additionally gets animated icons and further multimedia functions. Later each board gets its own firmware.
+> **✅ Release candidate:** Fusion runs on **two boards**: the **ESP32-P4** (recommended, future-proof: more power, animated icons, speaker with timer and warning tone) and the **ESP32-S3**. Both have the same core functions, the web installer picks the matching firmware.
 >
-> **⚠️ Waveshare boards only:** Exactly the two boards named above are supported. Other boards are not supported and can cause problems.
+> **⚠️ Waveshare boards only:** Exactly the two boards named above are supported. Make sure you get the **7-inch model with 1024×600 pixels** (the 800×480 variant does not fit) and, for the S3, the **touch version** (the board also exists without touch). Other boards are not supported.
 >
 > **💾 microSD card required:** history, log, settings backup and the emergency copy of the firmware live on a microSD card (FAT32). Without a card these functions are missing.
 >

@@ -4,6 +4,10 @@ dependencies:
   lvgl/lvgl: "~8.4.0"
   bblanchon/arduinojson: "^7.0.0"
   # Nur fuer das ESP32-P4-Board (src/board/p4): Display-Controller, WLAN ueber den ESP32-C6 (esp_hosted)
+  espressif/esp_codec_dev:
+    version: "~1.5"
+    rules:
+      - if: "target == esp32p4"
   espressif/esp_lcd_ek79007:
     version: "^2.0.2"
     rules:

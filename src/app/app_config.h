@@ -25,10 +25,14 @@
 
 // Muss mit docs/version.json übereinstimmen (sobald es Releases gibt)
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.9.9-beta15"
+#define FIRMWARE_VERSION "1.0.0-rc1"
 #endif
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/WetterCube-Fusion/main/docs/version.json"
+#if CONFIG_IDF_TARGET_ESP32P4
+#define OTA_BIN_URL      "https://jppeterson-lab.github.io/WetterCube-Fusion/firmware/p4-firmware.bin"   // der P4 bekommt seine eigene Firmware
+#else
 #define OTA_BIN_URL      "https://jppeterson-lab.github.io/WetterCube-Fusion/firmware/firmware.bin"
+#endif
 
 #define MDNS_NAME        "wettercube-fusion"   // http://wettercube-fusion.local
 #define PORTAL_SSID      "WetterCube-Fusion-Setup"

@@ -236,6 +236,33 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
   <div class="row"><span>Regenbalken anzeigen (aus: das Temperaturdiagramm wird h&ouml;her)</span>
     <label class="toggle"><input type="checkbox" name="vl_regen" %VR%><span class="slider"></span></label></div>
 </div>
+<div class="card">
+  <h2>T&ouml;ne (Lautsprecher)</h2>
+  <h3 style="margin:0 0 4px;font-size:1em">Wetter- und Pollenwarnung</h3>
+  <div class="row"><span>Warnton bei neuer Warnung (nicht in der Ruhezeit)</span>
+    <label class="toggle"><input type="checkbox" name="warn_ton_an" %WTA%><span class="slider"></span></label></div>
+  <label>Warnton</label>
+  <select name="warn_ton" id="tw_ton">%WARN_TON_OPTIONS%</select>
+  <label>Lautst&auml;rke: <span id="wl_v">%WARN_LAUT%</span>%</label>
+  <input type="range" name="warn_laut" id="tw_laut" min="0" max="100" value="%WARN_LAUT%" oninput="document.getElementById('wl_v').textContent=this.value">
+  <div style="margin-top:10px" id="tw_test_zeile">
+    <button type="button" class="btn" onclick="tonTest(true,'w')">Ton probeh&ouml;ren</button>
+    <button type="button" class="btn" onclick="tonTest(false,'w')">Stopp</button>
+  </div>
+  <hr style="margin:14px 0;border-color:var(--bd)">
+  <h3 style="margin:0 0 4px;font-size:1em">Timer und Stoppuhr</h3>
+  <p class="hint">Erreichbar &uuml;ber das Men&uuml; (Taste Timer). Wenn die Zeit abl&auml;uft, blinkt das Display; mit Lautsprecher (P4) ert&ouml;nt zus&auml;tzlich ein Ton, bis du den Bildschirm antippst.</p>
+  <label>Alarmton</label>
+  <select name="timer_ton" id="tt_ton">%TIMER_TON_OPTIONS%</select>
+  <label>Lautst&auml;rke: <span id="tl_v">%TIMER_LAUT%</span>%</label>
+  <input type="range" name="timer_laut" id="tt_laut" min="0" max="100" value="%TIMER_LAUT%" oninput="document.getElementById('tl_v').textContent=this.value">
+  <div style="margin-top:10px" id="tt_test_zeile">
+    <button type="button" class="btn" onclick="tonTest(true,'t')">Ton probeh&ouml;ren</button>
+    <button type="button" class="btn" onclick="tonTest(false,'t')">Stopp</button>
+    <span class="hint" id="tt_msg"></span>
+  </div>
+  <p class="hint" id="tt_kein" style="display:none">Dieses Board hat keinen Lautsprecher: Der Alarm bleibt optisch (blinkendes Display).</p>
+</div>
 </div>
 
 <div class="tab" id="t-wetter">
@@ -611,6 +638,12 @@ window.addEventListener('hashchange',function(){zeige(location.hash.replace('#',
 document.getElementById('tabs').addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[data-t]'):null;if(a){e.preventDefault();zeige(a.getAttribute('data-t'));}});
 document.getElementById('einst').addEventListener('input',function(){var d=document.getElementById('dirty');if(d)d.style.display='inline';});
 wcThemeLabel();startTab();
+function tonTest(an,w){
+  var m=document.getElementById('tt_msg');
+  if(!an){fetch('/api/tontest?aus=1',{method:'POST'});m.textContent='';return;}
+  var ton=document.getElementById('t'+w+'_ton').value,laut=document.getElementById('t'+w+'_laut').value;
+  fetch('/api/tontest?ton='+ton+'&laut='+laut,{method:'POST'}).then(function(r){return r.text();}).then(function(t){m.textContent=t==='ok'?'Ton l\u00e4uft (Stopp beendet ihn)':t;}).catch(function(){m.textContent='Fehler';});
+}
 </script>
 </body></html>
 )rawhtml";

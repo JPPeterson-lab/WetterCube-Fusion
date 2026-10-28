@@ -3,6 +3,7 @@
 // Warnungen: DWD-Warnkarte mit Standort-Marker und Windpfeil, Warnliste, Warn-Button,
 // Regen-/Pollen-Warnscreens mit Detail-Popup
 #include "app_state.h"
+#include "../board/board.h"
 #include <math.h>
 #include "navigation.h"
 #include "../ui/screens.h"
@@ -227,6 +228,12 @@ void aktualisiereWarnliste() {
   else          lv_obj_clear_flag(warnListeContainer, LV_OBJ_FLAG_SCROLLABLE);
 }
 
+// Warnton (nur Boards mit Lautsprecher): kurz, einmal je neuer Warnung; nicht in der Ruhezeit, ein laufender Timer-Alarm hat Vorrang
+void warnTonSpielen() {
+  if (!boardAudioVorhanden() || !cfg.warn_ton_an || warnRuheAktiv() || boardAudioSpielt()) return;
+  boardAudioTon(cfg.warn_ton, cfg.warn_laut, 4000);
+}
+
 // ── Warn-Button auf dem Hauptscreen ──────────────────────────────────────────
 static void cbDwdBlinker(lv_timer_t*) {
   if (!dwdWarnBtn || dwdWarnBestaetigt || warnRuheAktiv()) return;
@@ -264,10 +271,16 @@ static void erstelleDwdWarnBtn() {
 void aktualisiereDwdWarnBtn() {
   LvLock lock;
   if (!dwdWarnBtn) return;
+  static uint32_t zuletztGemeldet = 0;                           // Kennung der zuletzt gemeldeten Warnungen: Ton nur bei neuen
+  uint32_t kennung = 0;
+  if (cfg.warn_region) for (int i = 0; i < anzahl_warnungen && i < 5; i++) for (const char* c = warnungen[i].titel.c_str(); *c; c++) kennung = kennung * 31 + (uint8_t)*c;
   if (cfg.warn_region && anzahl_warnungen > 0 && !warnRuheAktiv()) {
+    if (kennung != zuletztGemeldet && !dwdWarnBestaetigt) warnTonSpielen();
+    zuletztGemeldet = kennung;
     lv_obj_clear_flag(dwdWarnBtn, LV_OBJ_FLAG_HIDDEN);
     if (!dwdWarnBestaetigt && !dwdBlinker) dwdBlinker = lv_timer_create(cbDwdBlinker, 600, nullptr);
   } else {
+    if (!anzahl_warnungen || !cfg.warn_region) zuletztGemeldet = 0;
     lv_obj_add_flag(dwdWarnBtn, LV_OBJ_FLAG_HIDDEN);
     dwdWarnBestaetigt = false;
     if (dwdBlinker) { lv_timer_del(dwdBlinker); dwdBlinker = nullptr; }
@@ -368,6 +381,7 @@ void uiWarnenPruefen() {
   if (pollenWarnAktiv && !pollenWarnBestaetigt && !pollenWarnGezeigt) {
     pollenWarnGezeigt = true;
     nav_goto(SCREEN_ID_SCREENWARNUNGPOLLEN);
+    warnTonSpielen();
   }
 }
 
