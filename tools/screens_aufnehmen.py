@@ -42,7 +42,7 @@ for name, s in (("main", "main"), ("woche", "woche"), ("verlauf", "verlauf"), ("
     foto(name, s)
 print("Beispieldaten (Variante 0):")
 demo(1, 0)
-for name, s in (("allergen", "allergen"), ("bio", "bio"), ("luft", "luft"), ("lueftenwarnung", "lueftenwarnung"), ("pollenwarnung", "pollenwarnung")):
+for name, s in (("allergen", "allergen"), ("tagebuch", "tagebuch"), ("bio", "bio"), ("luft", "luft"), ("lueftenwarnung", "lueftenwarnung"), ("pollenwarnung", "pollenwarnung")):
     foto(name, s)
 print("Beispieldaten (Variante 1: Regenhinweis, DWD-Warnung, Update-Symbol):")
 demo(1, 1)

@@ -13,6 +13,7 @@
 #include "homeassistant.h"
 #include "api_next.h"
 #include "next_geraete.h"
+#include "tagebuch.h"
 #include "../storage/storage.h"
 #include <nvs_flash.h>
 #include "ntfy.h"
@@ -269,6 +270,7 @@ static void handleWebRoot() {
   html.replace("%HR%",           cfg.hinweis_regen ? "checked" : "");
   html.replace("%HF%",           cfg.hinweis_frost ? "checked" : "");
   html.replace("%VR%",           cfg.verlauf_regen ? "checked" : "");
+  html.replace("%TBA%",          cfg.tagebuch_an ? "checked" : "");
   html.replace("%SD%",           speicherStatusText());
   { String nv; bool nb = notfallBereit(&nv);
     html.replace("%NOTFALL%", nb ? "Notfall-App Version " + nv + " ist installiert" : String("Notfall-App ist nicht installiert (nur per USB nachrüstbar)"));
@@ -448,6 +450,7 @@ static void handleWebSave() {
   if (server.hasArg("ws_cat1"))      cfg.ws_cat1          = server.arg("ws_cat1").toInt();
   if (server.hasArg("ws_cat2"))      cfg.ws_cat2          = server.arg("ws_cat2").toInt();
   if (server.hasArg("ws_cat3"))      cfg.ws_cat3          = server.arg("ws_cat3").toInt();
+  if (server.hasArg("tagebuch_form")) cfg.tagebuch_an = server.hasArg("tagebuch_an");
   if (server.hasArg("warn_ton"))     { cfg.warn_ton_an = server.hasArg("warn_ton_an"); cfg.warn_ton = constrain(server.arg("warn_ton").toInt(), 0, BOARD_AUDIO_TOENE - 1); }
   if (server.hasArg("warn_laut"))    cfg.warn_laut        = constrain(server.arg("warn_laut").toInt(), 0, 100);
   if (server.hasArg("timer_ton"))    cfg.timer_ton        = constrain(server.arg("timer_ton").toInt(), 0, BOARD_AUDIO_TOENE - 1);
@@ -546,6 +549,7 @@ String webuiSicherungJson() {   // Einstellungen als JSON (ohne WLAN- und MQTT-P
   doc["ws_cat2"]          = cfg.ws_cat2;
   doc["ws_cat3"]          = cfg.ws_cat3;
   doc["warn_ton_an"]      = cfg.warn_ton_an;
+  doc["tagebuch_an"]      = cfg.tagebuch_an;
   doc["warn_ton"]         = cfg.warn_ton;
   doc["warn_laut"]        = cfg.warn_laut;
   doc["timer_ton"]        = cfg.timer_ton;
@@ -631,6 +635,7 @@ static int wendeSicherungAn(const String& body) {
   RS_INT ("ws_cat2",          ws_cat2,          0, 6);
   RS_INT ("ws_cat3",          ws_cat3,          0, 6);
   RS_BOOL("warn_ton_an",      warn_ton_an);
+  RS_BOOL("tagebuch_an",      tagebuch_an);
   RS_INT ("warn_ton",         warn_ton,         0, BOARD_AUDIO_TOENE - 1);
   RS_INT ("warn_laut",        warn_laut,        0, 100);
   RS_INT ("timer_ton",        timer_ton,        0, BOARD_AUDIO_TOENE - 1);
@@ -1003,6 +1008,7 @@ void starteWebUI() {
   sensorenWebuiRegistrieren(server);
   schalterWebuiRegistrieren(server);
   nextGeraeteWebuiRegistrieren(server);
+  tagebuchWebuiRegistrieren(server);
   speicherWebuiRegistrieren(server);
   screenshotRegistrieren(server);
   server.begin();

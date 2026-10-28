@@ -78,6 +78,7 @@ void ladeCfg() {
   cfg.ws_cat2          = prefs.getInt   ("ws_cat2",     2);
   cfg.ws_cat3          = prefs.getInt   ("ws_cat3",     5);
   cfg.warn_ton_an      = prefs.getBool  ("warn_ton_an", true);
+  cfg.tagebuch_an      = prefs.getBool  ("tagebuch_an", true);
   cfg.warn_ton         = constrain(prefs.getInt("warn_ton", 1), 0, 4);
   cfg.warn_laut        = constrain(prefs.getInt("warn_laut", 50), 0, 100);
   cfg.timer_ton        = constrain(prefs.getInt("timer_ton", 2), 0, 4);
@@ -158,6 +159,7 @@ void speichereCfg() {
   prefs.putInt   ("ws_cat2",     cfg.ws_cat2);
   prefs.putInt   ("ws_cat3",     cfg.ws_cat3);
   prefs.putBool  ("warn_ton_an", cfg.warn_ton_an);
+  prefs.putBool  ("tagebuch_an", cfg.tagebuch_an);
   prefs.putInt   ("warn_ton",    cfg.warn_ton);
   prefs.putInt   ("warn_laut",   cfg.warn_laut);
   prefs.putInt   ("timer_ton",   cfg.timer_ton);

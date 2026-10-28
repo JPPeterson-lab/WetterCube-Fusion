@@ -63,6 +63,7 @@ static void starten()
         uiWarnInit();
         uiMenuInit();
         uiTimerInit();
+        uiTagebuchInit();
         uiSensorenInit();
         uiLuftInit();
         uiLueftenInit();

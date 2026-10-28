@@ -493,11 +493,22 @@ void change_color_theme(uint32_t theme_index) {
     lv_obj_set_style_bg_opa(objects.buttonwochehome, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(objects.buttonwocheweiter, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(objects.buttonwocheweiter, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(objects.screentagebuch, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(objects.screentagebuch, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(objects.containertagebuch, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(objects.containertagebuch, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(objects.buttontagebuchzurueck, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(objects.buttontagebuchzurueck, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(objects.buttontagebuchhome, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(objects.buttontagebuchhome, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(objects.buttontagebuchweiter, lv_color_hex(theme_colors[theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(objects.buttontagebuchweiter, (lv_opa_t)(theme_colors[theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
 // Common colors
 const uint32_t common_000000 = 0x000000;
 const uint32_t common_0e7490 = 0x0e7490;
+const uint32_t common_16a34a = 0x16a34a;
 const uint32_t common_3a424d = 0x3a424d;
 const uint32_t common_6b7280 = 0x6b7280;
 const uint32_t common_7b8794 = 0x7b8794;
@@ -505,6 +516,8 @@ const uint32_t common_87ceeb = 0x87ceeb;
 const uint32_t common_94a3b8 = 0x94a3b8;
 const uint32_t common_d1d5db = 0xd1d5db;
 const uint32_t common_d67a28 = 0xd67a28;
+const uint32_t common_d97706 = 0xd97706;
+const uint32_t common_dc2626 = 0xdc2626;
 const uint32_t common_e9b117 = 0xe9b117;
 const uint32_t common_ffffff = 0xffffff;
 

@@ -66,6 +66,238 @@ void tick_screen_screennachtuhr() {
 }
 
 
+void create_screen_screentagebuch() {
+    lv_obj_t *obj = lv_obj_create(0);
+    objects.screentagebuch = obj;
+    lv_obj_set_pos(obj, 0, 0);
+    lv_obj_set_size(obj, 1024, 600);
+        lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+    {
+        lv_obj_t *parent_obj = obj;
+        {
+            // containertagebuch
+            lv_obj_t *obj = lv_obj_create(parent_obj);
+            objects.containertagebuch = obj;
+            lv_obj_set_pos(obj, 14, 14);
+            lv_obj_set_size(obj, 996, 520);
+            lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+            lv_obj_set_style_pad_all(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_color(obj, lv_color_hex(common_94a3b8), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_width(obj, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // labeltagebuchtitel
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.labeltagebuchtitel = obj;
+                    lv_obj_set_pos(obj, 73, 17);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_label_set_text(obj, "Allergie-Tagebuch");
+                }
+                {
+                    // labeltagebuchfrage
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.labeltagebuchfrage = obj;
+                    lv_obj_set_pos(obj, 73, 61);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_label_set_text(obj, "Wie geht es dir heute?");
+                }
+                {
+                    // buttontagebuchgut
+                    lv_obj_t *obj = lv_btn_create(parent_obj);
+                    objects.buttontagebuchgut = obj;
+                    lv_obj_set_pos(obj, 39, 103);
+                    lv_obj_set_size(obj, 290, 88);
+                    lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_radius(obj, 14, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_color(obj, lv_color_hex(common_16a34a), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    {
+                        lv_obj_t *parent_obj = obj;
+                        {
+                            // buttontagebuchgut_label
+                            lv_obj_t *obj = lv_label_create(parent_obj);
+                            objects.buttontagebuchgut_label = obj;
+                            lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                            lv_label_set_text(obj, "Keine Beschwerden");
+                            lv_obj_center(obj);
+                        }
+                    }
+                }
+                {
+                    // buttontagebuchleicht
+                    lv_obj_t *obj = lv_btn_create(parent_obj);
+                    objects.buttontagebuchleicht = obj;
+                    lv_obj_set_pos(obj, 352, 103);
+                    lv_obj_set_size(obj, 290, 88);
+                    lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_radius(obj, 14, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_color(obj, lv_color_hex(common_d97706), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    {
+                        lv_obj_t *parent_obj = obj;
+                        {
+                            // buttontagebuchleicht_label
+                            lv_obj_t *obj = lv_label_create(parent_obj);
+                            objects.buttontagebuchleicht_label = obj;
+                            lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                            lv_label_set_text(obj, "Leichte Beschwerden");
+                            lv_obj_center(obj);
+                        }
+                    }
+                }
+                {
+                    // buttontagebuchstark
+                    lv_obj_t *obj = lv_btn_create(parent_obj);
+                    objects.buttontagebuchstark = obj;
+                    lv_obj_set_pos(obj, 665, 103);
+                    lv_obj_set_size(obj, 290, 88);
+                    lv_obj_set_style_text_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_radius(obj, 14, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_color(obj, lv_color_hex(common_dc2626), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    {
+                        lv_obj_t *parent_obj = obj;
+                        {
+                            // buttontagebuchstark_label
+                            lv_obj_t *obj = lv_label_create(parent_obj);
+                            objects.buttontagebuchstark_label = obj;
+                            lv_obj_set_style_text_color(obj, lv_color_hex(common_ffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                            lv_label_set_text(obj, "Starke Beschwerden");
+                            lv_obj_center(obj);
+                        }
+                    }
+                }
+                {
+                    // labeltagebuchstatus
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.labeltagebuchstatus = obj;
+                    lv_obj_set_pos(obj, 39, 205);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_label_set_text(obj, "Heute: noch kein Eintrag");
+                }
+                {
+                    // containertagebuchdiagramm
+                    lv_obj_t *obj = lv_obj_create(parent_obj);
+                    objects.containertagebuchdiagramm = obj;
+                    lv_obj_set_pos(obj, 39, 247);
+                    lv_obj_set_size(obj, 916, 226);
+                    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+                    lv_obj_set_style_pad_all(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(obj, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_width(obj, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_color(obj, lv_color_hex(common_94a3b8), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_radius(obj, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    {
+                        lv_obj_t *parent_obj = obj;
+                        {
+                            // labeltagebuchdiagrammtitel
+                            lv_obj_t *obj = lv_label_create(parent_obj);
+                            objects.labeltagebuchdiagrammtitel = obj;
+                            lv_obj_set_pos(obj, 13, 5);
+                            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                            lv_label_set_text(obj, "Letzte 30 Tage");
+                        }
+                    }
+                }
+                {
+                    // labeltagebuchlegende
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.labeltagebuchlegende = obj;
+                    lv_obj_set_pos(obj, 39, 481);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_label_set_text(obj, "Balken: Beschwerden  ·  Linie: Pollenbelastung");
+                }
+            }
+        }
+        {
+            // buttontagebuchzurueck
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttontagebuchzurueck = obj;
+            lv_obj_set_pos(obj, 13, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_left_60, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttontagebuchzurueck_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttontagebuchzurueck_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+        {
+            // buttontagebuchhome
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttontagebuchhome = obj;
+            lv_obj_set_pos(obj, 465, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_home, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttontagebuchhome_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttontagebuchhome_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+        {
+            // buttontagebuchweiter
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.buttontagebuchweiter = obj;
+            lv_obj_set_pos(obj, 911, 548);
+            lv_obj_set_size(obj, 100, 40);
+            lv_obj_set_style_bg_img_src(obj, &fc_right_60, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_img_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, (lv_opa_t)(theme_colors[active_theme_index][THEME_COLOR_SCREEN] >> 24), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(theme_colors[active_theme_index][THEME_COLOR_SCREEN]), LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    // buttontagebuchweiter_label
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.buttontagebuchweiter_label = obj;
+                    lv_label_set_text(obj, "");
+                    lv_obj_center(obj);
+                }
+            }
+        }
+    }
+
+    tick_screen_screentagebuch();
+}
+
+void tick_screen_screentagebuch() {
+}
+
+
 void create_screen_screenwoche() {
     lv_obj_t *obj = lv_obj_create(0);
     objects.screenwoche = obj;
@@ -5037,6 +5269,7 @@ void tick_screen_screenboot() {
 typedef void (*tick_screen_func_t)();
 tick_screen_func_t tick_screen_funcs[] = {
     tick_screen_screennachtuhr,
+    tick_screen_screentagebuch,
     tick_screen_screenwoche,
     tick_screen_screenverlauf,
     tick_screen_screensensoren,
@@ -5069,6 +5302,33 @@ void delete_screen_screennachtuhr() {
     objects.labelnachtdatum = 0;
     objects.imagenachtwetter = 0;
     objects.labelnachttemp = 0;
+}
+
+void delete_screen_screentagebuch() {
+    if (objects.screentagebuch != NULL) {
+        pp_anim_stop_timelines_for_deleted_tree(objects.screentagebuch);
+        lv_obj_del(objects.screentagebuch);
+    }
+    objects.screentagebuch = 0;
+    objects.containertagebuch = 0;
+    objects.labeltagebuchtitel = 0;
+    objects.labeltagebuchfrage = 0;
+    objects.buttontagebuchgut = 0;
+    objects.buttontagebuchgut_label = 0;
+    objects.buttontagebuchleicht = 0;
+    objects.buttontagebuchleicht_label = 0;
+    objects.buttontagebuchstark = 0;
+    objects.buttontagebuchstark_label = 0;
+    objects.labeltagebuchstatus = 0;
+    objects.containertagebuchdiagramm = 0;
+    objects.labeltagebuchdiagrammtitel = 0;
+    objects.labeltagebuchlegende = 0;
+    objects.buttontagebuchzurueck = 0;
+    objects.buttontagebuchzurueck_label = 0;
+    objects.buttontagebuchhome = 0;
+    objects.buttontagebuchhome_label = 0;
+    objects.buttontagebuchweiter = 0;
+    objects.buttontagebuchweiter_label = 0;
 }
 
 void delete_screen_screenwoche() {
@@ -5538,6 +5798,7 @@ void delete_screen_screenboot() {
 typedef void (*delete_screen_func_t)();
 delete_screen_func_t delete_screen_funcs[] = {
     delete_screen_screennachtuhr,
+    delete_screen_screentagebuch,
     delete_screen_screenwoche,
     delete_screen_screenverlauf,
     delete_screen_screensensoren,
@@ -5564,6 +5825,7 @@ void create_screens() {
     lv_disp_set_theme(dispp, theme);
 
     create_screen_screennachtuhr();
+    create_screen_screentagebuch();
     create_screen_screenwoche();
     create_screen_screenverlauf();
     create_screen_screensensoren();

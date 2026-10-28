@@ -237,6 +237,13 @@ const char WEBUI_HTML[] PROGMEM = R"rawhtml(
     <label class="toggle"><input type="checkbox" name="vl_regen" %VR%><span class="slider"></span></label></div>
 </div>
 <div class="card">
+  <h2>Allergie-Tagebuch</h2>
+  <input type="hidden" name="tagebuch_form" value="1">
+  <div class="row"><span>Seite &bdquo;Allergie-Tagebuch&ldquo; anzeigen (aus: sie fehlt in der Reihe der Bildschirme; die Eintr&auml;ge bleiben erhalten)</span>
+    <label class="toggle"><input type="checkbox" name="tagebuch_an" %TBA%><span class="slider"></span></label></div>
+  <p class="hint">Eintr&auml;ge ansehen, erg&auml;nzen, l&ouml;schen und als CSV laden: <a href="/tagebuch">Tagebuch</a>.</p>
+</div>
+<div class="card">
   <h2>T&ouml;ne (Lautsprecher)</h2>
   <h3 style="margin:0 0 4px;font-size:1em">Wetter- und Pollenwarnung</h3>
   <div class="row"><span>Warnton bei neuer Warnung (nicht in der Ruhezeit)</span>

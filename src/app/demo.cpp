@@ -4,6 +4,7 @@
 // "/demo?an=1&v=1|2" setzt eine Variante, "/demo?an=0" lädt alle echten Daten neu. Nichts davon wird gespeichert.
 #include "app_state.h"
 #include "lueften.h"
+#include "tagebuch.h"
 #include <time.h>
 
 // Beispieldaten der 7-Tage-Vorschau (Datum ab heute)
@@ -28,6 +29,7 @@ static void demoWoche() {
 void demoDatenSetzen(int variante) {
   LvLock lock;
   demoWoche();
+  tagebuchDemo();
   // Pollen: DWD-Stufen 0–3 (heute, morgen, übermorgen) und Open-Meteo-Körner/m³ (nächste Stunden)
   pollen.dwd_hasel = 0.5f;   pollen.dwd_hasel_tmr = 0.5f;   pollen.dwd_hasel_da = 0;
   pollen.dwd_erle = 1.0f;    pollen.dwd_erle_tmr = 1.5f;    pollen.dwd_erle_da = 1.0f;

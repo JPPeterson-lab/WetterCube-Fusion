@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Jan Althaus (JPPeterson-lab)
 // Bildschirmfoto: aktuellen Bildschirminhalt ausliefern, als PNG (/screenshot.png, Knopf in der Web-Oberflaeche) oder BMP (/screenshot.bmp, Diagnose).
-// Hilfreich, um Layout und Animationen ohne Foto zu pruefen. Mit ?s=main|woche|verlauf|bio|allergen|karte|warnliste|luft|sensoren|menu|pollenwarnung|boot|kachel30|kachel32 auch andere Seiten. Rendert den aktiven Screen einmal in einen PSRAM-Puffer.
+// Hilfreich, um Layout und Animationen ohne Foto zu pruefen. Mit ?s=main|woche|tagebuch|verlauf|bio|allergen|karte|warnliste|luft|sensoren|menu|pollenwarnung|boot|kachel30|kachel32 auch andere Seiten. Rendert den aktiven Screen einmal in einen PSRAM-Puffer.
 #include "app_state.h"
 #include "lueften.h"
 #include "../platform/WebServer.h"
@@ -25,11 +25,12 @@ static uint8_t* fotoNehmen(WebServer& server, int& W, int& H) {
       uint32_t neu = theme == "dark" ? THEME_DARK : theme == "light" ? THEME_LIGHT : altesDesign;
       if (neu != altesDesign) { change_color_theme(neu); aktualisiereUI(); designGewechselt = true; }
       lv_obj_t* scr = lv_scr_act();
-      String s = server.arg("s");                          // ?s=main|woche|verlauf|bio|allergen|karte|warnliste|luft|sensoren|menu|pollenwarnung|boot: andere Seite zeigen, ohne umzuschalten
+      String s = server.arg("s");                          // ?s=main|woche|tagebuch|verlauf|bio|allergen|karte|warnliste|luft|sensoren|menu|pollenwarnung|boot: andere Seite zeigen, ohne umzuschalten
       if (s == "main") scr = objects.screen_1; else if (s == "bio") scr = objects.screenbiowetter;
       else if (s == "allergen") scr = objects.screenallergen; else if (s == "sensoren") { scr = objects.screensensoren; uiSensorenErzwingen(); }
       else if (s == "menu") { scr = objects.screenmenu; uiSystemErzwingen(); } else if (s == "nachtuhr") { scr = objects.screennachtuhr; uiNachtUhrErzwingen(); } else if (s == "luft") { scr = objects.screenairquality; uiLuftErzwingen(); }
       else if (s == "woche") { scr = objects.screenwoche; aktualisiereWoche(); }
+      else if (s == "tagebuch") { scr = objects.screentagebuch; aktualisiereTagebuch(); }
       else if (s == "verlauf") scr = objects.screenverlauf; else if (s == "karte") scr = objects.screenwarnkarte1;
       else if (s == "warnliste") scr = objects.screenwarnkarte2; else if (s == "pollenwarnung") scr = objects.screenwarnungpollen; else if (s == "lueftenwarnung") { lueftenDemoSetzen(); aktualisiereLueftenWarnScreen(); scr = objects.screenwarnunglueften; } else if (s == "boot") scr = objects.screenboot;
       else if (s == "timer") scr = uiTimerFuerFoto();

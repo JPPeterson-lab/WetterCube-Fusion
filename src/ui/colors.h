@@ -30,6 +30,7 @@ void change_color_theme(uint32_t theme_index);
 // Common colors
 extern const uint32_t common_000000;
 extern const uint32_t common_0e7490;
+extern const uint32_t common_16a34a;
 extern const uint32_t common_3a424d;
 extern const uint32_t common_6b7280;
 extern const uint32_t common_7b8794;
@@ -37,6 +38,8 @@ extern const uint32_t common_87ceeb;
 extern const uint32_t common_94a3b8;
 extern const uint32_t common_d1d5db;
 extern const uint32_t common_d67a28;
+extern const uint32_t common_d97706;
+extern const uint32_t common_dc2626;
 extern const uint32_t common_e9b117;
 extern const uint32_t common_ffffff;
 

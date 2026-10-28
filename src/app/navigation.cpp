@@ -5,7 +5,7 @@
 
 // ── Navigationsplan ───────────────────────────────────────────────────────────
 //  Hauptkette (Kreis):
-//    screen_1 ─> woche ─> verlauf ─> biowetter ─> allergen ─> warnkarte1 ─> airquality ─> sensoren ─> screen_1
+//    screen_1 ─> woche ─> verlauf ─> biowetter ─> allergen ─> tagebuch ─> warnkarte1 ─> airquality ─> sensoren ─> screen_1
 //  Warnkarte1 <-> Warnkarte2 über den Hub-Button
 //  Home-Icons führen überall auf screen_1, fc_settings auf screenmenu
 // ─────────────────────────────────────────────────────────────────────────────
@@ -21,6 +21,10 @@ static void on_nav(lv_event_t *e)
 {
     nav_goto((enum ScreensEnum)(intptr_t)lv_event_get_user_data(e));
 }
+
+// Allergie-Tagebuch ist abschaltbar (Einstellung): Dann springen Allergene vorwaerts und Warnkarte rueckwaerts direkt aneinander vorbei
+static void on_nav_nach_allergen_vor(lv_event_t *)  { nav_goto(cfg.tagebuch_an ? SCREEN_ID_SCREENTAGEBUCH : SCREEN_ID_SCREENWARNKARTE1); }
+static void on_nav_nach_warnkarte_zurueck(lv_event_t *) { nav_goto(cfg.tagebuch_an ? SCREEN_ID_SCREENTAGEBUCH : SCREEN_ID_SCREENALLERGEN); }
 
 static void link(lv_obj_t *btn, enum ScreensEnum target)
 {
@@ -38,7 +42,7 @@ static void screenSpur(lv_timer_t*)
     letzter = a;
     struct { lv_obj_t* o; const char* n; } t[] = {
         {objects.screen_1, "Hauptscreen"}, {objects.screenwoche, "7-Tage-Vorschau"}, {objects.screenverlauf, "Temperaturverlauf"}, {objects.screenbiowetter, "Biowetter"},
-        {objects.screenallergen, "Allergene"}, {objects.screenwarnkarte1, "Warnkarte"}, {objects.screenwarnkarte2, "Warnliste"},
+        {objects.screenallergen, "Allergene"}, {objects.screentagebuch, "Allergie-Tagebuch"}, {objects.screenwarnkarte1, "Warnkarte"}, {objects.screenwarnkarte2, "Warnliste"},
         {objects.screenairquality, "Luftqualitaet"}, {objects.screensensoren, "Sensoren"}, {objects.screenmenu, "Menue"},
         {objects.screenwarnungpollen, "Pollenwarnung"}, {objects.screenwarnunglueften, "Lueftungswarnung"}, {objects.screennachtuhr, "Nacht-Uhr"},
     };
@@ -72,11 +76,16 @@ void nav_init()
 
     // Allergene (Pollen stündlich und 3 Tage; die Buttons heißen im PicoPixel-Entwurf noch button_1*)
     link(objects.button_1_1,               SCREEN_ID_SCREENBIOWETTER);
-    link(objects.button_1,                 SCREEN_ID_SCREENWARNKARTE1);
+    if (objects.button_1) { lv_obj_add_flag(objects.button_1, LV_OBJ_FLAG_CLICKABLE); lv_obj_add_event_cb(objects.button_1, on_nav_nach_allergen_vor, LV_EVENT_CLICKED, nullptr); }
     link(objects.button_1_2,               SCREEN_ID_SCREEN_1);
 
+    // Allergie-Tagebuch
+    link(objects.buttontagebuchzurueck,    SCREEN_ID_SCREENALLERGEN);
+    link(objects.buttontagebuchweiter,     SCREEN_ID_SCREENWARNKARTE1);
+    link(objects.buttontagebuchhome,       SCREEN_ID_SCREEN_1);
+
     // Warnkarte 1 und 2
-    link(objects.labelbuttonbackward_1,    SCREEN_ID_SCREENALLERGEN);
+    if (objects.labelbuttonbackward_1) { lv_obj_add_flag(objects.labelbuttonbackward_1, LV_OBJ_FLAG_CLICKABLE); lv_obj_add_event_cb(objects.labelbuttonbackward_1, on_nav_nach_warnkarte_zurueck, LV_EVENT_CLICKED, nullptr); }
     link(objects.labelbuttonforward_1,     SCREEN_ID_SCREENAIRQUALITY);
     link(objects.labelbuttonhome,          SCREEN_ID_SCREEN_1);
     link(objects.labelbuttonscreenhub,     SCREEN_ID_SCREENWARNKARTE2);

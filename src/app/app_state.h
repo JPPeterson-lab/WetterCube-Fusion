@@ -93,6 +93,7 @@ struct Config {
   // Biowetter-Kategorien der Kurzübersicht (0=Befinden 1=Hypotonie 2=Bluthochdruck
   // 3=Rheuma entz. 4=Rheuma deg. 5=Asthma 6=Wärmebelastung)
   int ws_cat0 = 0, ws_cat1 = 1, ws_cat2 = 2, ws_cat3 = 5;
+  bool tagebuch_an = true;              // Seite „Allergie-Tagebuch“ in der Reihe der Bildschirme anzeigen
   bool warn_ton_an = true;              // Warnton bei neuer DWD- oder Pollenwarnung (nur mit Lautsprecher, nicht in der Ruhezeit)
   int warn_ton = 1, warn_laut = 50;
   int timer_ton = 2, timer_laut = 60;   // Alarmton (0 bis BOARD_AUDIO_TOENE-1) und Lautstaerke in Prozent (nur Boards mit Lautsprecher)
@@ -350,6 +351,8 @@ struct SensorCfg;
 void sensorBezeichnung(const SensorCfg& c, char* out, size_t n);
 void uiWarnInit();                        // Warnkarte, Liste, Warn-Button, Blink-Timer anlegen
 void aktualisiereWarnliste();
+void uiTagebuchInit();                    // Allergie-Tagebuch (Tasten, Balken)
+void aktualisiereTagebuch();
 void aktualisiereWarnkarte();             // neue Karte (warnkarteDsc) anzeigen
 void aktualisiereDwdWarnBtn();
 void uiWarnenPruefen();                   // Regen-/Pollenwarn-Screens bei neuer Warnung zeigen

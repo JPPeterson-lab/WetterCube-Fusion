@@ -10,6 +10,7 @@ extern "C" {
 
 typedef struct _objects_t {
     lv_obj_t *screennachtuhr;
+    lv_obj_t *screentagebuch;
     lv_obj_t *screenwoche;
     lv_obj_t *screenverlauf;
     lv_obj_t *screensensoren;
@@ -346,6 +347,19 @@ typedef struct _objects_t {
     lv_obj_t *buttonwochezurueck;
     lv_obj_t *buttonwochehome;
     lv_obj_t *buttonwocheweiter;
+    lv_obj_t *containertagebuch;
+    lv_obj_t *labeltagebuchtitel;
+    lv_obj_t *labeltagebuchfrage;
+    lv_obj_t *buttontagebuchgut;
+    lv_obj_t *buttontagebuchleicht;
+    lv_obj_t *buttontagebuchstark;
+    lv_obj_t *labeltagebuchstatus;
+    lv_obj_t *containertagebuchdiagramm;
+    lv_obj_t *labeltagebuchdiagrammtitel;
+    lv_obj_t *labeltagebuchlegende;
+    lv_obj_t *buttontagebuchzurueck;
+    lv_obj_t *buttontagebuchhome;
+    lv_obj_t *buttontagebuchweiter;
     lv_obj_t *labelnachtzeit;
     lv_obj_t *labelnachtdatum;
     lv_obj_t *imagenachtwetter;
@@ -379,31 +393,41 @@ typedef struct _objects_t {
     lv_obj_t *buttonwochezurueck_label;
     lv_obj_t *buttonwochehome_label;
     lv_obj_t *buttonwocheweiter_label;
+    lv_obj_t *buttontagebuchgut_label;
+    lv_obj_t *buttontagebuchleicht_label;
+    lv_obj_t *buttontagebuchstark_label;
+    lv_obj_t *buttontagebuchzurueck_label;
+    lv_obj_t *buttontagebuchhome_label;
+    lv_obj_t *buttontagebuchweiter_label;
 } objects_t;
 
 extern objects_t objects;
 
 enum ScreensEnum {
     SCREEN_ID_SCREENNACHTUHR = 1,
-    SCREEN_ID_SCREENWOCHE = 2,
-    SCREEN_ID_SCREENVERLAUF = 3,
-    SCREEN_ID_SCREENSENSOREN = 4,
-    SCREEN_ID_SCREENBIOWETTER = 5,
-    SCREEN_ID_SCREENALLERGEN = 6,
-    SCREEN_ID_SCREENAIRQUALITY = 7,
-    SCREEN_ID_SCREENMENU = 8,
-    SCREEN_ID_LAGERSCREEN = 9,
-    SCREEN_ID_SCREENWARNKARTE2 = 10,
-    SCREEN_ID_SCREENWARNKARTE1 = 11,
-    SCREEN_ID_SCREENWARNUNGLUEFTEN = 12,
-    SCREEN_ID_SCREENWARNUNGPOLLEN = 13,
-    SCREEN_ID_SCREEN_1 = 14,
-    SCREEN_ID_SCREENBOOT = 15,
+    SCREEN_ID_SCREENTAGEBUCH = 2,
+    SCREEN_ID_SCREENWOCHE = 3,
+    SCREEN_ID_SCREENVERLAUF = 4,
+    SCREEN_ID_SCREENSENSOREN = 5,
+    SCREEN_ID_SCREENBIOWETTER = 6,
+    SCREEN_ID_SCREENALLERGEN = 7,
+    SCREEN_ID_SCREENAIRQUALITY = 8,
+    SCREEN_ID_SCREENMENU = 9,
+    SCREEN_ID_LAGERSCREEN = 10,
+    SCREEN_ID_SCREENWARNKARTE2 = 11,
+    SCREEN_ID_SCREENWARNKARTE1 = 12,
+    SCREEN_ID_SCREENWARNUNGLUEFTEN = 13,
+    SCREEN_ID_SCREENWARNUNGPOLLEN = 14,
+    SCREEN_ID_SCREEN_1 = 15,
+    SCREEN_ID_SCREENBOOT = 16,
 };
 
 void create_screen_screennachtuhr();
 void tick_screen_screennachtuhr();
 void delete_screen_screennachtuhr();
+void create_screen_screentagebuch();
+void tick_screen_screentagebuch();
+void delete_screen_screentagebuch();
 void create_screen_screenwoche();
 void tick_screen_screenwoche();
 void delete_screen_screenwoche();
