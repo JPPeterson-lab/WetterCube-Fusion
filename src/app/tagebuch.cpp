@@ -143,6 +143,13 @@ void tagebuchDemo() {
   }
 }
 
+void tagebuchDemoEnde() {
+  Sperre s;
+  if (!s_demo) return;
+  s_demo = false; s_geladen = false; s_n = 0;
+  ladenFallsNoetig();
+}
+
 // ── Web: /tagebuch und /api/tagebuch ─────────────────────────────────────────
 static const char TAGEBUCH_HTML[] PROGMEM = R"HTML(<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>WetterCube Fusion – Allergie-Tagebuch</title>

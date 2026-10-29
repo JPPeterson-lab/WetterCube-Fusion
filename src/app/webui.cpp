@@ -995,7 +995,7 @@ void starteWebUI() {
       }
       aktualisiereUI(); aktualisiereWarnliste(); aktualisiereDwdWarnBtn(); aktualisiereUpdateBadge();
     }
-    else { { LvLock l; anzahl_warnungen = 0; updateVerfuegbar = false; } datenNeuLaden = true; }
+    else { { LvLock l; anzahl_warnungen = 0; updateVerfuegbar = false; } tagebuchDemoEnde(); datenNeuLaden = true; }
     server.send(200, "text/plain", "ok");
   });
   server.on("/wiederherstellung", HTTP_POST, []() {

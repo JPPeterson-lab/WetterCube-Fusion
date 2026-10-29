@@ -25,7 +25,7 @@
 
 // Muss mit docs/version.json übereinstimmen (sobald es Releases gibt)
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "1.0.0-rc4"
+#define FIRMWARE_VERSION "1.0.0-rc5"
 #endif
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/WetterCube-Fusion/main/docs/version.json"
 #if CONFIG_IDF_TARGET_ESP32P4

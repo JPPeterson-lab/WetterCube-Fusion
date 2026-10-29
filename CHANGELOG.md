@@ -2,7 +2,7 @@
 
 *[English version](CHANGELOG.en.md)*
 
-## v1.0.0-rc4 (2026-10-28)
+## v1.0.0-rc5 (2026-10-29)
 
-### Neu
-- **Allergie-Tagebuch:** neue Seite zwischen Allergene und Warnkarte. Drei Tasten („Keine / Leichte / Starke Beschwerden“) tragen den heutigen Tag ein, 30 Balken zeigen die letzten Tage, dazu als blaue Linie die Pollenbelastung deiner gewählten Allergene. Die Einträge liegen auf der Speicherkarte (`tagebuch.csv`; ohne Karte bleiben sie bis zum Neustart im Speicher). Die Seite lässt sich in der Web-Oberfläche (Reiter Anzeige) abschalten. In der Web-Oberfläche unter `/tagebuch` (Reiter „Tagebuch“) lassen sie sich ansehen, ergänzen, löschen und als CSV herunterladen.
+### Behoben
+- **Allergie-Tagebuch:** Nach dem Beenden des Demo-Modus (`/demo?an=0`, nur für Bildschirmfotos) blieben die Beispieleinträge im Tagebuch stehen. Jetzt werden sie verworfen und die echten Einträge von der Speicherkarte wieder geladen.

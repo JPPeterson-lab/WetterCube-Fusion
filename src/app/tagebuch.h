@@ -17,7 +17,8 @@ bool tagebuchHeuteEintragen(int stufe);                // heutigen Eintrag setze
 int  tagebuchHeute();                                  // Stufe von heute, -1 = noch kein Eintrag
 int  tagebuchAbDatum(int32_t ab, TagebuchEintrag* out, int max);   // Eintraege ab einem Datum (JJJJMMTT), aufsteigend
 bool tagebuchAufKarte();                               // wird gerade auf der Speicherkarte gespeichert?
-void tagebuchDemo();                                   // Beispieleintraege der letzten 30 Tage (nur Speicher, fuer Bildschirmfotos)
+void tagebuchDemo();
+void tagebuchDemoEnde();                               // Beispieleintraege verwerfen, die echten Eintraege (Speicherkarte) wieder laden                                   // Beispieleintraege der letzten 30 Tage (nur Speicher, fuer Bildschirmfotos)
 int32_t tagebuchDatumHeute(int tageZurueck = 0);       // JJJJMMTT, 0 = Uhrzeit unbekannt
 class WebServer;
 void tagebuchWebuiRegistrieren(WebServer& server);     // Seite /tagebuch und /api/tagebuch
