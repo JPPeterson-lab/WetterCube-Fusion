@@ -60,6 +60,8 @@
 |---|---|
 | **[wettercube.de](https://wettercube.de/projekte/wettercube-fusion/)** | Überblick, [Vergleich der Cubes](https://wettercube.de/vergleich/), [Roadmap](https://wettercube.de/roadmap/), [Bauanleitung](https://wettercube.de/bauanleitung/), [Hardware](https://wettercube.de/hardware/) |
 | **[Wiki](https://wiki.wettercube.de/index.php/Fusion/Start)** | Inbetriebnahme, Einstellungen, alle Screens und Funktionen, Sensoren, Home Assistant, Updates, Wiederherstellung, Fehlersuche, Entwicklung |
+| **[draussenwetter.de](https://draussenwetter.de/)** | Pollenflug und Biowetter für deinen Ort als Webseite, ohne Display |
+| **[Vorstellungsvideo](https://youtu.be/aczE4MHxymY)** | der Fusion in gut fünf Minuten (YouTube) |
 | **[Änderungsverlauf](CHANGELOG.md)** | was in welcher Version neu ist |
 
 ## 📡 Datenquellen
@@ -142,6 +144,8 @@ Du darfst den Quellcode nutzen, verändern und weitergeben, auch kommerziell; di
 |---|---|
 | **[wettercube.de](https://wettercube.de/en/products/wettercube-fusion/)** | overview, [comparison of the cubes](https://wettercube.de/en/comparison/), [roadmap](https://wettercube.de/en/roadmap/), [build guide](https://wettercube.de/en/build-guide/), [hardware](https://wettercube.de/en/hardware/) |
 | **[Wiki](https://wiki.wettercube.de/index.php/Fusion/Start)** | getting started, settings, all screens and features, sensors, Home Assistant, updates, recovery, troubleshooting, development |
+| **[draussenwetter.de](https://draussenwetter.de/)** | pollen and bio-weather for your location as a website, no display needed (German) |
+| **[Introduction video](https://youtu.be/aczE4MHxymY)** | the Fusion in about five minutes (YouTube, German) |
 | **[Changelog](CHANGELOG.en.md)** | what is new in which version |
 
 ## 📡 Data sources
