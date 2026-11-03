@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WetterCube Fusion – Web-Installer</title>
+  <script type="module" src="esp-web-tools/install-button.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 { color: #58a6ff; font-size: 1.8em; margin-bottom: 4px; }
+    .subtitle { color: #8b949e; margin-bottom: 30px; }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    h2 { color: #e6edf3; font-size: 1.1em; margin: 0 0 12px; }
+    p { color: #8b949e; font-size: .9em; line-height: 1.5; }
+    esp-web-install-button {
+      display: block;
+      margin-top: 16px;
+    }
+    esp-web-install-button::part(button) {
+      background: #238636;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    esp-web-install-button::part(button):hover { background: #2ea043; }
+    .badge {
+      display: inline-block;
+      background: #30363d;
+      color: #8b949e;
+      font-size: .75em;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+    .steps { list-style: none; padding: 0; counter-reset: step; }
+    .steps li {
+      counter-increment: step;
+      padding: 8px 0 8px 36px;
+      position: relative;
+      color: #8b949e;
+      font-size: .9em;
+      border-bottom: 1px solid #21262d;
+    }
+    .steps li:last-child { border-bottom: none; }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 0; top: 8px;
+      background: #1f6feb;
+      color: #fff;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      font-size: .75em;
+      display: flex; align-items: center; justify-content: center;
+    }
+    footer { color: #30363d; font-size: .8em; text-align: center; margin-top: 30px; }
+    a { color: #58a6ff; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>WetterCube Fusion <span class="badge">v1.0.0-rc14</span></h1>
+  <p class="subtitle">Wetterdisplay für die Waveshare-Boards ESP32-P4-WIFI6-Touch-LCD-7B und ESP32-S3-Touch-LCD-7B (7&quot;, 1024×600) – Wetter, DWD-Warnungen, Pollenflug, Biowetter, Warnkarte, Sensoren &amp; Home Assistant</p>
+
+  <div class="card">
+    <h2>Firmware installieren</h2>
+    <p>Wähle unten dein Board und verbinde es per USB-C-Datenkabel am Anschluss mit der Beschriftung „UART“ (USB TO UART) mit dem Computer. Chrome oder Edge Browser erforderlich. Achtung: Setzt du im Installationsfenster den Haken „Gerät löschen“, wird der gesamte Flash-Speicher gelöscht, auch gespeicherte WLAN-Daten und Einstellungen. Ohne den Haken bleiben sie erhalten. Nur für die genannten Waveshare-Boards; andere Boards werden nicht unterstützt.</p>
+    <div style="margin:14px 0 6px;color:#e6edf3;font-size:.95em"><strong>Welches Board hast du?</strong></div>
+    <div class="boardwahl" style="display:grid;gap:8px;margin-bottom:12px">
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="p4" checked style="margin-right:8px"><strong>ESP32-P4-WIFI6-Touch-LCD-7B</strong> <span style="color:#3fb950">(empfohlen)</span><br><span style="font-size:.88em;color:#8b949e">Das Board mit Zukunft: mehr Leistung und Speicher, animierte Wettersymbole, Lautsprecher mit Timer und Warnton. Neue Funktionen kommen zuerst hierher.</span></label>
+      <label style="display:block;padding:10px 12px;border:1px solid #30363d;border-radius:8px;cursor:pointer;color:#e6edf3;line-height:1.45"><input type="radio" name="board" value="s3" style="margin-right:8px"><strong>ESP32-S3-Touch-LCD-7B</strong><br><span style="font-size:.88em;color:#8b949e">Läuft mit allen Kernfunktionen, hat aber weniger Speicher, keine Animationen und keinen Lautsprecher. Nimm das <strong>Modell mit Touch</strong> und 1024×600 Pixeln.</span></label>
+    </div>
+    <p style="font-size:.88em;color:#8b949e;margin:0 0 10px">Achte beim Kauf auf das <strong>7-Zoll-Display mit 1024×600 Pixeln</strong> (es gibt auch eine 800×480-Variante, die nicht passt) und beim S3 auf die <strong>Touch-Ausführung</strong> (das Board gibt es auch ohne Touch).</p>
+    <div style="margin:16px 0;padding:14px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;font-size:.92em;line-height:1.55;color:#e6edf3">
+      <strong>Welchen Anschluss wählen?</strong><br>
+      Nach dem Klick auf den Installationsknopf öffnet der Browser ein Fenster „… möchte eine Verbindung zu einem seriellen Anschluss herstellen“. Wähle dort den Anschluss deines Boards und klicke auf „Verbinden“:
+      <ul style="margin:8px 0 8px 18px;padding:0">
+        <li><strong>Windows:</strong> ein Eintrag mit „COM“ und einer Zahl, zum Beispiel <em>USB-SERIAL CH340 (COM3)</em> oder <em>USB JTAG/serial debug unit (COM5)</em>.</li>
+        <li><strong>Mac:</strong> ein Eintrag mit „usbmodem“ oder „usbserial“, zum Beispiel <em>cu.usbmodem1101</em>. Nimm am besten die Variante mit „cu.“.</li>
+        <li><strong>Linux:</strong> <em>ttyACM0</em> oder <em>ttyUSB0</em>.</li>
+      </ul>
+      Unsicher? Ziehe das Kabel ab, öffne die Liste und stecke es wieder an: Der Eintrag, der neu erscheint, ist dein Board. Erscheint keiner, nimm ein anderes Datenkabel (kein reines Ladekabel) oder einen anderen USB-Anschluss.
+      <img src="usb-anschluss.png" alt="Beispiel: Fenster zur Auswahl des seriellen Anschlusses unter Windows und auf dem Mac" style="max-width:100%;height:auto;margin-top:10px;border-radius:6px">
+    </div>
+    <label style="display:block;margin:14px 0 4px;color:#e6edf3;font-size:.9em;line-height:1.5;cursor:pointer"><input type="checkbox" id="haftung-ok" style="margin-right:8px">Ich habe die <a href="https://wettercube.de/nutzungshinweise/" target="_blank" style="color:#58a6ff">Nutzungshinweise</a> gelesen und nutze die Firmware auf eigene Gefahr.</label>
+    <div id="installbereich">
+      <esp-web-install-button manifest="manifest-p4.json"></esp-web-install-button>
+    </div>
+    <script>
+  (function () {
+    var cb = document.getElementById('haftung-ok'), bereich = document.getElementById('installbereich');
+    function pruefen() { bereich.style.display = cb.checked ? '' : 'none'; }
+    cb.addEventListener('change', pruefen); pruefen();
+    var knopf = document.querySelector('esp-web-install-button');
+    document.querySelectorAll('input[name=board]').forEach(function (r) {
+      r.addEventListener('change', function () { knopf.setAttribute('manifest', r.value === 'p4' ? 'manifest-p4.json' : 'manifest.json'); });
+    });
+  })();
+</script>
+  </div>
+
+  <div class="card">
+    <h2>Erstkonfiguration</h2>
+    <ol class="steps">
+      <li>Gerät startet und zeigt einen Einrichtungshinweis</li>
+      <li>WLAN-Hotspot <strong>„WetterCube-Fusion-Setup"</strong> mit Smartphone oder PC verbinden. Das <strong>Passwort (8 Ziffern) steht auf dem Display</strong> des Geräts und ist bei jedem Start ein anderes</li>
+      <li>Einrichtungsportal öffnet sich automatisch (alternativ: <strong>192.168.4.1</strong> im Browser)</li>
+      <li>WLAN-Zugangsdaten eingeben</li>
+      <li>Standort (Stadt) eingeben und die DWD-Region für dein Bundesland wählen</li>
+      <li>„Speichern &amp; Neustart" – Gerät verbindet sich mit dem WLAN und lädt die Daten</li>
+      <li>Alle weiteren Einstellungen (Helligkeit, Dimm-Timeout, Nachtmodus, Warnungen, Biowetter-Zone) unter <a href="http://wettercube-fusion.local">wettercube-fusion.local</a></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Features</h2>
+    <p>
+      Wetter · 4-Stunden-Vorhersage · 32 Wettersymbole · Pollenflug (8 Allergene) · Biowetter · Luftqualität · Hinweise (Regen, Frost, UV, Hitze) ·
+      DWD Wetterwarnungen · Warnkarte · Sonne · UV-Index · Mondphase · Eigene Sensoren (MQTT/ESPHome) · Lüften-Ampel · Handy-Nachrichten (ntfy) ·
+      Home Assistant (MQTT) · Schalter-Kacheln · Timer und Stoppuhr · Warnton und Alarmtöne (P4) · Nachtmodus mit Nacht-Uhr · Ruhezeit · Speicherkarte · Dark Mode · WebUI · OTA-Update mit Rollback · Notfall-App · Captive Portal
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Informationen</h2>
+    <p>
+      <strong>Hardware:</strong> Waveshare ESP32-P4-WIFI6-Touch-LCD-7B (empfohlen) oder ESP32-S3-Touch-LCD-7B · 7&quot; 1024×600 · GT911 Touch<br>
+      <strong>Datenquellen:</strong> <a href="https://open-meteo.com" target="_blank" rel="noopener">Weather data by Open-Meteo.com</a> (<a href="https://open-meteo.com/en/licence" target="_blank" rel="noopener">CC BY 4.0</a>; Werte teils umgerechnet) · Pollen/Luftqualität: Contains modified Copernicus Atmosphere Monitoring Service information, über Open-Meteo · Ortssuche: Location data by <a href="https://www.geonames.org" target="_blank" rel="noopener">GeoNames</a> via Open-Meteo · Warnungen, Pollenflug, Biowetter und Radar: Quelle: <a href="https://opendata.dwd.de" target="_blank" rel="noopener">Deutscher Wetterdienst</a> (<a href="https://www.dwd.de/DE/service/rechtliche_hinweise/rechtliche_hinweise_node.html" target="_blank" rel="noopener">CC BY 4.0</a>)<br>
+      <strong>Quellcode:</strong> <a href="https://github.com/JPPeterson-lab/WetterCube-Fusion" target="_blank">JPPeterson-lab/WetterCube-Fusion</a> (Open Source, Apache-Lizenz 2.0; Fehler und Wünsche bitte als Issue)<br>
+      <strong>Anleitung:</strong> <a href="https://wiki.wettercube.de/index.php/Fusion/Start" target="_blank">Wiki</a><br>
+      Portierung des <a href="https://github.com/JPPeterson-lab/WetterCubePlus" target="_blank">WetterCubePlus</a> auf das große Waveshare-Display.
+    </p>
+  </div>
+
+  <footer>WetterCube Fusion – Open Source (Apache 2.0) · <a href="https://github.com/JPPeterson-lab/WetterCube-Fusion">GitHub</a><br><small><a href="https://wettercube.de/impressum/">Impressum</a> · <a href="https://wettercube.de/datenschutz/">Datenschutz</a></small></footer>
+</div>
+</body>
+</html>
