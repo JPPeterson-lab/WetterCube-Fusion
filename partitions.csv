@@ -1,0 +1,12 @@
+# WetterCube Fusion – Partitionstabelle fuer das Waveshare ESP32-S3-Touch-LCD-7B (16 MB Flash)
+# factory: kleine Notfall-App (Wiederherstellung), wird von Updates nie beschrieben und startet nur, wenn keine gueltige Firmware
+#          vorhanden ist oder die Wiederherstellung angefordert wird. Die eigentliche Firmware liegt in app0/app1 (Updates wechseln
+#          zwischen beiden, die Rollback-Funktion des Bootloaders greift bei einem fehlgeschlagenen Update).
+# NVS bleibt an derselben Stelle wie frueher, Einstellungen ueberleben also das Neuflashen.
+# Das ESP32-P4-Board bekommt eine eigene Tabelle (32 MB Flash).
+# Name,    Type, SubType,  Offset,    Size,     Flags
+nvs,       data, nvs,      0x9000,    0x5000,
+otadata,   data, ota,      0xe000,    0x2000,
+factory,   app,  factory,  0x10000,   0x180000,
+app0,      app,  ota_0,    0x190000,  0x6C0000,
+app1,      app,  ota_1,    0x850000,  0x6C0000,

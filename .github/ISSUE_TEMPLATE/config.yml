@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Anleitung / Guide (Wiki)
+    url: https://wiki.wettercube.de/index.php/Fusion/Start
+    about: Inbetriebnahme, Einstellungen, Wiederherstellung und Fehlersuche

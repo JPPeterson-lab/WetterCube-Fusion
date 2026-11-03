@@ -1,0 +1,12 @@
+# WetterCube Fusion – Notfall-App: gemeinsame Einstellungen (Ziel-spezifisches in sdkconfig.defaults.esp32s3 bzw. .esp32p4)
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_OFFSET=0x8000
+CONFIG_COMPILER_OPTIMIZATION_SIZE=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+CONFIG_LV_CONF_SKIP=n
+CONFIG_FATFS_LFN_HEAP=y
+CONFIG_FATFS_MAX_LFN=64
+CONFIG_FATFS_SECTOR_512=y
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+# eigene Notfall-Partition: keine Rollback-Logik noetig (die Notfall-App wird nie ueberschrieben)

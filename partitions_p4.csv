@@ -1,0 +1,16 @@
+# WetterCube Fusion – Partitionstabelle fuer das Waveshare ESP32-P4-WIFI6-Touch-LCD-7B (Flash 32 MB, genutzt werden nur die ersten 16 MB)
+# Wichtig: Alles muss unterhalb von 16 MB (0x1000000) liegen. Die Firmware wird per Cache eingeblendet (esp_image_verify, Start); der
+# Bootloader und das laufende System koennen nur 24 Bit Flash-Adressen einblenden, Adressen ab 16 MB schlagen fehl ("out of range for
+# 24bit flash mapping"). Die Option fuer 32 Bit Adressen (BOOTLOADER_CACHE_32BIT_ADDR_QUAD_FLASH) ist experimentell und bleibt aus.
+# Darum: nvs/otadata an denselben Stellen wie beim S3, factory (Notfall-App, 0,66 MB gross) klein, danach "anim", app0/app1, Ende bei 16 MB.
+# factory: kleine Notfall-App (Wiederherstellung); app0/app1: Firmware, Updates wechseln zwischen beiden (Rollback).
+# anim: die Wetteranimationen (assets/icons/anim/wetteranim.bin, 3 MB). Sie liegen hier einmal, nicht in der Firmware: sonst braeuchten
+#       app0 und app1 sie je einmal (doppelt im Flash). Die Firmware (rund 4,6 MB) passt so mit reichlich Luft in die Slots.
+#       Die Partition wird nur per USB bzw. Web-Installer beschrieben (Typ data, Untertyp 0x40), Updates beruehren sie nicht.
+# Name,    Type, SubType,  Offset,    Size,     Flags
+nvs,       data, nvs,      0x9000,    0x5000,
+otadata,   data, ota,      0xe000,    0x2000,
+factory,   app,  factory,  0x10000,   0xB0000,
+anim,      data, 0x40,     0xC0000,   0x320000,
+app0,      app,  ota_0,    0x3E0000,  0x610000,
+app1,      app,  ota_1,    0x9F0000,  0x610000,
