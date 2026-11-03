@@ -1,0 +1,30 @@
+# Gemeinsame Einstellungen (alle Ziele). Ziel-spezifisches steht in sdkconfig.defaults.esp32s3 bzw. .esp32p4
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_PARTITION_TABLE_OFFSET=0x8000
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_LV_CONF_SKIP=n
+CONFIG_COMPILER_DISABLE_DEFAULT_ERRORS=y
+# TLS-Puffer (je Verbindung ca. 40-50 KB) im PSRAM statt im internen RAM
+CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC=y
+# Zertifikate der HTTPS-Abrufe werden gegen das eingebaute CA-Paket geprueft
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE=y
+# Hauptaufgabe (app_main): baut Oberflaeche und Tasks auf, braucht mehr Stapel als der Standard
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+# Webserver: laengere Kopfzeilen (Browser mit Cookies) und URLs
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=2048
+CONFIG_HTTPD_MAX_URI_LEN=512
+# Speicherkarte: lange Dateinamen (2026-10-16.csv) im FAT-Dateisystem
+CONFIG_FATFS_LFN_HEAP=y
+CONFIG_FATFS_MAX_LFN=64
+# 512-Byte-Sektoren (SD-Karte), nicht 4096: sonst belegt jede offene Datei 4 KB; FATFS-Puffer bevorzugt im PSRAM
+CONFIG_FATFS_SECTOR_512=y
+CONFIG_FATFS_ALLOC_PREFER_EXTRAM=y
+
+# Rollback: eine neue Firmware gilt erst nach gesundem Start als gueltig, sonst startet nach dem naechsten Neustart die vorherige
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
+
+# SNTP: drei Zeitserver (platform/Zeit.cpp)
+CONFIG_LWIP_SNTP_MAX_SERVERS=3
