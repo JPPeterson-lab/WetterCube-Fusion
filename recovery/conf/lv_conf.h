@@ -1,0 +1,102 @@
+#ifndef LV_CONF_H
+#define LV_CONF_H
+
+#include <stdint.h>
+#include "esp_attr.h"
+#include "esp_heap_caps.h"
+#include "esp_timer.h"
+/* Projektkopie fuer den ESP-IDF-Build: gleiche Einstellungen wie die gemeinsame lv_conf.h der Arduino-IDE plus die
+   Schalter aus build_opt.h (dort per -D), hier fest eingetragen. */
+
+/* Aktivierung der Datei */
+#if 1 
+
+/* Bildschirmfoto (lv_snapshot) fuer die Diagnose-Seite /screenshot.bmp */
+#define LV_USE_SNAPSHOT 1
+
+/* --- SPEICHER --- */
+#if 1  /* Notfall-App: LVGL-Speicher immer im PSRAM */
+/* Opt-in: Projekte mit PSRAM setzen -DLV_MEM_PSRAM in build_opt.h. Dann liegt der LVGL-Speicher im PSRAM
+   (schont den knappen internen RAM, kein festes Limit). Faellt auf den internen Heap zurueck, falls der
+   PSRAM nichts liefert. Ohne den Schalter aendert sich fuer ein Projekt nichts. */
+#define LV_MEM_CUSTOM 1
+#define LV_MEM_CUSTOM_INCLUDE <esp_heap_caps.h>
+#define LV_MEM_CUSTOM_ALLOC(size)       ({ void * lv_p_ = heap_caps_malloc((size), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT); lv_p_ ? lv_p_ : heap_caps_malloc((size), MALLOC_CAP_8BIT); })
+#define LV_MEM_CUSTOM_FREE(p)           heap_caps_free(p)
+#define LV_MEM_CUSTOM_REALLOC(p, size)  heap_caps_realloc((p), (size), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)
+#else
+#define LV_MEM_CUSTOM 0
+#endif
+#ifndef LV_MEM_SIZE
+#define LV_MEM_SIZE (192U * 1024U)  /* Default 64KB. Projekte mit mehr Screens setzen -DLV_MEM_SIZE=... in build_opt.h */
+#endif
+#define LV_MEM_ADR 0
+/* wie build_opt.h: der 192-KB-Speicherpool liegt im PSRAM, schnelle Funktionen im IRAM, memcpy aus der C-Bibliothek */
+#define LV_MEM_POOL_INCLUDE <esp_heap_caps.h>
+#define LV_MEM_POOL_ALLOC(size) heap_caps_malloc(size, MALLOC_CAP_SPIRAM)
+#define LV_MEMCPY_MEMSET_STD 1
+#define LV_ATTRIBUTE_FAST_MEM IRAM_ATTR
+
+/* --- GRAFIK --- */
+#ifndef LV_COLOR_DEPTH
+#define LV_COLOR_DEPTH 16
+#endif
+#ifndef LV_COLOR_16_SWAP
+#define LV_COLOR_16_SWAP 0  /* Default: 0. Projekte mit ILI9488/LovyanGFX setzen -DLV_COLOR_16_SWAP=1 in build_opt.h */
+#endif
+
+/* --- TICK (WICHTIG FÜR ESP32) --- */
+#define LV_TICK_CUSTOM 1
+#if LV_TICK_CUSTOM
+    #define LV_TICK_CUSTOM_INCLUDE "esp_timer.h"
+    #define LV_TICK_CUSTOM_SYS_TIME_EXPR ((uint32_t)(esp_timer_get_time() / 1000))
+#endif
+
+/* --- SCHRIFTEN --- */
+#define LV_FONT_MONTSERRAT_12 0
+#define LV_FONT_MONTSERRAT_14 1
+#define LV_FONT_MONTSERRAT_16 0
+#define LV_FONT_MONTSERRAT_18 0
+#define LV_FONT_MONTSERRAT_20 0
+#define LV_FONT_MONTSERRAT_22 0  /* zeigeHinweisScreen Titel */
+#define LV_FONT_MONTSERRAT_28 0
+#define LV_FONT_MONTSERRAT_30 0
+#define LV_FONT_MONTSERRAT_32 0
+#define LV_FONT_MONTSERRAT_34 0
+#define LV_FONT_MONTSERRAT_36 0
+#define LV_FONT_MONTSERRAT_38 0
+#define LV_FONT_MONTSERRAT_40 0
+#define LV_FONT_MONTSERRAT_42 0
+#define LV_FONT_MONTSERRAT_44 0
+#define LV_FONT_MONTSERRAT_46 0
+#define LV_FONT_MONTSERRAT_48 0
+#define LV_FONT_DEFAULT &lv_font_montserrat_14
+
+/* --- INPUT / SCROLL --- */
+#define LV_INDEV_DEF_SCROLL_LIMIT      40   /* px bis Scroll startet (default 10) — verhindert Ruckeln beim Wischen */
+#define LV_INDEV_DEF_SCROLL_THROW      10   /* Scroll-Auslauf nach Loslassen */
+#define LV_INDEV_DEF_GESTURE_LIMIT     30   /* px bis Geste erkannt wird (default 50) */
+#define LV_INDEV_DEF_GESTURE_MIN_VELOCITY 3 /* px/tick Mindestgeschwindigkeit fuer Geste */
+
+/* --- DEBUG --- */
+#define LV_USE_LOG 1
+#if LV_USE_LOG
+    #define LV_LOG_LEVEL LV_LOG_LEVEL_WARN
+    #define LV_LOG_PRINTF 1
+#endif
+
+/* --- WIDGETS --- */
+#define LV_USE_LABEL  1
+#define LV_USE_IMG    1
+#define LV_USE_BAR    1
+#define LV_USE_ARC    1
+#define LV_USE_BTN    1   /* Buttons (PicoPixel lv_btn_create) */
+
+/* --- PNG-DECODER (für DWD Warnkarte) --- */
+#define LV_USE_PNG    1
+
+/* --- ANIMATIONEN --- */
+#define LV_USE_ANIMATION 1
+
+#endif /* Aktivierung */
+#endif /* LV_CONF_H */
